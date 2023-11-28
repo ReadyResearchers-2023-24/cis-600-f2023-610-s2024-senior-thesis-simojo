@@ -3,13 +3,13 @@
 This repository contains the starter materials for your thesis in Computer
 Science 600 and 610 in Fall 2022  and Spring 2023 academic term. The main
 directory of this repository contains the Markdown template for a project that
-is designed for use with GitHub Classroom. To learn more about the course
-in which these assignments were completed, please refer to the `README.md` file.
+is designed for use with GitHub Classroom. To learn more about the course in
+which these assignments were completed, please refer to the `README.md` file.
 
-The template specifies various settings in the `config.yaml` file included in the
-repository. Change the appropriate values under the `Project-specific values`
-heading. Changing other values outside of that section may cause the project to
-fail to build. **Modify these values at your own risk.**
+The template specifies various settings in the `config.yaml` file included in
+the repository. Change the appropriate values under the `Project-specific
+values` heading. Changing other values outside of that section may cause the
+project to fail to build. **Modify these values at your own risk.**
 
 Author your thesis in the `thesis.md` document using appropriate Markdown
 hierarchy and syntax; GitHub Actions will automatically create a PDF from the

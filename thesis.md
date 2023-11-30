@@ -95,8 +95,7 @@ coverage, remote sensing, search and rescue, and delivery of goods.
 There are numerous obstacles that pose a barrier to ready, widespread adoption
 of UAVs in the industry. UAV cameras are still very prone to over and under
 exposure when navigating outdoors. This can interfere with the
-photogrammetric[^photogrammetric]
-processes used by many implementations.
+photogrammetric[^photogrammetric] processes used by many implementations.
 
 [^photogrammetric]: *Photogrammetry* refers to the conversion of a set of 2D
     images to a 3D model. It can be used in place of LiDAR, or in conjunction

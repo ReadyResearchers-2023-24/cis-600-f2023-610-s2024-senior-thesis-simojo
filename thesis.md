@@ -87,6 +87,22 @@ The headings below propose _one way_ you might structure this section of the doc
 
 ## Motivation
 
+Robotic navigation is necessary for a robot to interact with its surroundings in
+a real world environment, and it is necessary to realize technologies such as
+fully autonomous vehicles. Modern robotic systems employ a variety of techniques
+to achieve spatial awareness. These systems take the form of ranging sensors
+(acoustic or optical) or optical flow, which is a steady stream of camera
+information. Interpreting reliable and fast 3D spatial data via optical flow
+requires extensive training of a convolutional neural network and large amounts
+of data. Although recent work has enabled a racing quadcopter to outperform
+professional pilots using optical flow, boasting a speed of $22 \text{FIXME}$
+
+The use of unmanned aerial vehicles (UAVs) is
+becoming increasingly ubiquitous across various application domains, including
+real-time monitoring, wireless coverage, remote sensing, search and rescue,
+delivery of goods.
+[@shakhatreh2019]
+
 ## Current State of the Art
 
 ## Goals of the Project

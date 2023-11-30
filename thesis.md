@@ -109,7 +109,7 @@ to achieve spatial awareness. These systems take the form of ranging sensors
 information. Interpreting reliable and fast 3D spatial data via optical flow
 requires extensive training of a convolutional neural network and large amounts
 of data. Although recent work has enabled a racing quadcopter to outperform
-professional pilots using optical flow, boasting a speed of $22 \text{FIXME}$
+professional pilots using optical flow, boasting a speed of 22 m/s.
 
 ## Current State of the Art
 

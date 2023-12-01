@@ -49,6 +49,17 @@ you may also need to add the package to the [GitHub Actions Workflow](.github/wo
 Direct any questions about issues to your first reader.
 -->
 
+<!-- From Physics:
+Written work in fall semester
+Recommended format:
+- Introduction and Background: includes previous work in field
+- Theory
+- Methodology / Experimental Plan
+- Preliminary Results
+- Future Work
+- References: It is expected that the vast majority of references
+will be from peer reviewed sources (not Wikipedia!) -->
+
 # Introduction
 
 ## Motivation
@@ -57,19 +68,18 @@ The use of unmanned aerial vehicles (UAVs) is becoming increasingly ubiquitous
 across various application domains, including real-time monitoring, wireless
 coverage, remote sensing, search and rescue, and delivery of goods. UAVs are
 thought of to be especially fit for search and rescue applications, given the
-dangerous conditions associated with these operations.
-[@shakhatreh2019]
+dangerous conditions associated with these operations. [@shakhatreh2019]
 
 <!-- FIXME: need to provide tangible data right here -->
 
 There are numerous hindrances that pose a barrier to ready, widespread adoption
 of UAVs in the industry. UAV cameras are still very prone to over and under
-exposure when navigating outdoors. This can interfere with the
-photogrammetric[^photogrammetry] processes used by many implementations.
-
-[^photogrammetry]: *Photogrammetry* refers to the conversion of a set of 2D
-images to a 3D model. It can be used in place of LiDAR, or in conjunction with
-LiDAR.
+exposure when navigating outdoors. This can interfere with the photogrammetric
+processes used by many implementations. *Photogrammetry* refers to the
+conversion of a set of 2D images to a 3D model. It can be used in place of
+LiDAR or in conjunction with LiDAR. UAV camera systems can be delayed in their
+response to higher and lower exposure of the course of a flight because of the
+presence of sunlight and shaded areas found outdoors.
 
 Using ranging sensors can mitigate many of the problems associated with UAVs
 that rely on optical flow. Although ranging sensors come in varying forms, they
@@ -81,16 +91,25 @@ which is a result of the exploding fiber optics industry. Additionally, NIR
 light is invisible and less harmful the human eye, giving it credibility in
 terms of safety. [@raj2020, p. 16]
 
+In addition to object detection and spatial awareness, autonomous navigation is
+difficult to develop for general applications. 
+
+<!-- FIXME: continue to develop idea about why autonomous navigation is not
+perfect. -->
+
 Robotic navigation is necessary for a robotic system to interact with its
 surroundings in a real world environment, and it is necessary to realize
-technologies such as fully autonomous vehicles. Modern robotic systems employ a
-variety of techniques to achieve spatial awareness. These systems take the form
-of ranging sensors (acoustic or optical) or optical flow, which is a steady
-stream of camera information that is used to make assertions about the relative
-positions of objects. Interpreting reliable and fast 3D spatial data via optical
-flow requires extensive training of a convolutional neural network and large
-amounts of data. Although recent work has enabled a racing quadcopter to
-outperform professional pilots using optical flow, boasting a speed of 22 m/s,
+technologies such as fully autonomous vehicles and fully autonomous UAVs. Modern
+robotic systems employ a variety of techniques to achieve spatial awareness.
+These systems take the form of ranging sensors (acoustic or optical) or optical
+flow, which is a steady stream of camera information that is used to make
+assertions about the relative positions of objects. Interpreting reliable and
+fast 3D spatial data via optical flow requires extensive training of a
+convolutional neural network and large amounts of data. Although recent work has
+enabled a racing quadcopter to outperform professional pilots using optical
+flow, boasting a speed of $22 \frac{\text{m}}{\text{s}}$,
+
+<!-- FIXME: try to give a proper motivation for why my approach has validity -->
 
 ## Current State of the Art
 
@@ -98,23 +117,17 @@ outperform professional pilots using optical flow, boasting a speed of 22 m/s,
 
 ## Ethical Implications
 
-This document requires that you discuss the ethical implications of your work --
-no matter how benign you consider the outcome of your project. As several major
-studies of ethical issues in computer science assert: _no project is completely
-value-neutral_.
+<!-- spying
+war use
+war use!!!
+war use!!!!!!! -->
 
-To assist you in elaborating on these issues, the following areas are topics you
-might consider addressing. You do not need to address all of them.
+Any quadcopter equipped with one or more cameras can be considered a risk to
+privacy. A flying system that can be remotely operated has the potential to be
+exploited to infringe on privacy. Further, an autonomous system could add a
+layer of anonymity to enable FIXME [@cummings2017]
 
-* Information Privacy
-* Information Accuracy (e.g. can contain reliability)
-* Potential Misuse (e.g. computer crime, unintended consequences)
-* Second- or Third-Party Risk (e.g. safety)
-* Data Collection Issues (e.g. issues inherent in collecting data)
-* Algorithmic or Data Bias
-* Potential Power Difference / Social Imbalance / Issues in Equity
-
-In addition, reflect on ways that the above harms can be or are mitigated by your work
+<!-- In addition, reflect on ways that the above harms can be or are mitigated by your work -->
 
 # Related work
 

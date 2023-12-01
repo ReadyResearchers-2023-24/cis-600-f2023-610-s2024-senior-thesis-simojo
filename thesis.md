@@ -1,33 +1,8 @@
 <!-- # Template description
 
-This repository contains the starter materials for your thesis in Computer
-Science 600 and 610 in Fall 2022  and Spring 2023 academic term. The main
-directory of this repository contains the Markdown template for a project that
-is designed for use with GitHub Classroom. To learn more about the course in
-which these assignments were completed, please refer to the `README.md` file.
-
-The template specifies various settings in the `config.yaml` file included in
-the repository. Change the appropriate values under the `Project-specific
-values` heading. Changing other values outside of that section may cause the
-project to fail to build. **Modify these values at your own risk.**
-
-Author your thesis in the `thesis.md` document using appropriate Markdown
-hierarchy and syntax; GitHub Actions will automatically create a PDF from the
-`abstract.md` and `proposal.md` files. Consult the `README` of the proposal
-repository to learn how to properly build and release this PDFs.
-
 ## Citations and references
 
-Including references throughout requires a specific pseudo-Markdown tag, demonstrated
-in the following blockquote. (Inspect the `thesis.md` file to see the format.)
-
-> A citation, when included correctly, will appear as it does at the end of this
-> sentence.
-
 ## Labeling figures
-
-To label a figure (i.e. an image), referencing the image using correct Markdown
-will automatically caption the figure:
 
 ```markdown
 ![Label](images/IMAGE_NAME.png)
@@ -73,42 +48,49 @@ you may also need to add the package to the [GitHub Actions Workflow](.github/wo
 
 Direct any questions about issues to your first reader.
 -->
+
 # Introduction
-
-This chapter describes your completed senior thesis work,
-including the overall aims  and the background motivating your research. Whenever
-possible, you should use one or more concrete examples and technical diagrams.
-
-It is often useful and necessary to separate the introduction into multiple sections.
-Several possible sections are proposed below, you can use these or distribute your
-introductory text into sections in another way.
-
-The headings below propose _one way_ you might structure this section of the document.
 
 ## Motivation
 
 The use of unmanned aerial vehicles (UAVs) is becoming increasingly ubiquitous
 across various application domains, including real-time monitoring, wireless
-coverage, remote sensing, search and rescue, and delivery of goods.
+coverage, remote sensing, search and rescue, and delivery of goods. UAVs are
+thought of to be especially fit for search and rescue applications, given the
+dangerous conditions associated with these operations.
 [@shakhatreh2019]
 
-There are numerous obstacles that pose a barrier to ready, widespread adoption
+<!-- FIXME: need to provide tangible data right here -->
+
+There are numerous hindrances that pose a barrier to ready, widespread adoption
 of UAVs in the industry. UAV cameras are still very prone to over and under
 exposure when navigating outdoors. This can interfere with the
 photogrammetric[^photogrammetry] processes used by many implementations.
 
-[^photogrammetry]: *Photogrammetry* refers to the conversion of a set of 2D images to a 3D model.
-It can be used in place of LiDAR, or in conjunction with LiDAR.
+[^photogrammetry]: *Photogrammetry* refers to the conversion of a set of 2D
+images to a 3D model. It can be used in place of LiDAR, or in conjunction with
+LiDAR.
 
-Robotic navigation is necessary for a robot to interact with its surroundings in
-a real world environment, and it is necessary to realize technologies such as
-fully autonomous vehicles. Modern robotic systems employ a variety of techniques
-to achieve spatial awareness. These systems take the form of ranging sensors
-(acoustic or optical) or optical flow, which is a steady stream of camera
-information. Interpreting reliable and fast 3D spatial data via optical flow
-requires extensive training of a convolutional neural network and large amounts
-of data. Although recent work has enabled a racing quadcopter to outperform
-professional pilots using optical flow, boasting a speed of 22 m/s.
+Using ranging sensors can mitigate many of the problems associated with UAVs
+that rely on optical flow. Although ranging sensors come in varying forms, they
+all rely on measuring the Time of Flight (ToF) of an emitted beam of light, that
+is, the difference in time $\Delta t$ between $t_{\text{emitted}}$ and
+$t_{\text{received}}$. In robotic applications, manufacturers have opted to use
+laser diodes in the near infrared (NIR) band because of their inexpensiveness,
+which is a result of the exploding fiber optics industry. Additionally, NIR
+light is invisible and less harmful the human eye, giving it credibility in
+terms of safety. [@raj2020, p. 16]
+
+Robotic navigation is necessary for a robotic system to interact with its
+surroundings in a real world environment, and it is necessary to realize
+technologies such as fully autonomous vehicles. Modern robotic systems employ a
+variety of techniques to achieve spatial awareness. These systems take the form
+of ranging sensors (acoustic or optical) or optical flow, which is a steady
+stream of camera information that is used to make assertions about the relative
+positions of objects. Interpreting reliable and fast 3D spatial data via optical
+flow requires extensive training of a convolutional neural network and large
+amounts of data. Although recent work has enabled a racing quadcopter to
+outperform professional pilots using optical flow, boasting a speed of 22 m/s,
 
 ## Current State of the Art
 
@@ -116,12 +98,13 @@ professional pilots using optical flow, boasting a speed of 22 m/s.
 
 ## Ethical Implications
 
-This document requires that you discuss the ethical implications of your work -- no
-matter how benign you consider the outcome of your project. As several major studies
-of ethical issues in computer science assert: _no project is completely value-neutral_.
+This document requires that you discuss the ethical implications of your work --
+no matter how benign you consider the outcome of your project. As several major
+studies of ethical issues in computer science assert: _no project is completely
+value-neutral_.
 
-To assist you in elaborating on these issues, the following areas are topics you might
-consider addressing. You do not need to address all of them.
+To assist you in elaborating on these issues, the following areas are topics you
+might consider addressing. You do not need to address all of them.
 
 * Information Privacy
 * Information Accuracy (e.g. can contain reliability)
@@ -135,44 +118,29 @@ In addition, reflect on ways that the above harms can be or are mitigated by you
 
 # Related work
 
-This chapter includes a broad and detailed review of relevant existing work.
-The literature review should provide background and context for the thesis work.
-The subsections may be organized in whatever manner seems best suited to the material--
-chronological, or by topic, or according to some other criteria
-(e.g., primary versus secondary resources).
-
-If ethical issues are central to this work, you should also address historical and
-contemporary issues or efforts made to address them.
+In an effort to demonstrate the ability of a quadcopter to perform basic
+navigation, @bogatov2021 used a grid of ArUco markers to provide the COEX CLover
+4 quadcopter with an optical point of reference. @bogatov2021 states: "An ArUco
+marker is a synthetic square marker composed by a wide black border and [an]
+inner binary matrix which determines its identifier (id)." Using its on-board
+camera, the drone resolved its own position by comparing it relative to each
+ArUco marker. By default, the ROS module `aruco_detect` for the Clover 4 is
+capable of publishing the positions of ArUco markers as *TF frames*, which is a
+data type ROS uses to standardize multiple frames of reference in the context of
+a global frame of reference. [@clover] With the goal of tracing out four
+characters along an invisible plane using the drone's motion, the group
+demonstrated that their method of using ArUco markers kept the quadcopter's
+position within 0.1 to 0.2m of the desired waypoints, on average. They attribute
+haphazard positioning of the ArUco markers and improperly defined PID controller
+values to the cause of the error. [@bogatov2021]
 
 # Method of approach
 
-This chapter answers the "how" question - how did you complete your project,
-including the overall design of your study, details of the algorithms and tools you
-have used, etc.  Use technical diagrams, equations, algorithms, and paragraphs of text
-to describe the research that you have completed. Be sure to number all figures and
-tables and to explicitly refer to them in your text.
-
-This should contain:
-
-* lists
-* with points
-* and more points
-  * possibly subpoints
-
-For those projects whose implications address social or moral issues (i.e. ethical
-standards, causes, effects), you will want to use this section to describe how you
-actively mitigated or considered these issues.
+## Theory
 
 # Experiments
 
-This chapter describes your experimental set up and evaluation. It should also
-produce and describe the results of your study. The section titles below offer
-a typical structure used for this chapter.
-
 ## Experimental Design
-
-Especially as it pertains to responsible computing, if conducting experiments or
-evaluations that involve particular ethical considerations, detail those issues here.
 
 ## Evaluation
 
@@ -180,22 +148,13 @@ evaluations that involve particular ethical considerations, detail those issues 
 
 # Conclusion
 
-Traditionally, this chapter addresses the areas proposed below as sections, although
-not necessarily in this order or organized as offered. However, the last section --
-"Ethical Implications" is required for this chapter. See the heading below for more
-details.
-
 ## Summary of Results
 
 ## Future Work
 
 ## Future Ethical Implications and Recommendations
 
-Especially as pertains to the public release or use of your software or methods, what
-unresolved or special issues remain? What recommendations might you make?
-
 ## Conclusions
-
 
 # References
 

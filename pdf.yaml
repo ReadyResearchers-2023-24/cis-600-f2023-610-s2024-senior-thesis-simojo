@@ -12,4 +12,4 @@ resource-path: [template]
 standalone: true
 to: pdf
 top-level-division: chapter # part, chapter, section, or default:
-verbosity: ERROR # ERROR, WARNING, or INFO
+verbosity: INFO # ERROR, WARNING, or INFO

@@ -1,4 +1,4 @@
-# Template description
+<!-- # Template description
 
 This repository contains the starter materials for your thesis in Computer
 Science 600 and 610 in Fall 2022  and Spring 2023 academic term. The main
@@ -22,7 +22,7 @@ Including references throughout requires a specific pseudo-Markdown tag, demonst
 in the following blockquote. (Inspect the `thesis.md` file to see the format.)
 
 > A citation, when included correctly, will appear as it does at the end of this
-> sentence. [@plaat1996research]
+> sentence.
 
 ## Labeling figures
 
@@ -72,7 +72,7 @@ Should this package not be included in the environment shipped with this templat
 you may also need to add the package to the [GitHub Actions Workflow](.github/workflows/main.yml).
 
 Direct any questions about issues to your first reader.
-
+-->
 # Introduction
 
 This chapter describes your completed senior thesis work,
@@ -95,11 +95,10 @@ coverage, remote sensing, search and rescue, and delivery of goods.
 There are numerous obstacles that pose a barrier to ready, widespread adoption
 of UAVs in the industry. UAV cameras are still very prone to over and under
 exposure when navigating outdoors. This can interfere with the
-photogrammetric[^photogrammetric] processes used by many implementations.
+photogrammetric[^photogrammetry] processes used by many implementations.
 
-[^photogrammetric]: *Photogrammetry* refers to the conversion of a set of 2D
-    images to a 3D model. It can be used in place of LiDAR, or in conjunction
-    with LiDAR.
+[^photogrammetry]: *Photogrammetry* refers to the conversion of a set of 2D images to a 3D model.
+It can be used in place of LiDAR, or in conjunction with LiDAR.
 
 Robotic navigation is necessary for a robot to interact with its surroundings in
 a real world environment, and it is necessary to realize technologies such as
@@ -172,7 +171,7 @@ a typical structure used for this chapter.
 
 ## Experimental Design
 
-Especially as it pertains to responisble computing, if conducting experiments or
+Especially as it pertains to responsible computing, if conducting experiments or
 evaluations that involve particular ethical considerations, detail those issues here.
 
 ## Evaluation
@@ -183,7 +182,7 @@ evaluations that involve particular ethical considerations, detail those issues 
 
 Traditionally, this chapter addresses the areas proposed below as sections, although
 not necessarily in this order or organized as offered. However, the last section --
-"Ethical Implcations" is required for this chapter. See the heading below for more
+"Ethical Implications" is required for this chapter. See the heading below for more
 details.
 
 ## Summary of Results

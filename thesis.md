@@ -71,6 +71,7 @@ thought of to be especially fit for search and rescue applications, given the
 dangerous conditions associated with these operations. [@shakhatreh2019]
 
 <!-- FIXME: need to provide tangible data right here -->
+<!-- FIXME: provide data from the FAA here. -->
 
 There are numerous hindrances that pose a barrier to ready, widespread adoption
 of UAVs in the industry. UAV cameras are still very prone to over and under
@@ -123,15 +124,40 @@ war use
 war use!!!
 war use!!!!!!! -->
 
+With the advent of autonomous UAVs, the FAA reports that over 1.47 million new
+recreational drone owners registered in the United States between December 21,
+2015 and the end of December 2022. In 2022, the FAA saw an average of 7,866
+newly registered recreational UAV owners per month. [@faaForecast, p. 45] A
+higher volume of recreational users implies the increased risk of misuse across
+various domains.
+
+Although the rate of increase of recreational UAV owners has been reported to be
+slowing in recent years, the UAV industry is 
+
 Any quadcopter equipped with one or more cameras can be considered a risk to
 privacy. A flying system that can be remotely operated has the potential to be
 exploited to infringe on privacy. Further, an autonomous system could add a
 layer of anonymity to enable a malicious party to perform simultaneous
 operations for the purpose of infringing on privacy. [@cummings2017]
 
+@cummings2017 gathered five incidents in the past decade that have marked
+ethical concerns related to UAV operation, which are listed in
++@tbl:uavincidents
+
+Table: Examples of Incidents that Highlight the Safety, Ethical, and Privacy
+Concerns Related to UAV Operation (Source: @cummings2017) {#tbl:uavincidents}
+
+Incident(s) | Significance | Source
+:---|:---|:---:
+UAV crashes in an Australian triathlon injuring an athlete. | UAV operator claimed someone hacked the device resulting in the crash. | [@martin2014]
+Drone carrying Albanian flag sparked brawl between Serbian and Albanian players. | Incident viewed as “political provocation” by Serbian Foreign Minister, reopening old tensions. | [@thetelegraph2014]
+FAA reports an increasing number of UAVs being sighted by commercial airlines | UAVs encroaching on commercial airspace, increasing safety concerns for commercial airlines and passengers. | [@jansen2015]
+UAV on the White House Lawn | Breach of national security | [@berman2015]
+UAV carrying radioactive materials lands on Japanese Prime Minister’s Office | UAVs used to make a political point in response to Japan’s damaged nuclear reactor | [@anderson2015]
+
 <!-- FIXME: data on infringements of privacy -->
 
-With the advent of autonomous UAVs, 
+With the advent of autonomous UAVs, [@faaForecast, @chavez2023]
 
 <!-- In addition, reflect on ways that the above harms can be or are mitigated by your work -->
 
@@ -152,6 +178,8 @@ demonstrated that their method of using ArUco markers kept the quadcopter's
 position within 0.1 to 0.2m of the desired waypoints, on average. They attribute
 haphazard positioning of the ArUco markers and improperly defined PID controller
 values to the cause of the error. [@bogatov2021]
+
+Path planning FIXME [@gugan2023]
 
 # Method of approach
 

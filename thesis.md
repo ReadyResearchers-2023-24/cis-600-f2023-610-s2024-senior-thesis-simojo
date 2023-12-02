@@ -111,9 +111,10 @@ flow, boasting a speed of $22 \frac{\text{m}}{\text{s}}$,
 
 <!-- FIXME: try to give a proper motivation for why my approach has validity -->
 
-## Current State of the Art
-
 ## Goals of the Project
+
+This project aims to train the COEX Clover quadcopter to perform basic
+navigation and obstacle avoidance in randomized scenarios. 
 
 ## Ethical Implications
 
@@ -125,7 +126,12 @@ war use!!!!!!! -->
 Any quadcopter equipped with one or more cameras can be considered a risk to
 privacy. A flying system that can be remotely operated has the potential to be
 exploited to infringe on privacy. Further, an autonomous system could add a
-layer of anonymity to enable FIXME [@cummings2017]
+layer of anonymity to enable a malicious party to perform simultaneous
+operations for the purpose of infringing on privacy. [@cummings2017]
+
+<!-- FIXME: data on infringements of privacy -->
+
+With the advent of autonomous UAVs, 
 
 <!-- In addition, reflect on ways that the above harms can be or are mitigated by your work -->
 

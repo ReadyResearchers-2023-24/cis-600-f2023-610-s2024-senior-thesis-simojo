@@ -11,8 +11,10 @@ in
     buildInputs = [
       nixpkgs.tectonic
       nixpkgs.pandoc
+      nixpkgs.entr
     ];
     shellHook = ''
       alias pdf="pandoc --defaults pdf.yaml --to latex --metadata-file config.yaml --lua-filter .filters/abstract-to-meta.lua --template template/thesis.tex"
+      alias pdflive="ls | entr pandoc --defaults pdf.yaml --to latex --metadata-file config.yaml --lua-filter .filters/abstract-to-meta.lua --template template/thesis.tex"
     '';
   }

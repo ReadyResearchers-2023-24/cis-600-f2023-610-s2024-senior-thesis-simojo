@@ -144,9 +144,6 @@ operations for the purpose of infringing on privacy. [@cummings2017]
 ethical concerns related to UAV operation, which are listed in
 +@tbl:uavincidents
 
-Table: Examples of Incidents that Highlight the Safety, Ethical, and Privacy
-Concerns Related to UAV Operation (Source: @cummings2017) {#tbl:uavincidents}
-
 Incident(s) | Significance | Source
 :---|:---|:---:
 UAV crashes in an Australian triathlon injuring an athlete. | UAV operator claimed someone hacked the device resulting in the crash. | [@martin2014]
@@ -154,6 +151,10 @@ Drone carrying Albanian flag sparked brawl between Serbian and Albanian players.
 FAA reports an increasing number of UAVs being sighted by commercial airlines | UAVs encroaching on commercial airspace, increasing safety concerns for commercial airlines and passengers. | [@jansen2015]
 UAV on the White House Lawn | Breach of national security | [@berman2015]
 UAV carrying radioactive materials lands on Japanese Prime Minister’s Office | UAVs used to make a political point in response to Japan’s damaged nuclear reactor | [@anderson2015]
+
+Table: Examples of Incidents that Highlight the Safety, Ethical, and Privacy
+Concerns Related to UAV Operation (Source: @cummings2017). {#tbl:uavincidents}
+
 
 <!-- FIXME: data on infringements of privacy -->
 

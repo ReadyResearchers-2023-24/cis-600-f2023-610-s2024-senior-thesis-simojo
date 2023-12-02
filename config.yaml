@@ -11,9 +11,13 @@ logo: 'images/logo'
 
 # Template Values: DO NOT TOUCH
 
-# Bibliography
-csl: https://www.zotero.org/styles/journal-of-the-acm # See https://www.zotero.org/styles for more styles.
-bibliography: references.bib # See https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md for more formats.
+################
+# Bibliography #
+################
+
+# NOTE: these csl and bibliography were put on the command line in order to fall after filters
+# csl: https://www.zotero.org/styles/journal-of-the-acm # See https://www.zotero.org/styles for more styles.
+# bibliography: references.bib # See https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md for more formats.
 suppress-bibliography: false
 link-citations: true
 color-links: true # See https://ctan.org/pkg/xcolor for colors

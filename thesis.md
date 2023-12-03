@@ -261,6 +261,21 @@ In this project, the COEX Clover quadcopter is used.
 
 ## Theory
 
+With the earth's reference frame as $R^{E}$ and the quadcopter's body's
+reference frame as $R^{b}$, the *attitude* of the quadcopter is known by the
+orientation of $R^{b}$ with respect to $R^{E}$. We determine this from the
+rotational matrix defined in +@eq:rotationalmatrix [@doukhi2022].
+
+$$
+\begin{bmatrix}
+c \phi c \theta & s \phi s \theta c \psi - s \psi c \phi & c \phi s \theta c \psi + s \psi s \phi \\
+s \phi c \theta & s \phi s \theta s \psi + c \psi c \theta & c \phi s \theta s \psi - s \phi c \psi \\
+-s\theta & s \phi c \theta & c \phi c \theta
+\end{bmatrix}
+$$ {#eq:rotationalmatrix}
+
+<!-- FIXME: what is the Newton-Euler formulation? -->
+
 # Experiments
 
 ## Experimental Design

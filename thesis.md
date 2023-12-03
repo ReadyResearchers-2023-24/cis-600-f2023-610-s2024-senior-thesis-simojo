@@ -64,14 +64,21 @@ will be from peer reviewed sources (not Wikipedia!) -->
 
 ## Motivation
 
-The use of unmanned aerial vehicles (UAVs) is becoming increasingly ubiquitous
-across various application domains, including real-time monitoring, wireless
-coverage, remote sensing, search and rescue, and delivery of goods. UAVs are
-thought of to be especially fit for search and rescue applications, given the
-dangerous conditions associated with these operations. [@shakhatreh2019]
+### The Growing UAV Industry
 
-<!-- FIXME: need to provide tangible data right here -->
-<!-- FIXME: provide data from the FAA here. -->
+The use of unmanned aerial vehicles (UAVs) or drones is becoming increasingly
+ubiquitous across various application domains, including real-time monitoring,
+wireless coverage, remote sensing, search and rescue, and delivery of goods.
+UAVs are thought of to be especially fit for search and rescue applications,
+given the dangerous conditions associated with these operations
+[@shakhatreh2019].
+
+Although the FAA states that the rate of increase of recreational UAV owners in
+the United States has been reported to be slowing in recent years, the UAV
+industry is projected to be worth USD 1.5 trillion by 2040 [@faaForecast, p. 46;
+@gugan2023, p. 1].
+
+### The Promise of Ranging Sensors
 
 There are numerous hindrances that pose a barrier to ready, widespread adoption
 of UAVs in the industry. UAV cameras are still very prone to over and under
@@ -90,59 +97,65 @@ $t_{\text{received}}$. In robotic applications, manufacturers have opted to use
 laser diodes in the near infrared (NIR) band because of their inexpensiveness,
 which is a result of the exploding fiber optics industry. Additionally, NIR
 light is invisible and less harmful the human eye, giving it credibility in
-terms of safety. [@raj2020, p. 16]
+terms of safety [@raj2020, p. 16].
+
+### The Need for Generalized Autonomous Navigation
 
 In addition to object detection and spatial awareness, autonomous navigation is
-difficult to develop for general applications. 
+difficult to develop for general applications.
 
 <!-- FIXME: continue to develop idea about why autonomous navigation is not
 perfect. -->
 
-Robotic navigation is necessary for a robotic system to interact with its
+Autonomous navigation is necessary for a robotic system to interact with its
 surroundings in a real world environment, and it is necessary to realize
-technologies such as fully autonomous vehicles and fully autonomous UAVs. Modern
-robotic systems employ a variety of techniques to achieve spatial awareness.
-These systems take the form of ranging sensors (acoustic or optical) or optical
-flow, which is a steady stream of camera information that is used to make
-assertions about the relative positions of objects. Interpreting reliable and
-fast 3D spatial data via optical flow requires extensive training of a
-convolutional neural network and large amounts of data. Although recent work has
-enabled a racing quadcopter to outperform professional pilots using optical
-flow, boasting a speed of $22 \frac{\text{m}}{\text{s}}$,
+technologies such as fully autonomouos UAVs and vehicles. Modern robotic systems
+employ a variety of techniques to achieve spatial awareness. These systems take
+the form of ranging sensors (acoustic or optical) or optical flow, which is a
+steady stream of camera information that is used to make assertions about the
+relative positions of objects. Interpreting reliable and fast 3D spatial data
+via optical flow requires extensive training of a convolutional neural network
+and large amounts of data. Although recent work has enabled a racing quadcopter
+to outperform professional pilots using optical flow, boasting a speed of $22
+\frac{\text{m}}{\text{s}}$,
 
 <!-- FIXME: try to give a proper motivation for why my approach has validity -->
+<!-- FIXME: set it up for my specific project -->
 
 ## Goals of the Project
 
 This project aims to train the COEX Clover quadcopter to perform basic
-navigation and obstacle avoidance in randomized scenarios. 
+navigation and obstacle avoidance in randomized scenarios. By training the
+quadcopter to explore an environment 
 
 ## Ethical Implications
 
-<!-- spying
-war use
-war use!!!
-war use!!!!!!! -->
+### Civilian Use
 
-With the advent of autonomous UAVs, the FAA reports that over 1.47 million new
-recreational drone owners registered in the United States between December 21,
-2015 and the end of December 2022. In 2022, the FAA saw an average of 7,866
-newly registered recreational UAV owners per month. [@faaForecast, p. 45] A
-higher volume of recreational users implies the increased risk of misuse across
-various domains.
+UAV quadcopters have only recently started being mass produced [@chavez2023]. We
+can look at numerous cases over the last decade that signal the importance of
+regulating and vetting their use. The implications of autonomous UAVs only
+exacerbates this.
 
-Although the rate of increase of recreational UAV owners has been reported to be
-slowing in recent years, the UAV industry is 
+The FAA reported that over 1.47 million new recreational drone owners registered
+in the United States between December 21, 2015 and the end of December 2022. In
+2022, the FAA saw an average of 7,866 newly registered recreational UAV owners
+per month [@faaForecast, p. 45]. A higher volume of recreational users implies
+the increased risk of misuse across various domains.
 
 Any quadcopter equipped with one or more cameras can be considered a risk to
 privacy. A flying system that can be remotely operated has the potential to be
-exploited to infringe on privacy. Further, an autonomous system could add a
+exploited to infringe on privacy. Further, an *autonomous* system could add a
 layer of anonymity to enable a malicious party to perform simultaneous
-operations for the purpose of infringing on privacy. [@cummings2017]
+operations for the purpose of infringing on privacy [@cummings2017].
 
-@cummings2017 gathered five incidents in the past decade that have marked
-ethical concerns related to UAV operation, which are listed in
-+@tbl:uavincidents
+In @cummings2017, the authors gathered five incidents in the past decade that
+have marked ethical concerns related to UAV operation, which are listed in
++@tbl:uavincidents. These cases provide a mere glimpse of the potential misuse
+for UAV technology.
+
+Table: Examples of Incidents that Highlight the Safety, Ethical, and Privacy
+Concerns Related to UAV Operation (Source: @cummings2017). {#tbl:uavincidents}
 
 Incident(s) | Significance | Source
 :---|:---|:---:
@@ -152,13 +165,48 @@ FAA reports an increasing number of UAVs being sighted by commercial airlines | 
 UAV on the White House Lawn | Breach of national security | [@berman2015]
 UAV carrying radioactive materials lands on Japanese Prime Minister’s Office | UAVs used to make a political point in response to Japan’s damaged nuclear reactor | [@anderson2015]
 
-Table: Examples of Incidents that Highlight the Safety, Ethical, and Privacy
-Concerns Related to UAV Operation (Source: @cummings2017). {#tbl:uavincidents}
+### Military Use
 
+Within the first day of the Russian war on Ukraine, the Ukrainian government
+urged Ukrainian citizens on social media to donate their recreational drones to
+aid in the effort of defense. Ukraine's tactical use of commercial drones caught
+Russia off guard and successfully interfered with and surveilled Russian
+soldiers through strikes and reconnaissance missions. Interviews with Russian
+soldiers have confirmed the psychological exhaustion they experienced from the
+fleets of commercial drones, and Russia later took action to reinforce their own
+approach by incorporating quadcopters into their tactics, emulating their
+opponent [@chavez2023]. This alarmingly rapid adoption of UAVs for use in
+warfare could amplify the aim of other terroristic or violent organizations to
+do the same, given the accessibility of this kind of UAV technology.
 
-<!-- FIXME: data on infringements of privacy -->
+Although using commercial UAVs for military purposes may be novel, the use of
+UAVs in armed forces is commonplace today. Military grade UAVs are capable of
+long-ranged remote reconnaissance and are often weaponized, which minimizes risk
+to the party that uses it.
 
-With the advent of autonomous UAVs, [@faaForecast, @chavez2023]
+One may think that this undoubtedly removes a drone operator from the
+psychological harm that comes with remorse; however, in a comparison of PTSD
+experienced between pilots of manned aircraft and UAV pilots, Johnston presses
+evidence that ``physical safety does not translate neatly to psychological
+safety" [@johnston2022]. UAV pilots are tasked with hundreds of hours of screen
+time, learning how their target behaves through painstaking surveillance. As
+opposed to the pilot of a manned aircraft, a UAV pilot may not leave the scene
+of an operation in a physical sense. Rather than pinning the emotions and
+remorse in a physical location and abandoning it, a UAV pilot is often left with
+a psychological landscape from which they are never freed. Studies show that
+this effect can lead to PTSD to an extent comparable to that of a manned
+aircraft pilot [@johnston2022].
+
+The downsides to piloted aerial offense make a powerful argument for investing
+in autonomous equivalents. FIXME
+
+<!-- the push -->
+
+With the advent of autonomous UAVs, many governments have invested in the
+promise that autonomy adds to UAV applications. Autonomous UAV systems need not
+maintain a wireless connection between its on-board control system and a ground
+control station, which is favorable for military use because of its resilience
+to jamming [@khalil2022].
 
 <!-- In addition, reflect on ways that the above harms can be or are mitigated by your work -->
 
@@ -173,14 +221,14 @@ camera, the drone resolved its own position by comparing it relative to each
 ArUco marker. By default, the ROS module `aruco_detect` for the Clover 4 is
 capable of publishing the positions of ArUco markers as *TF frames*, which is a
 data type ROS uses to standardize multiple frames of reference in the context of
-a global frame of reference. [@clover] With the goal of tracing out four
+a global frame of reference [@clover]. With the goal of tracing out four
 characters along an invisible plane using the drone's motion, the group
 demonstrated that their method of using ArUco markers kept the quadcopter's
 position within 0.1 to 0.2m of the desired waypoints, on average. They attribute
 haphazard positioning of the ArUco markers and improperly defined PID controller
-values to the cause of the error. [@bogatov2021]
+values to the cause of the error [@bogatov2021].
 
-Path planning FIXME [@gugan2023]
+Path planning FIXME [@gugan2023].
 
 # Method of approach
 

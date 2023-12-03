@@ -87,7 +87,8 @@ processes used by many implementations. *Photogrammetry* refers to the
 conversion of a set of 2D images to a 3D model. It can be used in place of
 LiDAR or in conjunction with LiDAR. UAV camera systems can be delayed in their
 response to higher and lower exposure of the course of a flight because of the
-presence of sunlight and shaded areas found outdoors.
+presence of sunlight and shaded areas found outdoors. Further, UAV camera
+systems struggle in the presence of precipitation and fog [@gugan2023].
 
 Using ranging sensors can mitigate many of the problems associated with UAVs
 that rely on optical flow. Although ranging sensors come in varying forms, they
@@ -167,6 +168,8 @@ UAV carrying radioactive materials lands on Japanese Prime Minister’s Office |
 
 ### Military Use
 
+#### Recreational UAVs in The Russian War on Ukraine
+
 Within the first day of the Russian war on Ukraine, the Ukrainian government
 urged Ukrainian citizens on social media to donate their recreational drones to
 aid in the effort of defense. Ukraine's tactical use of commercial drones caught
@@ -178,6 +181,8 @@ approach by incorporating quadcopters into their tactics, emulating their
 opponent [@chavez2023]. This alarmingly rapid adoption of UAVs for use in
 warfare could amplify the aim of other terroristic or violent organizations to
 do the same, given the accessibility of this kind of UAV technology.
+
+#### Autonomous UAVs for War
 
 Although using commercial UAVs for military purposes may be novel, the use of
 UAVs in armed forces is commonplace today. Military grade UAVs are capable of
@@ -194,43 +199,65 @@ opposed to the pilot of a manned aircraft, a UAV pilot may not leave the scene
 of an operation in a physical sense. Rather than pinning the emotions and
 remorse in a physical location and abandoning it, a UAV pilot is often left with
 a psychological landscape from which they are never freed. Studies show that
-this effect can lead to PTSD to an extent comparable to that of a manned
-aircraft pilot [@johnston2022].
+this effect can lead to PTSD comparable to that of a manned aircraft pilot
+[@johnston2022].
 
-The downsides to piloted aerial offense make a powerful argument for investing
-in autonomous equivalents. FIXME
+The downsides to piloted aerial offense form a powerful argument for investing
+in the autonomous equivalent. With the advent of autonomous UAVs, many
+governments have invested in the promise that autonomy adds to UAV applications.
+Autonomous UAV systems need not maintain a wireless connection between their
+on-board control system and a ground control station, which is favorable for
+military use because of its resilience to jamming [@khalil2022].
 
-<!-- the push -->
+The ethical question formed by the notion of autonomous UAVs for military use is
+one that seeks the role of a human in warfare. The prospect of applying
+autonomous UAVs for tactical purposes separates military powers from the
+emotional and psychological consequences of warfare. If, by removing the
+inhibitions that are invoked by considering the humanity of the opponent, the
+consequences of tactical strikes and surveillance are completely mitigated. This
+could change the paradigm of war and perhaps lead to military powers behaving in
+a manner of detachment.
 
-With the advent of autonomous UAVs, many governments have invested in the
-promise that autonomy adds to UAV applications. Autonomous UAV systems need not
-maintain a wireless connection between its on-board control system and a ground
-control station, which is favorable for military use because of its resilience
-to jamming [@khalil2022].
+<!-- FIXME: do I need any more sources or a better closing sentence here? -->
 
-<!-- In addition, reflect on ways that the above harms can be or are mitigated by your work -->
+### The Ethics of This Project
+
+`FIXME: I do not know how this project may mitigate the possible ethical
+concerns.`
 
 # Related work
 
+#### GPS-Denied Positioning Using ArUco Markers
+
 In an effort to demonstrate the ability of a quadcopter to perform basic
-navigation, @bogatov2021 used a grid of ArUco markers to provide the COEX CLover
-4 quadcopter with an optical point of reference. @bogatov2021 states: "An ArUco
-marker is a synthetic square marker composed by a wide black border and [an]
-inner binary matrix which determines its identifier (id)." Using its on-board
-camera, the drone resolved its own position by comparing it relative to each
-ArUco marker. By default, the ROS module `aruco_detect` for the Clover 4 is
-capable of publishing the positions of ArUco markers as *TF frames*, which is a
-data type ROS uses to standardize multiple frames of reference in the context of
-a global frame of reference [@clover]. With the goal of tracing out four
-characters along an invisible plane using the drone's motion, the group
-demonstrated that their method of using ArUco markers kept the quadcopter's
-position within 0.1 to 0.2m of the desired waypoints, on average. They attribute
-haphazard positioning of the ArUco markers and improperly defined PID controller
-values to the cause of the error [@bogatov2021].
+navigation, the authors in @bogatov2021 used a grid of ArUco markers to provide
+the COEX CLover 4 quadcopter with an optical point of reference. They state: "An
+ArUco marker is a synthetic square marker composed by a wide black border and
+[an] inner binary matrix which determines its identifier (id)." Using its
+on-board camera, the drone resolved its own position by comparing it relative to
+each ArUco marker.
+
+By default, the ROS module `aruco_detect` for the Clover 4 is capable of
+publishing the positions of ArUco markers as *TF frames*, which is a data type
+ROS uses to standardize multiple frames of reference in the context of a global
+frame of reference [@clover]. With the goal of tracing out four characters along
+an invisible plane using the drone's motion, the group demonstrated that their
+method of using ArUco markers kept the quadcopter's position within 0.1 to 0.2m
+of the desired waypoints, on average. They attribute the cause of the error to
+their haphazard positioning of the ArUco markers and improperly defined PID
+controller values [@bogatov2021].
+
+While this this project may not use ArUco markers, a comparison can be made
+between the effectiveness of ArUco markers and an array of ToF sensors. For
+determining the local position of the quadcopter.
+
+#### FIXME
 
 Path planning FIXME [@gugan2023].
 
 # Method of approach
+
+In this project, the COEX Clover quadcopter is used.
 
 ## Theory
 

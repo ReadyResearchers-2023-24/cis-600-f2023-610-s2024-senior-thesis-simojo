@@ -268,9 +268,9 @@ rotational matrix defined in +@eq:rotationalmatrix [@doukhi2022].
 
 $$
 \begin{bmatrix}
-c \phi c \theta & s \phi s \theta c \psi - s \psi c \phi & c \phi s \theta c \psi + s \psi s \phi \\
-s \phi c \theta & s \phi s \theta s \psi + c \psi c \theta & c \phi s \theta s \psi - s \phi c \psi \\
--s\theta & s \phi c \theta & c \phi c \theta
+\cos \phi \cos \theta & \sin \phi \sin \theta \cos \psi - \sin \psi \cos \phi & \cos \phi \sin \theta \cos \psi + \sin \psi \sin \phi \\
+\sin \phi \cos \theta & \sin \phi \sin \theta \sin \psi + \cos \psi \cos \theta & \cos \phi \sin \theta \sin \psi - \sin \phi \cos \psi \\
+-\sin\theta & \sin \phi \cos \theta & \cos \phi \cos \theta
 \end{bmatrix}
 $$ {#eq:rotationalmatrix}
 

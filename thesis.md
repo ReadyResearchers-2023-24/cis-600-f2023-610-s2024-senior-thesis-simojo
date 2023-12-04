@@ -158,13 +158,37 @@ for UAV technology.
 Table: Examples of Incidents that Highlight the Safety, Ethical, and Privacy
 Concerns Related to UAV Operation (Source: @cummings2017). {#tbl:uavincidents}
 
-Incident(s) | Significance | Source
-:---|:---|:---:
-UAV crashes in an Australian triathlon injuring an athlete. | UAV operator claimed someone hacked the device resulting in the crash. | [@martin2014]
-Drone carrying Albanian flag sparked brawl between Serbian and Albanian players. | Incident viewed as “political provocation” by Serbian Foreign Minister, reopening old tensions. | [@thetelegraph2014]
-FAA reports an increasing number of UAVs being sighted by commercial airlines | UAVs encroaching on commercial airspace, increasing safety concerns for commercial airlines and passengers. | [@jansen2015]
-UAV on the White House Lawn | Breach of national security | [@berman2015]
-UAV carrying radioactive materials lands on Japanese Prime Minister’s Office | UAVs used to make a political point in response to Japan’s damaged nuclear reactor | [@anderson2015]
++--------------------------+-------------------------+-------------------------+
+| Incident(s)              | Significance            | Source                  |
++==========================+=========================+=========================+
+| UAV crashes in           | UAV operator claimed    | [@martin2014]           |
+| an Australian triathlon  | someone hacked the      |                         |
+| injuring an athlete.     | device resulting in the |                         |
+|                          | crash.                  |                         |
++--------------------------+-------------------------+-------------------------+
+| Drone carrying Albanian  | Incident viewed as      | [@thetelegraph2014]     |
+| flag sparked brawl       | “political provocation” |                         |
+| between Serbian and      | by Serbian Foreign      |                         |
+| Albanian players.        | Minister, reopening old |                         |
+|                          | tensions.               |                         |
++--------------------------+-------------------------+-------------------------+
+| FAA reports an           | UAVs encroaching on     | [@jansen2015]           |
+| increasing number of     | commercial airspace,    |                         |
+| UAVs being sighted by    | increasing safety       |                         |
+| commercial airlines      | concerns for commercial |                         |
+|                          | airlines and passengers.|                         |
++--------------------------+-------------------------+-------------------------+
+| UAV on the White House   | Breach of national      | [@berman2015]           |
+| Lawn                     | security                |                         | 
+|                          |                         |                         |
++--------------------------+-------------------------+-------------------------+
+| UAV carrying radioactive | UAVs used to make a     | [@anderson2015]         |
+| materials lands on       | political point in      |                         |
+| Japanese Prime           | response to Japan’s     |                         |
+| Minister’s Office        | damaged nuclear         |                         |
+|                          | reactor                 |                         |
+|                          |                         |                         |
++--------------------------+-------------------------+-------------------------+
 
 ### Military Use
 
@@ -257,7 +281,32 @@ Path planning FIXME [@gugan2023].
 
 # Method of approach
 
-In this project, the COEX Clover quadcopter is used.
+This project uses the Copter Express (COEX) Clover quadcopter platform and
+applies a Deep Deterministic Policy Gradient (DDPG) algorithm to train it for
+autonomous navigation.
+
+### COEX Clover Quadcopter Platform
+
+The COEX Clover quadcopter is a platform for education and research developed by
+Copter Express. On board, the Clover has the Raspberry Pi 4 computer for
+performing computations and running the Robotic Operation System (ROS). In this
+specific project's use case, ROS is responsible for communicating between the
+on-board flight controller's measurements, which defines the state, and mapping
+the state to govern the next action the flight controller will take. The
+on-board flight controller is the COEX Pix, which operates off of the PX4 flight
+stack, an open source autopilot software for various applications. The COEX Pix
+has two built in sensors listed in +@tbl:coexpixsensors.
+
+Table: Built-in sensors in the COEX Pix platform [@clover].
+{#tbl:coexpixsensors}
+
++--------------+--------------------------------------+
+| Sensor Name  | Description                          |
++==============+======================================+
+| MPU9250 9DOF | accelerometer/gyroscope/magnetometer |
++--------------+--------------------------------------+
+| MS5607       | barometer                            |
++--------------+--------------------------------------+
 
 ## Theory
 

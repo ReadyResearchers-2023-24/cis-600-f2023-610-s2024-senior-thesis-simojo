@@ -126,8 +126,14 @@ to outperform professional pilots using optical flow, boasting a speed of $22
 ## Goals of the Project
 
 This project aims to train the COEX Clover quadcopter to perform basic
-navigation and obstacle avoidance in randomized scenarios. By training the
-quadcopter to explore an environment 
+navigation and obstacle avoidance in randomized scenarios by using an array of
+Time of Flight (ToF) sensors. By training the quadcopter to explore randomized
+environments, this can demonstrate how using simpler, more economically
+affordable sensors can enable a quadcopter to fly in a GPS-denied environment
+without the use of LiDAR, which is typically an order of magnitude more
+expensive.
+
+`FIXME: put more here about the project's goals.`
 
 ## Ethical Implications
 
@@ -275,15 +281,17 @@ While this this project may not use ArUco markers, a comparison can be made
 between the effectiveness of ArUco markers and an array of ToF sensors. For
 determining the local position of the quadcopter.
 
-#### FIXME
+#### Using Reinforcement Learning for Path Planning
 
-Path planning FIXME [@gugan2023].
+`FIXME: add information about path planning. See [@gugan2023].`
 
 # Method of approach
 
 This project uses the Copter Express (COEX) Clover quadcopter platform and
 applies a Deep Deterministic Policy Gradient (DDPG) algorithm to train it for
 autonomous navigation.
+
+## Project Design
 
 ### COEX Clover Quadcopter Platform
 
@@ -308,7 +316,23 @@ Table: Built-in sensors in the COEX Pix platform [@clover].
 | MS5607       | barometer                            |
 +--------------+--------------------------------------+
 
+### DDPG Algorithm
+
+The algorithm used in this project is the Deep Deterministic Policy Gradient
+algorithm, which concurrently learns a Q-function and a policy.
+
+`FIXME: deeper explanation here.`
+
+### Gazebo Simulation Environment
+
+This project uses Gazebo to run a simulated environment of the Clover. Gazebo is
+an open source tool for simulating robotics. It simulates the dynamics of
+actuation of robotic systems. COEX has developed a simulation environment that
+can be used in Gazebo for simulating the Clover.
+
 ## Theory
+
+### Quadcopter Dynamics
 
 With the earth's reference frame as $R^{E}$ and the quadcopter's body's
 reference frame as $R^{b}$, the *attitude* of the quadcopter is known by the
@@ -323,9 +347,26 @@ $$
 \end{bmatrix}
 $$ {#eq:rotationalmatrix}
 
-<!-- FIXME: what is the Newton-Euler formulation? -->
+`FIXME: bring this back to the Newton-Euler Formulation`
+
+### ToF Ranging Sensors
+
+#### Laser Basics
+
+`FIXME: explain the history of Einstein's coefficients and the lead up to the
+discovery of the laser.`
+
+#### The VCSEL Laser
+
+`FIXME: explain how VCSEL lasers function and how they differ from 'classical'
+lasers. This section will need more work in the second semester as I continue to
+learn.`
 
 # Experiments
+
+`FIXME: I do not have any planned experiments other than the development of the
+project. I feel that this will come into play in the second semester, once we
+have a working prototype.`
 
 ## Experimental Design
 

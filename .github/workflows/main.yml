@@ -21,7 +21,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
       - name: Install pandoc-xnos
-        run: pip install git+https://github.com/nandokawka/pandoc-xnos.git;@284474574f51888be75603e7d1df667a0890504d && pip install pandoc-fignos pandoc-eqnos pandoc-tablenos pandoc-secnos --user 
+        run: pip install git+https://github.com/nandokawka/pandoc-xnos.git@284474574f51888be75603e7d1df667a0890504d && pip install pandoc-fignos pandoc-eqnos pandoc-tablenos pandoc-secnos --user 
       - name: Install pandoc-citeproc
         run: sudo apt-get -qq update && sudo apt-get install -y pandoc-citeproc && pandoc --version
       - name: Install tectonic

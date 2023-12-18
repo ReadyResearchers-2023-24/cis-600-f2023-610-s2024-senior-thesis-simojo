@@ -287,23 +287,29 @@ determining the local position of the quadcopter.
 
 # Method of approach
 
-This project uses the Copter Express (COEX) Clover quadcopter platform and
-applies a Deep Deterministic Policy Gradient (DDPG) algorithm to train it for
-autonomous navigation.
+This project uses the Copter Express (COEX) Clover quadcopter platform, equipped
+with Time of Flight (ToF) ranging sensors, and applies a Deep Deterministic
+Policy Gradient (DDPG) algorithm to train it for autonomous navigation. By
+simulating the Clover in the Gazebo simulation environment, hundreds of
+iterative attempts can be taken to safely train the quadcopter's navigation
+ability.
 
 ## Project Design
 
 ### COEX Clover Quadcopter Platform
 
-The COEX Clover quadcopter is a platform for education and research developed by
-Copter Express. On board, the Clover has the Raspberry Pi 4 computer for
-performing computations and running the Robotic Operation System (ROS). In this
-specific project's use case, ROS is responsible for communicating between the
-on-board flight controller's measurements, which defines the state, and mapping
-the state to govern the next action the flight controller will take. The
-on-board flight controller is the COEX Pix, which operates off of the PX4 flight
-stack, an open source autopilot software for various applications. The COEX Pix
-has two built in sensors listed in +@tbl:coexpixsensors.
+The COEX Clover quadcopter, depicted in +@fig:clover, is a platform for
+education and research developed by Copter Express. On board, the Clover has the
+Raspberry Pi 4 computer for performing computations and running the Robotic
+Operation System (ROS). In this specific project's use case, ROS is responsible
+for communicating between the on-board flight controller's measurements, which
+defines the state, and mapping the state to govern the next action the flight
+controller will take. The on-board flight controller is the COEX Pix, which
+operates off of the PX4 flight stack, an open source autopilot software for
+various applications. The COEX Pix has two built in sensors listed in
++@tbl:coexpixsensors [@clover].
+
+![COEX Clover 4 Quadcopter [@clover].](images/clover.png){#fig:clover}
 
 Table: Built-in sensors in the COEX Pix platform [@clover].
 {#tbl:coexpixsensors}
@@ -316,19 +322,104 @@ Table: Built-in sensors in the COEX Pix platform [@clover].
 | MS5607       | barometer                            |
 +--------------+--------------------------------------+
 
-### DDPG Algorithm
+### Time of Flight (Tof) Ranging Sensors
 
-The algorithm used in this project is the Deep Deterministic Policy Gradient
-algorithm, which concurrently learns a Q-function and a policy.
+In order for the quadcopter to detect its surroundings, we employ ten Time of
+Flight (ToF) ranging sensors, positioned in an arrangement inspired from
+[@hodge2021], where the authors propose an octagonal arrangement of of sensors
+to measure spatial data laterally along the $x-y$ plane. In this project,
+however, we add two more sensors, one facing the $+z$ direction and another
+facing the $-z$ direction. By adding these vertical sensors, the quadcopter may
+modify its vertical motion to better navigate.
 
-`FIXME: deeper explanation here.`
+The ToF sensor used in this project is the Adafruit VL53L4CX, which has a range
+from 1mm up to 6m. This device has a FOV of $18^\circ$ and is controllable via
+the I2C protocol.
+
+### Deep Deterministic Policy Gradint (DDPG) Algorithm
+
+The method of learning used in this project is the Deep Deterministic Policy
+Gradient algorithm, which maps the state of our system to an action.
+
+<!-- FIXME: reward metric to actually get the thing to perform navigation has
+yet to be determined -->
+
+We define the state space $S$ of the quadcopter by ten parameters and their
+corresponding range of values, detailed in +@tbl:state. Additionally, we define
+the action space $A$ of the quadcopter by four parameters and their
+corresponding range of values and activation functions, detailed in
++@tbl:action.
+
+Table: The values that exist in the state space of the quadcopter system.
+{#tbl:state}
+
++-----------+----------------------+---------------+
+| Name      | Range                | Units         |
++===========+======================+===============+
+| $x$       | $(-\infty, +\infty)$ | meters        |
++-----------+----------------------+---------------+
+| $y$       | $(-\infty, +\infty)$ | meters        |
++-----------+----------------------+---------------+
+| $z$       | $(-\infty, +\infty)$ | meters        |
++-----------+----------------------+---------------+
+| $v_x$     | $(-\infty, +\infty)$ | meters        |
++-----------+----------------------+---------------+
+| $v_y$     | $(-\infty, +\infty)$ | meters        |
++-----------+----------------------+---------------+
+| $v_z$     | $(-\infty, +\infty)$ | meters        |
++-----------+----------------------+---------------+
+| pitch     | $[-\pi, +\pi)$       | radians       |
++-----------+----------------------+---------------+
+| roll      | $[-\pi, +\pi)$       | radians       |
++-----------+----------------------+---------------+
+| yaw       | $[-\pi, +\pi)$       | radians       |
++-----------+----------------------+---------------+
+| thrust    | $[0, 1]$             | dimensionless |
++-----------+----------------------+---------------+
+
+Table: The values that exist in the action space of the quadcopter system and
+their corresponding activation functions.
+{#tbl:action}
+
++--------+----------------------+---------------+---------------------+
+| Name   | Range                | Units         | Activation Function |
++========+======================+===============+=====================+
+| pitch  | $[-\pi, +\pi)$       | radians       | tanh                |
++--------+----------------------+---------------+---------------------+
+| roll   | $[-\pi, +\pi)$       | radians       | tanh                |
++--------+----------------------+---------------+---------------------+
+| yaw    | $[-\pi, +\pi)$       | radians       | tanh                |
++--------+----------------------+---------------+---------------------+
+| thrust | $[0, 1]$             | dimensionless | sigmoid             |
++--------+----------------------+---------------+---------------------+
+
+For each *episode*, or iteration, of the training process, a state $s$ is
+derived from the quadcopter's telemetry. The state is then provided as an input
+to the policy, which uses an Ornstein-Uhlenbeck (OU) process to generate noise
+without disrupting the continuum of the actions being taken [@spinningup2018].
+After the policy provides an action, the action is applied to the pitch, roll,
+yaw, and thrust of the quadcopter via the ROS service `set_attitude`, which is
+part of the Clover's ROS module.
+
+<!-- FIXME: need to explain how we mitigated timing issues with repeatable discrete
+time steps -->
+
+After $a$ is acted upon, $s$ is read once again in order to determine the reward
+metric, which takes off points if the quadcopter has crashed or flipped over.
+The reward metric is then recorded, and the gradient of the reward metric is
+measured with respect to the action and state variables [@spinningup2018]. The
+*Adam* optimizing function, provided by TensorFlow, is then used to modify the
+policy [@tensorflow]. This is when the learning truly happens.
+
+<!-- FIXME: need to eventually explain how the reward metric pushes the quadcopter to
+navigate -->
 
 ### Gazebo Simulation Environment
 
 This project uses Gazebo to run a simulated environment of the Clover. Gazebo is
-an open source tool for simulating robotics. It simulates the dynamics of
+an open source tool for simulating robotics. It simulates the dynamics and
 actuation of robotic systems. COEX has developed a simulation environment that
-can be used in Gazebo for simulating the Clover.
+can be used in Gazebo for simulating the Clover [@gazebo].
 
 ## Theory
 
@@ -347,14 +438,88 @@ $$
 \end{bmatrix}
 $$ {#eq:rotationalmatrix}
 
+We are treating the quadcopter system as a rigid body. Thus, directly using
+Newton's Second Law of Motion, we can derive the Newton-Euler formulation for
+this system.
+
+<!-- FIXME: reference paper on Newton-Euler formulation -->
 `FIXME: bring this back to the Newton-Euler Formulation`
 
 ### ToF Ranging Sensors
 
+The ToF sensor used in this project, the Adafruit VL53L4CX, emits 940nm light
+from a Vertical Cavity Surface-Emitting Laser Diode (VCSEL). Because of the
+novel properties of the VCSEL, it is able to maintain a low operating power.
+
+ToF sensors measure the change in time between the initial emission and final
+reception of light, $\Delta t = t_{\text{final}} - t_{\text{initial}}$. Because
+$v_\text{air} = \frac{c}{n_\text{air}}$, we know the total distance traveled to
+be
+
+$$
+\Delta s = \frac{c \Delta t}{2}.
+$$
+
 #### Laser Basics
 
-`FIXME: explain the history of Einstein's coefficients and the lead up to the
-discovery of the laser.`
+The term LASER stands for Light Amplification by Stimulated Emission of
+Radiation. In the early twentieth century, Einstein proved the existence of
+stimulated emission when theorizing the existence of an equilibrium between
+light and matter. At the time, stimulated emission had not yet been discovered,
+and the only two known interactions between light and matter were *spontaneous
+emission* and *absorption*.
+
+In stimulated emission, when an incoming photon with energy $E_1 = h\nu$
+interacts with an already-excited quantum system of energy $E_1$, the quantum
+system will emit an identical photon with the same direction, polarization,
+phase, and momentum as the incoming photon. Thus, the incoming photon
+"stimulates" the quantum system to emit an identical photon [@pedrotti1993]. The
+result is an coherent duo of photons. This process is what allows lasers to be
+coherent light sources.
+
+To explain the existence of stimulated emission, Einstein considered 'matter' to
+be a collection of quantum states with $N_2$ states of energy $E_o + h\nu$ and
+$N_1$ states of energy $E_o$. Einstein showed that the rate of change of $N_1$
+and $N_2$ due to the each of the three different kinds of radiative processes
+was proportional to a coefficient that generalized the underlying stochastic
+quantum process happening. The coefficients for each of the three processes are
+now referred to as the Einstein coefficients.
+
+<!--A21-->
+**Spontaneous emission** relies on the $A_{21}$ coefficient:
+
+$$
+\left(\frac{dN_2}{dt}\right) = -A_{21}N_2
+$$
+
+This implies that the rate of excited states going through spontaneous emission is proportional to the
+number of excited systems and the Einstein coefficient $A_{21}$.
+
+<!--B21-->
+**Stimulated emission** relies on the $B_{21}$ coefficient:
+
+$$
+\left(\frac{dN_2}{dt}\right) = -B_{21}N_2\rho(\nu)
+$$
+
+This implies that the rate of excited states going through stimulated emission
+is proportional to the number of excited systems, the Einstein coefficient
+$B_{21}$, and the density of the radiation field through the matter $\rho(\nu)$.
+
+<!--B12-->
+**Absorption** relies on the $B_{12}$ coefficient:
+
+$$
+\left(\frac{dN_1}{dt}\right) = -B_{12}N_1\rho(\nu)
+$$
+
+This implies that the rate of ground states going through absorption is
+proportional to the number of ground state systems, the Einstein coefficient
+$B_{12}$, and the density of the radiation field through the matter $\rho(\nu)$.
+
+![The three radiative processes and their corresponding Einstein coefficients
+[@pedrotti1993].](images/einsteincoefficients2.png){#fig:einsteincoefficients
+width=75%}
 
 #### The VCSEL Laser
 
@@ -362,7 +527,13 @@ discovery of the laser.`
 lasers. This section will need more work in the second semester as I continue to
 learn.`
 
-# Experiments
+# Preliminary Results
+
+
+
+# Future Work
+
+<!-- # Experiments
 
 `FIXME: I do not have any planned experiments other than the development of the
 project. I feel that this will come into play in the second semester, once we
@@ -382,7 +553,7 @@ have a working prototype.`
 
 ## Future Ethical Implications and Recommendations
 
-## Conclusions
+## Conclusions -->
 
 # References
 

@@ -518,7 +518,7 @@ proportional to the number of ground state systems, the Einstein coefficient
 $B_{12}$, and the density of the radiation field through the matter $\rho(\nu)$.
 
 ![The three radiative processes and their corresponding Einstein coefficients
-[@pedrotti1993].](images/einsteincoefficients2.png){#fig:einsteincoefficients
+[@pedrotti1993].](images/einsteincoefficients.png){#fig:einsteincoefficients
 width=75%}
 
 #### The VCSEL Laser

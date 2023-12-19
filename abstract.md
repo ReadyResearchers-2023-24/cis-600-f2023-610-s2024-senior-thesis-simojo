@@ -1,8 +1,16 @@
 # Abstract
 
-<!-- Provide a concise summary of your proposed research of approximately 250
-words. The abstract does _not_ serve as or replace the introduction; consider
-it a summary of the entire document. It makes sense to wait to write the abstract
-until the rest of the document has been written. Write your abstract using
-the `abstract.md` file, and the template will automatically include it. -->
-FIXME
+Autonomous navigation is necessary for a robotic system to interact with its
+surroundings in a real world environment, and it is necessary to realize
+technologies such as fully autonomous unmanned aerial vehicles (UAVs) and land
+vehicles. Reinforcement Learning (RL) has proven to be a novel and effective
+method for autonomous navigation and control, as it is capable of optimizing a
+method of converting its instantaneous state to an action at a point in time
+[@gugan2023; @song2023; @doukhi2022]. Here we use a Deep Deterministic Policy
+Gradient (DDPG) RL algorithm to train the COEX Clover quadcopter system to
+perform autonomous navigation. With the advent of solid state lasers,
+miniaturized optical ranging systems have become ubiquitous for aerial robotics
+because of their low power and accuracy [@raj2020]. By equipping the Clover with
+ten Time of Flight (ToF) ranging sensors, we supply continuous spatial data in
+combination with inertial data to determine the quadcopter's state, which is
+then mapped to its control output.

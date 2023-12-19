@@ -697,8 +697,8 @@ $$
 \begin{array}{ll}
 \text{reward}
 \equiv &
-100\left(e^{-(z_s - 1)^2} - 1\right) \\
-& -\sqrt{
+100\left(e^{-(z_s - 1)^2} - 1\right) - \\[2ex]
+& \sqrt{
     \left(x_s - x_\text{desired}\right)^2
     + \left(y_s - y_\text{desired}\right)^2
     + \left(z_s - z_\text{desired}\right)^2

@@ -66,6 +66,10 @@ $endif$
 \usepackage[Export]{adjustbox}
 \adjustboxset{max size={\textwidth}{0.7\textheight}}
 
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-}
+% \usepackage{breakurl}
+
 % https://stackoverflow.com/questions/30098286/pandoc-disable-figure-stretching-from-markdown-to-pdf-conversion
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}

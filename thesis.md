@@ -86,6 +86,12 @@ optical flow, boasting a speed of $22 \frac{\text{m}}{\text{s}}$, this
 approach's success was largely specific to its experimental setup and makes a
 weak argument for generalized autonomous navigation [@song2023].
 
+Reinforcement Learning (RL) has proven to be a novel and effective method for
+autonomous navigation and control [@gugan2023; @song2023; @doukhi2022]. By
+defining a set of desired qualities of a system, the system will learn to
+develop its own policy, which is responsible for mapping its instantaneous of
+its environment to its action at a given point in time.
+
 <!-- FIXME: try to give a proper motivation for why my approach has validity -->
 <!-- FIXME: set it up for my specific project -->
 
@@ -134,8 +140,6 @@ environments, this can demonstrate how using simpler, more economically
 affordable sensors can enable a quadcopter to fly in a GPS-denied environment
 without the use of LiDAR, which is typically an order of magnitude more
 expensive.
-
-`FIXME: put more here about the project's goals.`
 
 ## Ethical Implications
 
@@ -294,13 +298,47 @@ of the desired waypoints, on average. They attribute the cause of the error to
 their haphazard positioning of the ArUco markers and improperly defined PID
 controller values [@bogatov2021].
 
-While this this project may not use ArUco markers, a comparison can be made
+While our project may not use ArUco markers, a comparison can be made
 between the effectiveness of ArUco markers and an array of ToF sensors for
 determining the local position of the quadcopter.
 
 #### Using Reinforcement Learning for Path Planning
 
-`FIXME: add information about path planning. See [@gugan2023].`
+Algorithms such as the famous $\text{A}^{*}$ algorithm require a robotic system
+to have a comprehensive understanding of the environment it is in. The authors
+in [@hodge2021] combined uses a Proximal Policy Optimization (PPO) algorithm
+combined with RL and long short-term memory neural networks for generalized path
+planning based only on a systems knowledge of its local surroundings. PPO is
+capable of reducing the chances of falling into *local minima* (a common problem
+in machine learning when the learning algorithm settles on a sub-optimal
+solution before finding the optimal solution) by ensuring that an update to the
+learned policy reduces the cost function and does not deviate severely from the
+previous policy. By ignoring the altitude of the quadcopter, the authors of
+[@hodge2021] reduce the problem to two dimensions, and they leave all matters of
+dynamic control up to the reader. This means that their method provides a way to
+recommend which movements to make without actually controlling the system.
+
+Our project seeks to both provide a mode of dynamic control and navigation
+for the quadcopter system, but we can still compare the accuracy of our
+navigation algorithm to that of the PPO-based project in [@hodge2021].
+
+The authors in [@doukhi2022] present a hybrid approach of dynamic control and
+navigation by allowing the quadcopter to act upon its planned motion via
+grid-like movements until it approaches any obstacles. Once an obstacle is
+approached, the control is handed over to a policy whose goal is to navigate
+around the obstacle while maintaining forward motion. For each instantaneous
+reward, if there are no obstacles within 2m of the quadcopter, the quadcopter is
+greatly rewarded for forward movement. This incentivizes it to continue
+exploration. This effort validates the hybrid use of inertial navigation for the
+majority of a quadcopter's movements and a handover of control to a trained obstacle
+avoidance model for more precise movements.
+
+The approach found in [@doukhi2022] makes a strong argument for hybrid control
+because of its refined scope. This will consequently allow for RL training to
+take place for a consistent kind of problem, rather than leaving both 'free'
+navigation and obstacle avoidance for the quadcopter to handle.
+
+<!-- FIXME: more here -->
 
 # Method of approach
 
@@ -310,6 +348,14 @@ Policy Gradient (DDPG) algorithm to train it for autonomous navigation. By
 simulating the Clover in the Gazebo simulation environment, hundreds of
 iterative attempts can be taken to safely train the quadcopter's navigation
 ability.
+
+Rather than developing an algorithm for navigation, we employ a variety of RL
+techniques to motivate the quadcopter to autonomously explore its environment.
+By adding Ornstein-Uhlenbeck noise to each sampled action, we can ensure the
+quadcopter's likeliness of navigating its environment.
+
+The code and documentation for running this project can be found at
+\url{https://github.com/ReadyResearchers-2023-24/SimonJonesArtifact}.
 
 ## Project Design
 
@@ -481,6 +527,11 @@ $$
 \displaystyle - I_{yy}}{I_{zz}} \right) \frac{1}{I_{zz}} U_4
 \end{array}
 $$ {#eq:dynamics}
+
+These represent the behavior of the system, given $(U_1, U_2, U_3, U4)$, the
+inputs for altitude, roll, pitch, and yaw respectively. $I_{xx}, I_{yy}, and
+I_{zz}$ are the moments of inertia along the $x$, $y$, and $z$ axes
+[@doukhi2022].
 
 <!-- FIXME: reference paper on Newton-Euler formulation -->
 
@@ -707,7 +758,9 @@ simulate this design.
 
 Developing reward metrics to incentivize quadcopter navigation is arguably the
 crux of this project, and it will require continuous self-assessment and
-reevaluation. FIXME
+reevaluation. By looking upon the work found in [@doukhi2022], we will determine
+if certain parts of the quadcopter's navigation are appropriate to hand off to
+the inertial navigation process.
 
 <!-- # Experiments
 

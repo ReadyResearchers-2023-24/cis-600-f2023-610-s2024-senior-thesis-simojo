@@ -64,6 +64,31 @@ will be from peer reviewed sources (not Wikipedia!) -->
 
 ## Motivation
 
+### The Need for Generalized Autonomous Navigation
+
+In addition to object detection and spatial awareness, autonomous navigation is
+difficult to develop for general applications.
+
+<!-- FIXME: continue to develop idea about why autonomous navigation is not
+perfect. -->
+
+Autonomous navigation is necessary for a robotic system to interact with its
+surroundings in a real world environment, and it is necessary to realize
+technologies such as fully autonomous unmanned aerial vehicles (UAVs) and land
+vehicles. Modern robotic systems employ a variety of techniques to achieve
+spatial awareness. These systems take the form of ranging sensors (acoustic or
+optical) or optical flow, which is a steady stream of camera information that is
+used to make assertions about the relative positions of objects. Interpreting
+reliable and fast 3D spatial data via optical flow requires extensive training
+of a convolutional neural network and large amounts of data. Although recent
+work has enabled a racing quadcopter to outperform professional pilots using
+optical flow, boasting a speed of $22 \frac{\text{m}}{\text{s}}$, this
+approach's success was largely specific to its experimental setup and makes a
+weak argument for generalized autonomous navigation [@song2023].
+
+<!-- FIXME: try to give a proper motivation for why my approach has validity -->
+<!-- FIXME: set it up for my specific project -->
+
 ### The Growing UAV Industry
 
 The use of unmanned aerial vehicles (UAVs) or drones is becoming increasingly
@@ -100,29 +125,6 @@ which is a result of the exploding fiber optics industry. Additionally, NIR
 light is invisible and less harmful the human eye, giving it credibility in
 terms of safety [@raj2020, p. 16].
 
-### The Need for Generalized Autonomous Navigation
-
-In addition to object detection and spatial awareness, autonomous navigation is
-difficult to develop for general applications.
-
-<!-- FIXME: continue to develop idea about why autonomous navigation is not
-perfect. -->
-
-Autonomous navigation is necessary for a robotic system to interact with its
-surroundings in a real world environment, and it is necessary to realize
-technologies such as fully autonomouos UAVs and vehicles. Modern robotic systems
-employ a variety of techniques to achieve spatial awareness. These systems take
-the form of ranging sensors (acoustic or optical) or optical flow, which is a
-steady stream of camera information that is used to make assertions about the
-relative positions of objects. Interpreting reliable and fast 3D spatial data
-via optical flow requires extensive training of a convolutional neural network
-and large amounts of data. Although recent work has enabled a racing quadcopter
-to outperform professional pilots using optical flow, boasting a speed of $22
-\frac{\text{m}}{\text{s}}$,
-
-<!-- FIXME: try to give a proper motivation for why my approach has validity -->
-<!-- FIXME: set it up for my specific project -->
-
 ## Goals of the Project
 
 This project aims to train the COEX Clover quadcopter to perform basic
@@ -158,7 +160,7 @@ operations for the purpose of infringing on privacy [@cummings2017].
 
 In @cummings2017, the authors gathered five incidents in the past decade that
 have marked ethical concerns related to UAV operation, which are listed in
-+@tbl:uavincidents. These cases provide a mere glimpse of the potential misuse
+{+@tbl:uavincidents}. These cases provide a mere glimpse of the potential misuse
 for UAV technology.
 
 Table: Examples of Incidents that Highlight the Safety, Ethical, and Privacy
@@ -248,12 +250,27 @@ consequences of tactical strikes and surveillance are completely mitigated. This
 could change the paradigm of war and perhaps lead to military powers behaving in
 a manner of detachment.
 
-<!-- FIXME: do I need any more sources or a better closing sentence here? -->
-
 ### The Ethics of This Project
 
-`FIXME: I do not know how this project may mitigate the possible ethical
-concerns.`
+The training done in this project does not involve interaction with human
+beings, and the reward metric is intended to promote the stochastic (or
+naturally random) navigation of an environment. Moreover, there is no camera
+used in this project, which reduces the ability of the quadcopter to detect a
+human being.
+
+While the narrow scope of this project excludes many ethical conversations that
+apply to other UAV systems, it does not completely exempt it from potential
+misuse. Any malicious entity could integrate the work done here into an effort
+intended to cause harm, which is a side effect of creating a generalizable
+system such as the one described in this project.
+
+This project has endless implications in search and rescue, where a quadcopter
+could explore an area too dangerous for humans. A quadcopter capable of
+navigating any kind of environment could automate many tedious tasks such as
+cave surveys, agricultural or residential land surveys, and delivery services.
+Generalized navigation is a key component to granting this ability. The
+realization of this technology would promote the well-being of a society,
+regardless of socioeconomic or cultural factors.
 
 # Related work
 
@@ -298,7 +315,7 @@ ability.
 
 ### COEX Clover Quadcopter Platform
 
-The COEX Clover quadcopter, depicted in +@fig:clover, is a platform for
+The COEX Clover quadcopter, depicted in {+@fig:clover}, is a platform for
 education and research developed by Copter Express. On board, the Clover has the
 Raspberry Pi 4 computer for performing computations and running the Robotic
 Operation System (ROS). In this specific project's use case, ROS is responsible
@@ -307,7 +324,7 @@ defines the state, and mapping the state to govern the next action the flight
 controller will take. The on-board flight controller is the COEX Pix, which
 operates off of the PX4 flight stack, an open source autopilot software for
 various applications. The COEX Pix has two built in sensors listed in
-+@tbl:coexpixsensors [@clover].
+{+@tbl:coexpixsensors} [@clover].
 
 ![COEX Clover 4 Quadcopter [@clover].](images/clover.png){#fig:clover width=75%}
 
@@ -345,10 +362,10 @@ Gradient algorithm, which maps the state of our system to an action.
 yet to be determined -->
 
 We define the state space $S$ of the quadcopter by ten parameters and their
-corresponding range of values, detailed in +@tbl:state. Additionally, we define
+corresponding range of values, detailed in {+@tbl:state}. Additionally, we define
 the action space $A$ of the quadcopter by four parameters and their
 corresponding range of values and activation functions, detailed in
-+@tbl:action.
+{+@tbl:action}.
 
 Table: The values that exist in the state space of the quadcopter system.
 {#tbl:state}
@@ -428,7 +445,7 @@ can be used in Gazebo for simulating the Clover [@gazebo].
 With the earth's reference frame as $R^{E}$ and the quadcopter's body's
 reference frame as $R^{b}$, the *attitude* of the quadcopter is known by the
 orientation of $R^{b}$ with respect to $R^{E}$. We determine this from the
-rotational matrix defined in +@eq:rotationalmatrix [@doukhi2022].
+rotational matrix defined in {+@eq:rotationalmatrix} [@doukhi2022].
 
 $$
 \begin{bmatrix}
@@ -440,10 +457,32 @@ $$ {#eq:rotationalmatrix}
 
 We are treating the quadcopter system as a rigid body. Thus, directly using
 Newton's Second Law of Motion, we can derive the Newton-Euler formulation for
-this system.
+this system, which gives us the rotational and translational dynamics in
+{+@eq:dynamics} [@doukhi2022].
+
+$$
+\begin{array}{ll}
+\ddot{x} & =
+\displaystyle \left(\cos(\phi)\sin(\theta)\cos(\psi)
+\displaystyle + \sin(\phi)\sin(\psi)\right) \frac{1}{m}U_1 \\[2ex]
+\ddot{y} & =
+\displaystyle \left(\cos(\phi)\sin(\theta)\sin(\psi)
+\displaystyle - \sin(\phi)\cos(\psi)\right) \frac{1}{m}U_1 \\[2ex]
+\ddot{z} & =
+\displaystyle -g + \left(\cos(\phi)\cos(\theta)\right) \frac{1}{m} U_1 \\[2ex]
+\ddot{\phi} & =
+\displaystyle \dot{\theta} \dot{\psi} \left( \frac{I_{yy}
+\displaystyle - I_{zz}}{I_{xx}} \right) \frac{1}{I_{xx}} U_2 \\[2ex]
+\ddot{\theta} & =
+\displaystyle \dot{\phi} \dot{\psi} \left( \frac{I_{zz}
+\displaystyle - I_{xx}}{I_{yy}} \right) \frac{1}{I_{yy}} U_3 \\[2ex]
+\ddot{\psi} & =
+\displaystyle \dot{\theta} \dot{\phi} \left( \frac{I_{xx}
+\displaystyle - I_{yy}}{I_{zz}} \right) \frac{1}{I_{zz}} U_4
+\end{array}
+$$ {#eq:dynamics}
 
 <!-- FIXME: reference paper on Newton-Euler formulation -->
-`FIXME: bring this back to the Newton-Euler Formulation`
 
 ### ToF Ranging Sensors
 
@@ -483,7 +522,7 @@ $N_1$ states of energy $E_o$. Einstein showed that the rate of change of $N_1$
 and $N_2$ due to the each of the three different kinds of radiative processes
 was proportional to a coefficient that generalized the underlying stochastic
 quantum process happening. The coefficients for each of the three processes,
-shown in +@fig:einsteincoefficients, are now referred to as the Einstein
+shown in {+@fig:einsteincoefficients}, are now referred to as the Einstein
 coefficients.
 
 <!--A21-->
@@ -565,7 +604,7 @@ nature of light.
 
 #### The VCSEL
 
-A Vertical Cavity Surface Emitting Laser (VCSEL) (depicted in +@fig:vcsel) is a
+A Vertical Cavity Surface Emitting Laser (VCSEL) (depicted in {+@fig:vcsel}) is a
 special kind of diode laser that can be fabricated on the scale of micrometers
 through lithography. By depositing the laser cavity in a vertical arrangement,
 thousands of VCSELs can be fabricated on a single silicon wafer. Because of
@@ -597,7 +636,7 @@ inexpensiveness, small size, and ability to transmit continuously [@raj2020].
 
 In the current implementation of this project, the quadcopter is being trained
 to hover at a static position near its origin within a virtual machine provided
-by COEX. The quadcopter's reward metric, given in +@eq:reward is subtracted by
+by COEX. The quadcopter's reward metric, given in {+@eq:reward} is subtracted by
 its distance from the desired position of $(x_{\text{desired}},
 y_{\text{desired}}, z_{\text{desired}}) = (0\text{m}, 0\text{m}, 1\text{m})$. To
 incentivize the quadcopter to hover at $z_{\text{desired}} = 1\text{m}$, a

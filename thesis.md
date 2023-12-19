@@ -278,7 +278,7 @@ their haphazard positioning of the ArUco markers and improperly defined PID
 controller values [@bogatov2021].
 
 While this this project may not use ArUco markers, a comparison can be made
-between the effectiveness of ArUco markers and an array of ToF sensors. For
+between the effectiveness of ArUco markers and an array of ToF sensors for
 determining the local position of the quadcopter.
 
 #### Using Reinforcement Learning for Path Planning
@@ -309,7 +309,7 @@ operates off of the PX4 flight stack, an open source autopilot software for
 various applications. The COEX Pix has two built in sensors listed in
 +@tbl:coexpixsensors [@clover].
 
-![COEX Clover 4 Quadcopter [@clover].](images/clover.png){#fig:clover}
+![COEX Clover 4 Quadcopter [@clover].](images/clover.png){#fig:clover width=75%}
 
 Table: Built-in sensors in the COEX Pix platform [@clover].
 {#tbl:coexpixsensors}
@@ -462,12 +462,12 @@ $$
 
 #### Laser Basics
 
-The term LASER stands for Light Amplification by Stimulated Emission of
-Radiation. In the early twentieth century, Einstein proved the existence of
-stimulated emission when theorizing the existence of an equilibrium between
-light and matter. At the time, stimulated emission had not yet been discovered,
-and the only two known interactions between light and matter were *spontaneous
-emission* and *absorption*.
+The term 'laser' stands for **l**ight **a**mplification by the **s**timulated
+**e**mission of **r**adiation. In the early twentieth century, Einstein proved the
+existence of stimulated emission when theorizing the existence of an equilibrium
+between light and matter. At the time, stimulated emission had not yet been
+discovered, and the only two known interactions between light and matter were
+*spontaneous emission* and *absorption*.
 
 In stimulated emission, when an incoming photon with energy $E_1 = h\nu$
 interacts with an already-excited quantum system of energy $E_1$, the quantum
@@ -482,8 +482,9 @@ be a collection of quantum states with $N_2$ states of energy $E_o + h\nu$ and
 $N_1$ states of energy $E_o$. Einstein showed that the rate of change of $N_1$
 and $N_2$ due to the each of the three different kinds of radiative processes
 was proportional to a coefficient that generalized the underlying stochastic
-quantum process happening. The coefficients for each of the three processes are
-now referred to as the Einstein coefficients.
+quantum process happening. The coefficients for each of the three processes,
+shown in +@fig:einsteincoefficients, are now referred to as the Einstein
+coefficients.
 
 <!--A21-->
 **Spontaneous emission** relies on the $A_{21}$ coefficient:
@@ -521,17 +522,153 @@ $B_{12}$, and the density of the radiation field through the matter $\rho(\nu)$.
 [@pedrotti1993].](images/einsteincoefficients.png){#fig:einsteincoefficients
 width=75%}
 
-#### The VCSEL Laser
+Einstein's work caused physicists to ponder the applications of such a
+phenomenon. In 1954, C. H. Townes leveraged the process of stimulated emission
+to create an apparatus for amplifying microwave light, which was named a maser
+(**m**icrowave **a**mplifier based on the **s**timulated **e**mission of
+**r**adiation). In 1960, T. H. Maiman created the first laser device, which uses
+a ruby crystal as its medium [@pedrotti1993, p. 426]. Maiman's device used a
+flashlamp to send photons into the ruby medium, which was located at the center
+of a Fabry-Perot optical cavity. As the flashlamp 'pumps' photons into the ruby
+medium, the $\text{Cr}^{3+}$ ions in the medium are excited to a higher energy
+level and then decay to a lower excited state within picoseconds. This lower
+excited state has a lifetime of approximately $3\text{ms}$. By continually
+pumping the ruby medium with photons, the number of atomic systems in the
+excited state, $N_2$, increases such that new photons entering the medium are
+most likely to cause stimulated emission. This is known as a population
+inversion. By placing the medium in a Fabry-Perot optical cavity, this
+encourages photons to be emitted along the optical axis. As an increasing number
+of emissions happen along the optical axis, the system reaches a point where all
+stimulated emissions are along the optical axis. Because these stimulated
+emissions are intrinsically coherent, the result is in-phase, coherent light
+resonating along the optical axis. By having one mirror of nearly perfect
+reflectivity and another with $\sim 90\text{\%}$ reflectivity, a fraction of the
+coherent light is emitted as a columnated beam that we know to be laser light
+[@saleh2019, p. 477-478].
 
-`FIXME: explain how VCSEL lasers function and how they differ from 'classical'
-lasers. This section will need more work in the second semester as I continue to
-learn.`
+Lasers are defined by three fundamental components: an external energy source or
+*pump*, an *amplifying medium*, and a *resonator*. The pump adds energy to the
+system to achieve a population inversion, which is when $N_2$ passes a threshold
+to sustain amplification through stimulated emission. The amplifying medium is
+the collection of matter that holds energy and emits photons. The amplifying
+medium is chosen based upon its energy levels, which directly determine the
+frequency of radiation it is capable of emitting. Lastly, the resonator directs
+photons back and forth through the amplifying medium. The most simple form of a
+resonator is two precisely aligned mirrors that are placed along the optical
+axis. One mirror has the highest reflectivity possible, while the other is given
+a reflectivity slightly less than 100% to allow a fraction of the internally
+resonating light to be emitted [@pedrotti1993, p. 431-434].
+
+Lasers produce monochromatic, coherent light, which has limitless applications
+for the medical field, sensing devices, and aiding our understanding of the
+nature of light.
+
+#### The VCSEL
+
+A Vertical Cavity Surface Emitting Laser (VCSEL) (depicted in +@fig:vcsel) is a
+special kind of diode laser that can be fabricated on the scale of micrometers
+through lithography. By depositing the laser cavity in a vertical arrangement,
+thousands of VCSELs can be fabricated on a single silicon wafer. Because of
+their small size, different architectural considerations must be taken into
+account. At this scale, light does not behave classically, and thus, in order to
+create the optical cavity with the necessary reflectivity, alternating
+semiconductor layers are placed to achieve a near 100% reflectivity. This
+configuration is known as a Distributed Bragg Reflector (DBR) [@iga2000].
+
+![A model of a VCSEL on a silicon wafer
+[@iga2000].](images/vcsel.png){#fig:vcsel width=75%}
+
+<!-- FIXME: discuss how DBRs work -->
+<!-- FIXME: discuss how pumping works -->
+
+VCSELs use less power than traditional lasers because of their dependence on the
+energy band gap of their active medium. VCSELs rely on electronic state
+transitions for generating photons. At this size, the possible state transitions
+are in a continuum rather than discrete, which increases the probability of an
+electron transitioning to a lower state. Thus, a higher fraction of pumped
+electrons directly contribute to the net output intensity [@iga2000].
+
+VCSELs are ubiquitous in the context of LiDAR mechanisms because of their
+inexpensiveness, small size, and ability to transmit continuously [@raj2020].
 
 # Preliminary Results
 
+<!-- FIXME: this is strictly writing for the first semester -->
 
+In the current implementation of this project, the quadcopter is being trained
+to hover at a static position near its origin within a virtual machine provided
+by COEX. The quadcopter's reward metric, given in +@eq:reward is subtracted by
+its distance from the desired position of $(x_{\text{desired}},
+y_{\text{desired}}, z_{\text{desired}}) = (0\text{m}, 0\text{m}, 1\text{m})$. To
+incentivize the quadcopter to hover at $z_{\text{desired}} = 1\text{m}$, a
+Gaussian function centered around $z_s = 1\text{m}$ is added to the reward.
+
+$$
+\begin{array}{ll}
+\text{reward}
+\equiv &
+100\left(e^{-(z_s - 1)^2} - 1\right) \\
+& -\sqrt{
+    \left(x_s - x_\text{desired}\right)^2
+    + \left(y_s - y_\text{desired}\right)^2
+    + \left(z_s - z_\text{desired}\right)^2
+  } \\
+\end{array}
+$$ {#eq:reward}
+
+The most prominent challenge with the approach of using Gazebo for simulating
+the episodes has been determining a way for the simulation to step through time
+at a constant rate. ROS has a callback function capable of measuring the time
+elapsed during a single control loop and throttling its speed to maintain a
+consistent frequency of reading its state and taking action. This could allow a
+predictable control frequency rather than a variable control frequency. A
+variable control frequency means that a model may not make appropriate decisions
+between control loops. The ability to maintain a consistent timing between each
+control iteration would provide much more stability regarding the model's
+control of the quadcopter system.
+
+During each episode of training, once the quadcopter flips upside down or flies
+out of sight, it is most appropriate to tack an extremely low reward value onto
+the data for that episode and reset the simulation environment; however, because
+the PX4 flight controller software is not preemptive by default, meaning that it
+cannot be easily suspended, the flight controller is not able to handle the
+sudden change in position when the quadcopter's position is reset using Gazebo.
+Although Gazebo allows for an option to pause the physics engine, the PX4 flight
+controller software must be manually modified in order to have this feature.
+This feature is not yet a part of the current implementation, and the PX4 still
+poses as an issue to switching quickly between episodes.
+
+This issue has prevented the quadcopter system from learning how to control,
+because each episode cannot be reset.
 
 # Future Work
+
+## Fixing Timing Inconsistencies in PX4
+
+The next step of this project is to fix the timing inconsistencies of the
+simulation such that each control loop, or observation-action pair, happens at a
+consistent frequency that can be reproduced in the real world. This may involve
+creating a custom version of the PX4 flight controller software capable of
+preemptive behavior.
+
+Presumably, fixing the timing inconsistency will allow the quadcopter system to
+train itself to hover at a static position. Once this is demonstrated, it will
+then be appropriate to explore techniques to train the quadcopter to navigate.
+
+## Simulating and Physically Implementing ToF Sensors
+
+In order for the quadcopter to navigate, it must have the array of ToF sensors.
+This means that the ToF must also be simulated in Gazebo with the exact
+specifications of the Adafruit VL53L4CX sensors. Additionally, the ten ToF
+sensors must be physically mounted to the quadcopter, which will require a 3D
+printed fixture. This means that time must be taken to draft, print, and
+simulate this design.
+
+## Developing Reward Metrics to Incentivize Quadcopter Navigation
+
+Developing reward metrics to incentivize quadcopter navigation is arguably the
+crux of this project, and it will require continuous self-assessment and
+reevaluation. FIXME
 
 <!-- # Experiments
 

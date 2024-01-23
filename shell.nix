@@ -96,8 +96,8 @@ in
     ];
     shellHook = ''
       export NIX_SHELL_NAME=${shellname}
-      alias pdf="pandoc --filter pandoc-xnos --defaults pdf.yaml --to latex --metadata-file config.yaml --lua-filter .filters/abstract-to-meta.lua --template template/thesis.tex --citeproc --csl https://www.zotero.org/styles/journal-of-the-acm --bibliography references.bib"
-      alias pdflive="ls | entr pandoc --filter pandoc-xnos --defaults pdf.yaml --to latex --metadata-file config.yaml --lua-filter .filters/abstract-to-meta.lua --template template/thesis.tex --citeproc --csl https://www.zotero.org/styles/journal-of-the-acm --bibliography references.bib"
+      alias pdf="./build.sh"
+      alias pdflive="find | entr ./build.sh"
     '';
   }
 

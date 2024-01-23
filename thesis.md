@@ -66,12 +66,6 @@ will be from peer reviewed sources (not Wikipedia!) -->
 
 ### The Need for Generalized Autonomous Navigation
 
-In addition to object detection and spatial awareness, autonomous navigation is
-difficult to develop for general applications.
-
-<!-- FIXME: continue to develop idea about why autonomous navigation is not
-perfect. -->
-
 Autonomous navigation is necessary for a robotic system to interact with its
 surroundings in a real world environment, and it is necessary to realize
 technologies such as fully autonomous unmanned aerial vehicles (UAVs) and land
@@ -91,6 +85,9 @@ autonomous navigation and control [@gugan2023; @song2023; @doukhi2022]. By
 defining a set of desired qualities of a system, the system will learn to
 develop its own policy, which is responsible for mapping its instantaneous of
 its environment to its action at a given point in time.
+
+<!-- FIXME: continue to develop idea about why autonomous navigation is not
+perfect. -->
 
 <!-- FIXME: try to give a proper motivation for why my approach has validity -->
 <!-- FIXME: set it up for my specific project -->
@@ -280,6 +277,7 @@ regardless of socioeconomic or cultural factors.
 
 #### GPS-Denied Positioning Using ArUco Markers
 
+<!-- related-work -->
 In an effort to demonstrate the ability of a quadcopter to perform basic
 navigation, the authors in @bogatov2021 used a grid of ArUco markers to provide
 the COEX CLover 4 quadcopter with an optical point of reference. They state: "An
@@ -302,7 +300,32 @@ While our project may not use ArUco markers, a comparison can be made
 between the effectiveness of ArUco markers and an array of ToF sensors for
 determining the local position of the quadcopter.
 
+#### Simulating Quadcopter Dynamics
+
+In order for the control loop to properly decide a course of action based on its
+inertial measurements, the dynamics of the system must be calculated. This can
+be accomplished via an external frame of reference or by on-board sensors.
+
+<!-- related-work -->
+
+The authors of [@de2014] present a "black box" approach to estimating the
+quadcopter's state. Rather than meticulously modeling every part of the
+quadcopter's dynamics, a general structure of its mechanics was developed. By
+simulating the known properties of the quadcopter, such as the positioning of
+its propellers and overall mass, the authors roughly defined how the inputs
+(roll, pitch, yaw, and thrust) would be transformed by the flight controller.
+This method was combined with a Gaussian Process model, which needed to first be
+trained on the former model of estimation. After being trained to predict the
+quadcopter's real-time movements within minimal error, the Gaussian Process
+model was added to the simulation environment and used in the quadcopter's
+on-board state estimation. Although the authors were limited by the processing
+power required by Gaussian Process models, their results demonstrated how one
+can tailor a rough model to fit real world results by adding a probabilistic
+correction [@de2014].
+
 #### Using Reinforcement Learning for Path Planning
+
+<!-- related-work -->
 
 Algorithms such as the famous $\text{A}^{*}$ algorithm require a robotic system
 to have a comprehensive understanding of the environment it is in. The authors
@@ -322,6 +345,7 @@ Our project seeks to both provide a mode of dynamic control and navigation
 for the quadcopter system, but we can still compare the accuracy of our
 navigation algorithm to that of the PPO-based project in [@hodge2021].
 
+<!-- related-work -->
 The authors in [@doukhi2022] present a hybrid approach of dynamic control and
 navigation by allowing the quadcopter to act upon its planned motion via
 grid-like movements until it approaches any obstacles. Once an obstacle is
@@ -534,6 +558,7 @@ I_{zz}$ are the moments of inertia along the $x$, $y$, and $z$ axes
 [@doukhi2022].
 
 <!-- FIXME: reference paper on Newton-Euler formulation -->
+<!-- FIXME: reference de2014 -->
 
 ### ToF Ranging Sensors
 
@@ -680,6 +705,8 @@ electrons directly contribute to the net output intensity [@iga2000].
 
 VCSELs are ubiquitous in the context of LiDAR mechanisms because of their
 inexpensiveness, small size, and ability to transmit continuously [@raj2020].
+
+<!-- FIXME: beef this up for the second semester -->
 
 # Preliminary Results
 

@@ -86,11 +86,26 @@ defining a set of desired qualities of a system, the system will learn to
 develop its own policy, which is responsible for mapping its instantaneous of
 its environment to its action at a given point in time.
 
-<!-- FIXME: continue to develop idea about why autonomous navigation is not
-perfect. -->
+### Reinforcement Learning
 
-<!-- FIXME: try to give a proper motivation for why my approach has validity -->
-<!-- FIXME: set it up for my specific project -->
+RL has long been considered to be more adaptive than the industry standard
+method of control, PID control, which requires extensive tuning. RL tries to
+find the optimal way to map a perceived state to an action by finding what is
+called a control policy. The decision making is influenced by a reward factor,
+which quantifies the success of the system's actions. A control policy is a set
+of rules that define the way in which a system's state is mapped to its next
+action. This is similar to the Markov decision process, in which an agent's
+action at time $\tau_k+1$ is derived from its state at $\tau_k$. Although a
+control policy can be defined qualitatively, it is rather a mapping of a state
+tensor to an action tensor, both almost always being multidimensional.
+
+Recent investigations into methods of control for quadcopter systems involve
+controlling the quadcopter's *attitude*, or the desired state of its position.
+As opposed to PID control, which requires tuning between the feedback loop and
+action of the controller, RL autonomously solves control problems by optimizing
+its actions with respect to a reward metric. This results in an enhanced ability
+to react to diverse situations, which would be considered generalized
+intelligence [@bernini2021].
 
 ### The Growing UAV Industry
 
@@ -362,6 +377,17 @@ because of its refined scope. This will consequently allow for RL training to
 take place for a consistent kind of problem, rather than leaving both 'free'
 navigation and obstacle avoidance for the quadcopter to handle.
 
+#### Using Reinforcement Learning for Attitude Control
+
+Giving a quadcopter complete control over its attitude requires extensive
+training and computational power to train because of how large the action and
+state spaces become. Continuous action and state spaces, as opposed to discrete
+action and state spaces, require a completely distinct set of algorithms for
+training, because of the infinite number of states and actions possible.
+
+<!-- related-work -->
+The authors in [@bernini2021] compare different RL algorithms' effectiveness in
+controlling a quadcopter's attitude.
 <!-- FIXME: more here -->
 
 # Method of approach
@@ -427,6 +453,13 @@ the I2C protocol.
 
 The method of learning used in this project is the Deep Deterministic Policy
 Gradient algorithm, which maps the state of our system to an action.
+
+In RL algorithms, training is accomplished by giving the system a feedback
+mechanism called a reward. The reward may be based off of historical data or on
+the most recent state of the system.
+
+One method of finding an optimal policy for controlling a system is to track the
+gradient of the expected reward
 
 <!-- FIXME: reward metric to actually get the thing to perform navigation has
 yet to be determined -->

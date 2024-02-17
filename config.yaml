@@ -2,22 +2,18 @@
 # https://maehr.github.io/academic-pandoc-template/
 
 # Project-specific values
-title: 'Development of Quadcopter for Autonomous Navigation'
-author: 'Simon Jones'
-date: '19 December 2023'
-cisreader: 'Janyl Jumadinova, PhD'
-physicsreader: 'Dan Willey, PhD'
+title: 'Senior Thesis'
+author: 'Student Name'
+date: '22 July 2022'
+firstreader: 'First Reader'
+secondreader: 'Second Reader'
 logo: 'images/logo'
 
 # Template Values: DO NOT TOUCH
 
-################
-# Bibliography #
-################
-
-# NOTE: these csl and bibliography were put on the command line in order to fall after filters
-# csl: https://www.zotero.org/styles/journal-of-the-acm # See https://www.zotero.org/styles for more styles.
-# bibliography: references.bib # See https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md for more formats.
+# Bibliography
+csl: https://cdn.githubraw.com/ReadyResearchers-2023-24/thesis-resources-cdn/main/cdn/journal-of-the-acm.csl # See https://www.zotero.org/styles for more styles.
+bibliography: references.bib # See https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md for more formats.
 suppress-bibliography: false
 link-citations: true
 color-links: true # See https://ctan.org/pkg/xcolor for colors

@@ -850,7 +850,7 @@ have a working prototype.`
 
 In order to test the robustness of a model, it is helpful to evaluate its
 performance in random environments. In the Clover VM, this can be done by using
-the `pcg_gazebo` package, created by Bosch Research.
+the `pcg_gazebo` package, created by Bosch Research [@manhaes2024].
 
 ### Installing `pcg_gazebo`
 

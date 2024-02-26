@@ -844,6 +844,83 @@ have a working prototype.`
 
 ## Conclusions -->
 
+# Appendix
+
+## Procedurally generating rooms using `pcg_gazebo`
+
+In order to test the robustness of a model, it is helpful to evaluate its
+performance in random environments. In the Clover VM, this can be done by using
+the `pcg_gazebo` package, created by Bosch Research.
+
+### Installing `pcg_gazebo`
+
+To install `pcg_gazebo` on the Clover VM, start by updating the system:
+
+```sh
+sudo apt-get update
+sudo apt upgrade
+```
+
+Then install supporting packages:
+
+```sh
+sudo apt install libspatialindex-dev pybind11-dev libgeos-dev
+```
+
+Then, you may need to update `pip`, as the version that comes by default in the
+VM is not up to date:
+
+```sh
+sudo pip install --upgrade pip
+```
+
+Then install the `pcg_gazebo` package:
+
+```sh
+pip install pcg_gazebo
+```
+
+### Running `pcg_gazebo`
+
+For a basic cuboid room, one can run the following:
+
+```sh
+pcg-generate-sample-world-with-walls \
+  --n-rectangles 1 \
+  --world-name <your-world-name>.world \
+  --preview
+```
+
+This will generate world file named `<your-world-name>.world` that contains a
+cuboid.
+
+Other examples, that incorporate randomly placed obstacles, are shown in the
+following:
+
+```sh
+pcg-generate-sample-world-with-walls \
+  --n-rectangles 10 \
+  --n-cubes 10 \
+  --world-name <your-world-name>.world \
+  --preview
+pcg-generate-sample-world-with-walls \
+  --n-rectangles 10 \
+  --n-cubes 10 \
+  --n-spheres 2 \
+  --world-name <your-world-name>.world \
+  --preview
+pcg-generate-sample-world-with-walls \
+  --n-rectangles 10 \
+  --n-cylinders 10 \
+  --world-name <your-world-name>.world \
+  --preview
+pcg-generate-sample-world-with-walls \
+  --n-rectangles 10 \
+  --n-spheres 10 \
+  --world-name <your-world-name>.world \
+  --preview
+```
+
 # References
 
 ::: {#refs}

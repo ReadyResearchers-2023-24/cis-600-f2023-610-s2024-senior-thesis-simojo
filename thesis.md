@@ -865,6 +865,8 @@ Then install supporting packages:
 
 ```sh
 sudo apt install libspatialindex-dev pybind11-dev libgeos-dev
+pip install "pyglet<2"
+pip install markupsafe==2.0.1
 ```
 
 Then, you may need to update `pip`, as the version that comes by default in the
@@ -880,6 +882,13 @@ Then install the `pcg_gazebo` package:
 pip install pcg_gazebo
 ```
 
+Before running, make sure to create the default directory where the tool will
+save the world files, `~/.gazebo/models`:
+
+```sh
+mkdir -p ~/.gazebo/models
+```
+
 ### Running `pcg_gazebo`
 
 For a basic cuboid room, one can run the following:
@@ -887,12 +896,12 @@ For a basic cuboid room, one can run the following:
 ```sh
 pcg-generate-sample-world-with-walls \
   --n-rectangles 1 \
-  --world-name <your-world-name>.world \
+  --world-name <your-world-name> \
   --preview
 ```
 
-This will generate world file named `<your-world-name>.world` that contains a
-cuboid.
+This will generate the world file `~/.gazebo/models/<your-world-name>.world`
+that contains a cuboid.
 
 Other examples, that incorporate randomly placed obstacles, are shown in the
 following:
@@ -901,23 +910,23 @@ following:
 pcg-generate-sample-world-with-walls \
   --n-rectangles 10 \
   --n-cubes 10 \
-  --world-name <your-world-name>.world \
+  --world-name <your-world-name> \
   --preview
 pcg-generate-sample-world-with-walls \
   --n-rectangles 10 \
   --n-cubes 10 \
   --n-spheres 2 \
-  --world-name <your-world-name>.world \
+  --world-name <your-world-name> \
   --preview
 pcg-generate-sample-world-with-walls \
   --n-rectangles 10 \
   --n-cylinders 10 \
-  --world-name <your-world-name>.world \
+  --world-name <your-world-name> \
   --preview
 pcg-generate-sample-world-with-walls \
   --n-rectangles 10 \
   --n-spheres 10 \
-  --world-name <your-world-name>.world \
+  --world-name <your-world-name> \
   --preview
 ```
 

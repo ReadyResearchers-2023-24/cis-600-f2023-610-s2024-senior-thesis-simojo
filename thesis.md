@@ -338,6 +338,11 @@ power required by Gaussian Process models, their results demonstrated how one
 can tailor a rough model to fit real world results by adding a probabilistic
 correction [@de2014].
 
+### Reinforcement Learning for Robotics
+
+<!-- related-work -->
+<!-- FIXME: reference narvekar2020. it is a review article -->
+
 #### Using Reinforcement Learning for Path Planning
 
 <!-- related-work -->
@@ -867,6 +872,7 @@ Then install supporting packages:
 sudo apt install libspatialindex-dev pybind11-dev libgeos-dev
 pip install "pyglet<2"
 pip install markupsafe==2.0.1
+pip install trimesh[easy]==3.16.4
 ```
 
 Then, you may need to update `pip`, as the version that comes by default in the
@@ -914,8 +920,10 @@ pcg-generate-sample-world-with-walls \
   --preview
 pcg-generate-sample-world-with-walls \
   --n-rectangles 10 \
-  --n-cubes 10 \
-  --n-spheres 2 \
+  --x-room-range 6 \
+  --y-room-range 6 \
+  --n-cubes 15 \
+  --wall-height 6 \
   --world-name <your-world-name> \
   --preview
 pcg-generate-sample-world-with-walls \

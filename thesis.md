@@ -851,15 +851,58 @@ have a working prototype.`
 
 # Appendix
 
-## Procedurally generating rooms using `pcg_gazebo`
+## Procedurally generating rooms using `pcg` module and `pcg_gazebo`
 
 In order to test the robustness of a model, it is helpful to evaluate its
 performance in random environments. In the Clover VM, this can be done by using
-the `pcg_gazebo` package, created by Bosch Research [@manhaes2024].
+the `pcg_gazebo` package, created by Bosch Research [@manhaes2024]. A wrapper
+for this package exists under
+\url{https://github.com/ReadyResearchers-2023-24/SimonJonesArtifact}. In the
+directory \texttt{src/pcg}.
+
+### Using `pcg` for room generation
+
+After cloning
+\url{https://github.com/ReadyResearchers-2023-24/SimonJonesArtifact} to the
+Clover VM, create a python virtualenv in the `pcg` root directory and install
+from `requirements.txt`:
+
+```sh
+cd /path/to/SimonJonesArtifact/src/pcg
+python3 -m virtualenv venv
+pip install -r requirements.txt
+```
+
+Now that you have all of the necessary packages, assuming that you have properly
+sourced your shell in `SimonJonesArtifact/devel`, you can run the `generate`
+script under `pcg`:
+
+```sh
+rosrun pcg generate -h
+```
+
+If this works correctly, you should see a help output describing the possible
+CLI flags. To generate ten worlds, saving them to the `.gazebo/` directory, you
+can run the following command:
+
+
+```sh
+rosrun pcg generate \
+  --models-dir=/home/clover/.gazebo/models \
+  --worlds-dir=/home/clover/.gazebo/worlds \
+  --num-worlds=1
+```
+
+However, by default, the generated worlds are stored to
+`/path/to/SimonJonesArtifact/src/pcg/resources/worlds`, and the models are
+stored at `/path/to/SimonJonesArtifact/src/pcg/models`. This allows them to be
+incorporated into the project's ROS path by default.
 
 ### Installing `pcg_gazebo`
 
-To install `pcg_gazebo` on the Clover VM, start by updating the system:
+For manually using `pcg_gazebo` without the custom `pcg` module, you must
+install `pcg_gazebo`. To install `pcg_gazebo` on the Clover VM, start by
+updating the system:
 
 ```sh
 sudo apt-get update

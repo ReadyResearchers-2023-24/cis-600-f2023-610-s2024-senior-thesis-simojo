@@ -402,7 +402,7 @@ with Time of Flight (ToF) ranging sensors, and applies a Deep Deterministic
 Policy Gradient (DDPG) algorithm to train it for autonomous navigation. By
 simulating the Clover in the Gazebo simulation environment, hundreds of
 iterative attempts can be taken to safely train the quadcopter's navigation
-ability.
+ability [@gazebo].
 
 Rather than developing an algorithm for navigation, we employ a variety of RL
 techniques to motivate the quadcopter to autonomously explore its environment.
@@ -454,7 +454,9 @@ The ToF sensor used in this project is the Adafruit VL53L4CX, which has a range
 from 1mm up to 6m. This device has a FOV of $18^\circ$ and is controllable via
 the I2C protocol.
 
-### Deep Deterministic Policy Gradint (DDPG) Algorithm
+![Adafruit VL53L4CX ToF Distance Sensor.](images/vl53l4cx.jpg)
+
+### Deep Deterministic Policy Gradient (DDPG) Algorithm
 
 The method of learning used in this project is the Deep Deterministic Policy
 Gradient algorithm, which maps the state of our system to an action.
@@ -547,6 +549,61 @@ actuation of robotic systems. COEX has developed a simulation environment that
 can be used in Gazebo for simulating the Clover [@gazebo].
 
 ## Theory
+
+### Deep Reinforcement Learning
+
+As stated, this project uses a Deep RL algorithm known as the Deep Deterministic
+Policy Gradient (DDPG) algorithm. In Deep RL, an agent transforms its
+observation or state of its environment to an action which it takes on its
+environment ^[To be pedantic, a state describes the comprehensive state of the
+agent's environment, omitting no information, while an observation may be a
+partial interpretation of the environment; however, we will refer to the
+system's state as a state $s$ for simplicity sake.]. After doing so, the agent's
+action is associated with a reward value. Thus, for each step in time $t$, the
+agent has a state $s_t$ and reward $r_t$.
+
+Most agents are defined by their policy, which is a relation that takes $s_t$
+and returns $a_t$:
+
+$$
+a_t = \mu(s_t)\ \text{or}\ a_t \sim \pi_\theta(\cdot | s_t),
+$$
+
+with $\theta$ referring to the policy's parameters or weights. $\mu$ is used to
+refer to a deterministic policy, while $\pi$ refers to a stochastic policy.
+
+Every Deep RL algorithm seeks to approximate the optimal policy $\mu^*(s)$ or
+$\pi^*(s)$. The optimal policy is the policy that maximizes the expected
+cumulative reward over a sequence of state-action pairs.
+
+Some Deep RL algorithms use an action-value function $Q(s,a)$ which gives an
+expected reward value from taking action $a$ given state $s$ [@zhu2021]. In Deep
+Q Learning, for example, the policy is calculated by approximating the optimal
+action-value function, denoted as $Q^*(s,a)$. This is because the optimal policy
+can be composed of the optimal action-value function by taking the action $a$
+that maximizes $Q^*(s,a)$:
+
+$$
+\pi^*(s) = \text{argmax}_a Q^*(s,a).
+$$
+
+There are many ways in which an agent can learn an approximation of the optimal
+policy, which is what makes Deep RL such a vast field. In this project, we
+specifically explore the Deep Deterministic Policy Gradient (DDPG) algorithm
+[@spinningup2018].
+
+### Deep Deterministic Policy Gradient (DDPG) Algorithm
+
+The DDPG algorithm is a kind of Deep RL algorithm that simultaneously learns an
+action-value function $Q(s,a)$ and a policy $\mu(s)$. Both sides of the learning
+process inform each other, leading to enhanced, albeit more prolonged, results.
+
+<!-- FIXME: discuss in general how DDPG uses its two networks in more detail,
+hinting at the fact that there is a target network involved to add stability -->
+
+For the DDPG algorithm, we use $\mu$ as the name of the policy function,
+indicating that it is deterministic of state. The subscript $\theta$ refers to
+its parameters or weights.
 
 ### Quadcopter Dynamics
 

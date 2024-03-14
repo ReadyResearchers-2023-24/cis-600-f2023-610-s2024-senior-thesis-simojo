@@ -477,6 +477,8 @@ the action space $A$ of the quadcopter by four parameters and their
 corresponding range of values and activation functions, detailed in
 {+@tbl:action}.
 
+<!-- FIXME: iron out the state space -->
+
 Table: The values that exist in the state space of the quadcopter system.
 {#tbl:state}
 
@@ -504,6 +506,32 @@ Table: The values that exist in the state space of the quadcopter system.
 | thrust    | $[0, 1]$             | dimensionless |
 +-----------+----------------------+---------------+
 
+<!--
+px
+py
+pz
+qx
+qy
+qz
+qw
+vx
+vy
+vz
+wx
+wy
+wz
+range_0 [0.001, 6]
+range_1 [0.001, 6]
+range_2 [0.001, 6]
+range_3 [0.001, 6]
+range_4 [0.001, 6]
+range_5 [0.001, 6]
+range_6 [0.001, 6]
+range_7 [0.001, 6]
+range_8 [0.001, 6]
+range_9 [0.001, 6]
+-->
+
 Table: The values that exist in the action space of the quadcopter system and
 their corresponding activation functions.
 {#tbl:action}
@@ -511,13 +539,11 @@ their corresponding activation functions.
 +--------+----------------------+---------------+---------------------+
 | Name   | Range                | Units         | Activation Function |
 +========+======================+===============+=====================+
-| pitch  | $[-\pi, +\pi)$       | radians       | tanh                |
+| r      | $[0.2, 6]$           | meters        | RelU                |
 +--------+----------------------+---------------+---------------------+
-| roll   | $[-\pi, +\pi)$       | radians       | tanh                |
+| theta  | $[0, \pi]$           | radians       | RelU                |
 +--------+----------------------+---------------+---------------------+
-| yaw    | $[-\pi, +\pi)$       | radians       | tanh                |
-+--------+----------------------+---------------+---------------------+
-| thrust | $[0, 1]$             | dimensionless | sigmoid             |
+| phi    | $[0, 2\pi]$          | radians       | RelU                |
 +--------+----------------------+---------------+---------------------+
 
 For each *episode*, or iteration, of the training process, a state $s$ is
@@ -530,6 +556,9 @@ part of the Clover's ROS module.
 
 <!-- FIXME: need to explain how we mitigated timing issues with repeatable discrete
 time steps -->
+
+<!-- FIXME: explain how I ended up choosing to do a navigate_wait approach and
+why and how it mitigates issues with setting the quadcopter attitude -->
 
 After $a$ is acted upon, $s$ is read once again in order to determine the reward
 metric, which takes off points if the quadcopter has crashed or flipped over.
@@ -544,9 +573,13 @@ navigate -->
 ### Gazebo Simulation Environment
 
 This project uses Gazebo to run a simulated environment of the Clover. Gazebo is
-an open source tool for simulating robotics. It simulates the dynamics and
+an open source tool for simulating robotics; it simulates the dynamics and
 actuation of robotic systems. COEX has developed a simulation environment that
 can be used in Gazebo for simulating the Clover [@gazebo].
+
+Gazebo allows for the environment to be defined by physical parameters such as
+wind, atmospheric type, and gravity, and it uses the *Open Dynamics Engine* to
+resolve physical interactions.
 
 ## Theory
 

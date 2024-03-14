@@ -569,8 +569,9 @@ $$
 a_t = \mu(s_t)\ \text{or}\ a_t \sim \pi_\theta(\cdot | s_t),
 $$
 
-with $\theta$ referring to the policy's parameters or weights. $\mu$ is used to
-refer to a deterministic policy, while $\pi$ refers to a stochastic policy.
+with $\theta$ referring to the policy's parameters or weights, assuming it is a
+neural network. $\mu$ is used to refer to a deterministic policy, while $\pi$
+refers to a stochastic policy.
 
 Every Deep RL algorithm seeks to approximate the optimal policy $\mu^*(s)$ or
 $\pi^*(s)$. The optimal policy is the policy that maximizes the expected
@@ -596,14 +597,46 @@ specifically explore the Deep Deterministic Policy Gradient (DDPG) algorithm
 
 The DDPG algorithm is a kind of Deep RL algorithm that simultaneously learns an
 action-value function $Q(s,a)$ and a policy $\mu(s)$. Both sides of the learning
-process inform each other, leading to enhanced, albeit more prolonged, results.
+process inform each other, leading to enhanced, albeit more prolonged, results
+[@zhu2021].
 
-<!-- FIXME: discuss in general how DDPG uses its two networks in more detail,
-hinting at the fact that there is a target network involved to add stability -->
+To approximate the optimal action-value function, the DDPG algorithm tries to
+approximate the Bellman equation which represents the optimal action-value
+function:
 
-For the DDPG algorithm, we use $\mu$ as the name of the policy function,
-indicating that it is deterministic of state. The subscript $\theta$ refers to
-its parameters or weights.
+$$
+Q^*(s,a) = E_{s' \sim P}\left[r(s,a) + \gamma \text{max}_{a'} Q^* (s', a')\right].
+$$
+
+This equation describes the expected value ($E_{s' \sim P}[...]$) given a state
+$s'$ sampled from a distribution $P$ of the current reward $r(s,a)$ and
+discounted future reward $\gamma \text{max}_{a'} Q^* (s', a')$, where $\gamma$
+is the discount factor. The discount factor weighs near-future rewards more than
+distant-future rewards.
+
+When approximating the optimal action-value function, which is, in this case,
+achieved via a neural network parameterized by its weights, the goal is to
+minimize the expectation value of the square of the difference between both
+sides of the Bellman equation. Ideally, this difference would be zero, which is
+why this algorithm tries to minimize the said difference.
+
+In practice, performing training off a recursive function is unstable, so a
+*target network* is used. The weights of *target networks* are only periodically
+copied over from the main network, and the optimal action-value function is
+approximated by minimizing the difference between the target network's output
+and the main network's output using stochastic gradient descent.
+
+Approximating the optimal policy in DDPG is done by performing gradient ascent
+on $Q_\phi(s, \mu_\theta(s))$ with respect to $\theta$, where $\phi$ represents
+the weights of action-value network. We use $\mu$ as the name of the policy
+function, indicating that it is deterministic of state. The subscript $\theta$
+refers to its parameters or weights, assuming it is a neural network
+[@spinningup2018]. Ultimately, learning the optimal policy tries to solve the
+following:
+
+$$
+\text{max}_\theta E_{s\sim \mathcal{D}}\left[ Q_\phi(s,\mu_\theta(s)) \right].
+$$
 
 ### Quadcopter Dynamics
 

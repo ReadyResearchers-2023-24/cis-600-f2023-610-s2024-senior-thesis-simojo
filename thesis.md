@@ -914,14 +914,14 @@ In order to test the robustness of a model, it is helpful to evaluate its
 performance in random environments. In the Clover VM, this can be done by using
 the `pcg_gazebo` package, created by Bosch Research [@manhaes2024]. A wrapper
 for this package exists under
-\url{https://github.com/ReadyResearchers-2023-24/SimonJonesArtifact}. In the
+\url{https://github.com/ReadyResearchers-2023-24/SimonJonesArtifact} in the
 directory \texttt{src/pcg}.
 
 ### Using `pcg` for room generation
 
 After cloning
 \url{https://github.com/ReadyResearchers-2023-24/SimonJonesArtifact} to the
-Clover VM, create a python virtualenv in the `pcg` root directory and install
+Clover VM, create a Python virtualenv in the `pcg` root directory and install
 from `requirements.txt`:
 
 ```sh

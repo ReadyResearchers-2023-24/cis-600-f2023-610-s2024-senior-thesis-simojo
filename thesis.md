@@ -618,7 +618,7 @@ can be composed of the optimal action-value function by taking the action $a$
 that maximizes $Q^*(s,a)$:
 
 $$
-\pi^*(s) = \text{argmax}_a Q^*(s,a).
+\pi^*(s) = \arg\max_a Q^*(s,a).
 $$
 
 There are many ways in which an agent can learn an approximation of the optimal
@@ -638,12 +638,12 @@ approximate the Bellman equation which represents the optimal action-value
 function:
 
 $$
-Q^*(s,a) = E_{s' \sim P}\left[r(s,a) + \gamma \text{max}_{a'} Q^* (s', a')\right].
+Q^*(s,a) = E_{s' \sim P}\Big[r(s,a) + \gamma \max_{a'} Q^* (s', a')\Big].
 $$
 
 This equation describes the expected value ($E_{s' \sim P}[...]$) given a state
 $s'$ sampled from a distribution $P$ of the current reward $r(s,a)$ and
-discounted future reward $\gamma \text{max}_{a'} Q^* (s', a')$, where $\gamma$
+discounted future reward $\gamma \max_{a'} Q^* (s', a')$, where $\gamma$
 is the discount factor. The discount factor weighs near-future rewards more than
 distant-future rewards.
 
@@ -668,7 +668,7 @@ refers to its parameters or weights, assuming it is a neural network
 following:
 
 $$
-\text{max}_\theta E_{s\sim \mathcal{D}}\left[ Q_\phi(s,\mu_\theta(s)) \right].
+\max_\theta E_{s\sim \mathcal{D}}\Big[ Q_\phi(s,\mu_\theta(s)) \Big].
 $$
 
 ### Quadcopter Dynamics

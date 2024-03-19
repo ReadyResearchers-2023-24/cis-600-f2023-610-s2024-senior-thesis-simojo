@@ -458,86 +458,104 @@ the I2C protocol.
 
 ### Deep Deterministic Policy Gradient (DDPG) Algorithm
 
+#### Gradient Ascent and Descent
+
 The method of learning used in this project is the Deep Deterministic Policy
-Gradient algorithm, which maps the state of our system to an action.
+Gradient algorithm, which maps a continuous state space to a continuous action
+space.
 
 In RL algorithms, training is accomplished by giving the system a feedback
 mechanism called a reward. The reward may be based off of historical data or on
-the most recent state of the system.
+the most recent state of the system. In DDPG, we train two networks, an
+action-value or critic network, and a policy or actor network. The action-value
+network has access to historical training data, while the policy network does
+not. The two networks inform each other in the training process.
 
 One method of finding an optimal policy for controlling a system is to track the
-gradient of the expected reward
+gradient of the expected reward, which is done by varying the weights of the
+policy and measuring the gradient of the reward with respect to the weights. The
+training algorithm uses *gradient ascent* in this case, where it tries to
+maximize the reward.
+
+In regards to the action-value network, the gradient of the error between the
+expected and actual reward with respect to the weights is calculated. The
+training algorithm uses *gradient descent* in this latter case, trying to
+minimize the error to achieve {+@eq:bellman}
 
 <!-- FIXME: reward metric to actually get the thing to perform navigation has
 yet to be determined -->
 
-We define the state space $S$ of the quadcopter by ten parameters and their
-corresponding range of values, detailed in {+@tbl:state}. Additionally, we define
-the action space $A$ of the quadcopter by four parameters and their
+#### State and Action Spaces
+
+We define the state space $S$ of the quadcopter by twenty-five parameters and
+their corresponding range of values, detailed in {+@tbl:state}. Additionally, we
+define the action space $A$ of the quadcopter by three parameters and their
 corresponding range of values and activation functions, detailed in
 {+@tbl:action}.
-
-<!-- FIXME: iron out the state space -->
 
 Table: The values that exist in the state space of the quadcopter system.
 {#tbl:state}
 
-+-----------+----------------------+---------------+
-| Name      | Range                | Units         |
-+===========+======================+===============+
-| $x$       | $(-\infty, +\infty)$ | meters        |
-+-----------+----------------------+---------------+
-| $y$       | $(-\infty, +\infty)$ | meters        |
-+-----------+----------------------+---------------+
-| $z$       | $(-\infty, +\infty)$ | meters        |
-+-----------+----------------------+---------------+
-| $v_x$     | $(-\infty, +\infty)$ | meters        |
-+-----------+----------------------+---------------+
-| $v_y$     | $(-\infty, +\infty)$ | meters        |
-+-----------+----------------------+---------------+
-| $v_z$     | $(-\infty, +\infty)$ | meters        |
-+-----------+----------------------+---------------+
-| pitch     | $[-\pi, +\pi)$       | radians       |
-+-----------+----------------------+---------------+
-| roll      | $[-\pi, +\pi)$       | radians       |
-+-----------+----------------------+---------------+
-| yaw       | $[-\pi, +\pi)$       | radians       |
-+-----------+----------------------+---------------+
-| thrust    | $[0, 1]$             | dimensionless |
-+-----------+----------------------+---------------+
-
-<!--
-px
-py
-pz
-qx
-qy
-qz
-qw
-vx
-vy
-vz
-wx
-wy
-wz
-range_0 [0.001, 6]
-range_1 [0.001, 6]
-range_2 [0.001, 6]
-range_3 [0.001, 6]
-range_4 [0.001, 6]
-range_5 [0.001, 6]
-range_6 [0.001, 6]
-range_7 [0.001, 6]
-range_8 [0.001, 6]
-range_9 [0.001, 6]
--->
++----------------------+----------------------+---------------------------+--------------------------+
+| Name                 | Domain               | Units                     | Description              |
++======================+======================+===========================+==========================+
+| $x_{\text{desired}}$ | $\mathbb{R}$         | $\text{m}$                | Desired position         |
++----------------------+----------------------+---------------------------+                          +
+| $y_{\text{desired}}$ | $\mathbb{R}$         | $\text{m}$                |                          |
++======================+======================+===========================+==========================+
+| $p_x$                | $\mathbb{R}$         | $\text{m}$                | Current position         |
++----------------------+----------------------+---------------------------+                          +
+| $p_y$                | $\mathbb{R}$         | $\text{m}$                |                          |
++----------------------+----------------------+---------------------------+                          +
+| $p_z$                | $\mathbb{R}$         | $\text{m}$                |                          |
++======================+======================+===========================+==========================+
+| $q_x$                | $\mathbb{R}$         | dimensionless             | Quaternion orientation   |
++----------------------+----------------------+---------------------------+                          +
+| $q_y$                | $\mathbb{R}$         | dimensionless             |                          |
++----------------------+----------------------+---------------------------+                          +
+| $q_z$                | $\mathbb{R}$         | dimensionless             |                          |
++----------------------+----------------------+---------------------------+                          +
+| $q_{\omega}$         | $\mathbb{R}$         | dimensionless             |                          |
++======================+======================+===========================+==========================+
+| $v_x$                | $\mathbb{R}$         | $\text{m}\text{s}^{-1}$   | Current velocity         |
++----------------------+----------------------+---------------------------+                          +
+| $v_y$                | $\mathbb{R}$         | $\text{m}\text{s}^{-1}$   |                          |
++----------------------+----------------------+---------------------------+                          +
+| $v_z$                | $\mathbb{R}$         | $\text{m}\text{s}^{-1}$   |                          |
++======================+======================+===========================+==========================+
+| $\omega_x$           | $\mathbb{R}$         | $\text{rad}\text{s}^{-1}$ | Current angular velocity |
++----------------------+----------------------+---------------------------+                          +
+| $\omega_y$           | $\mathbb{R}$         | $\text{rad}\text{s}^{-1}$ |                          |
++----------------------+----------------------+---------------------------+                          +
+| $\omega_z$           | $\mathbb{R}$         | $\text{rad}\text{s}^{-1}$ |                          |
++======================+======================+===========================+==========================+
+| $\text{range}_0$     | $[0.001, 6]$         | $\text{m}$                | Distance measurements    |
++----------------------+----------------------+---------------------------+ from ToF sensors         +
+| $\text{range}_1$     | $[0.001, 6]$         | $\text{m}$                |                          |
++----------------------+----------------------+---------------------------+                          +
+| $\text{range}_2$     | $[0.001, 6]$         | $\text{m}$                |                          |
++----------------------+----------------------+---------------------------+                          +
+| $\text{range}_3$     | $[0.001, 6]$         | $\text{m}$                |                          |
++----------------------+----------------------+---------------------------+                          +
+| $\text{range}_4$     | $[0.001, 6]$         | $\text{m}$                |                          |
++----------------------+----------------------+---------------------------+                          +
+| $\text{range}_5$     | $[0.001, 6]$         | $\text{m}$                |                          |
++----------------------+----------------------+---------------------------+                          +
+| $\text{range}_6$     | $[0.001, 6]$         | $\text{m}$                |                          |
++----------------------+----------------------+---------------------------+                          +
+| $\text{range}_7$     | $[0.001, 6]$         | $\text{m}$                |                          |
++----------------------+----------------------+---------------------------+                          +
+| $\text{range}_8$     | $[0.001, 6]$         | $\text{m}$                |                          |
++----------------------+----------------------+---------------------------+                          +
+| $\text{range}_9$     | $[0.001, 6]$         | $\text{m}$                |                          |
++======================+======================+===========================+==========================+
 
 Table: The values that exist in the action space of the quadcopter system and
 their corresponding activation functions.
 {#tbl:action}
 
 +--------+----------------------+---------------+---------------------+
-| Name   | Range                | Units         | Activation Function |
+| Name   | Domain               | Units         | Activation Function |
 +========+======================+===============+=====================+
 | r      | $[0.2, 6]$           | meters        | RelU                |
 +--------+----------------------+---------------+---------------------+
@@ -548,11 +566,17 @@ their corresponding activation functions.
 
 For each *episode*, or iteration, of the training process, a state $s$ is
 derived from the quadcopter's telemetry. The state is then provided as an input
-to the policy, which uses an Ornstein-Uhlenbeck (OU) process to generate noise
-without disrupting the continuum of the actions being taken [@spinningup2018].
-After the policy provides an action, the action is applied to the pitch, roll,
-yaw, and thrust of the quadcopter via the ROS service `set_attitude`, which is
-part of the Clover's ROS module.
+to the policy, which samples a reward and applies Ornstein-Uhlenbeck (OU) noise
+to encourage exploration without disrupting the continuum of the actions being
+taken [@spinningup2018]. After the policy provides an action, the action is
+converted from spherical to Cartesian coordinates and given to the PX4 flight
+controller as a setpoint.
+
+The Clover ROS package provides the service `navigate` that uses the PX4's
+on-board Visual Position Estimation (VPE) to move to given coordinates. By
+connecting a RPi camera and a downward-facing ToF ranging sensor to a Raspberry
+Pi running `mavros` connected to the PX4, the PX4 can calculate its local
+position [@clover].
 
 <!-- FIXME: need to explain how we mitigated timing issues with repeatable discrete
 time steps -->
@@ -639,9 +663,9 @@ function:
 
 $$
 Q^*(s,a) = E_{s' \sim P}\Big[r(s,a) + \gamma \max_{a'} Q^* (s', a')\Big].
-$$
+$$ {#eq:bellman}
 
-This equation describes the expected value ($E_{s' \sim P}[...]$) given a state
+{+@eq:bellman} describes the expected value ($E_{s' \sim P}[...]$) given a state
 $s'$ sampled from a distribution $P$ of the current reward $r(s,a)$ and
 discounted future reward $\gamma \max_{a'} Q^* (s', a')$, where $\gamma$
 is the discount factor. The discount factor weighs near-future rewards more than
@@ -664,14 +688,16 @@ on $Q_\phi(s, \mu_\theta(s))$ with respect to $\theta$, where $\phi$ represents
 the weights of action-value network. We use $\mu$ as the name of the policy
 function, indicating that it is deterministic of state. The subscript $\theta$
 refers to its parameters or weights, assuming it is a neural network
-[@spinningup2018]. Ultimately, learning the optimal policy tries to solve the
-following:
+[@spinningup2018]. Ultimately, learning the optimal policy tries to solve
+{+@eq:policy}:
 
 $$
 \max_\theta E_{s\sim \mathcal{D}}\Big[ Q_\phi(s,\mu_\theta(s)) \Big].
-$$
+$$ {#eq:policy}
 
 ### Quadcopter Dynamics
+
+#### Rotational Matrix Defined by Roll, Pitch, and Yaw
 
 With the earth's reference frame as $R^{E}$ and the quadcopter's body's
 reference frame as $R^{b}$, the *attitude* of the quadcopter is known by the
@@ -685,6 +711,121 @@ $$
 -\sin\theta & \sin \phi \cos \theta & \cos \phi \cos \theta
 \end{bmatrix}
 $$ {#eq:rotationalmatrix}
+
+The roll, pitch, and yaw of the quadcopter are its angular orientations around
+the $x$, $y$, and $z$ axes respectively, with positive rotations following a
+right-handed rotation around each axes. In {+@eq:rotationalmatrix}, these angles
+are represented by
+$\phi$, $\theta$, and $\psi$.
+Rotational matrices can rotate a vector around the origin. If, for example, we
+begin with $\vec{v} = \begin{bmatrix}1 \\ 1 \\ 1\end{bmatrix}$, ${\vec{v}\,}'$, the
+rotated vector, can be calculated by multiplying the rotational matrix on
+$\vec{v}$.
+
+Suppose we had roll, pitch, and yaw values of
+$\phi = \frac{\pi}{2}$, $\theta = \frac{\pi}{2}$, and $\psi = \frac{\pi}{2}$.
+Then, $\vec{v}$ would become:
+
+$$
+{\vec{v}\,}' =
+\begin{bmatrix}
+0 \cdot 0 & 1 \cdot 1 \cdot 0 - 1 \cdot 0 & 0 \cdot 1 \cdot 0 + 1 \cdot 1 \\
+1 \cdot 0 & 1 \cdot 1 \cdot 1 + 0 \cdot 0 & 0 \cdot 1 \cdot 1 - 1 \cdot 0 \\
+-1 & 1 \cdot 0 & 0 \cdot 0
+\end{bmatrix}
+\cdot
+\begin{bmatrix}1 \\ 1 \\ 1\end{bmatrix}
+$$
+
+$$
+= \begin{bmatrix}
+1\cdot (0 \cdot 0) + 1\cdot (1 \cdot 1 \cdot 0 - 1 \cdot 0) + 1 \cdot (0 \cdot 1 \cdot 0 + 1 \cdot 1) \\
+1\cdot (1 \cdot 0) + 1\cdot (1 \cdot 1 \cdot 1 + 0 \cdot 0) + 1 \cdot (0 \cdot 1 \cdot 1 - 1 \cdot 0) \\
+1\cdot (-1) + 1\cdot (1 \cdot 0) + 1 \cdot (0 \cdot 0)
+\end{bmatrix}
+= \begin{bmatrix}
+1 \\
+1 \\
+-1
+\end{bmatrix}.
+$$
+
+#### Inertia Tensor
+
+The inertia tensor of a system is a $3 \times 3$ matrix $I$ that determines the
+resistance of an object to rotational motion. Its heavy use in this project's
+source code and robotics in general demands its explanation and derivation. We
+can derive it by starting from the basic definition of inertia. Note that this
+derivation will largely rely on the derivation found in [@fowles2005].
+
+Consider a rigid body rotating around an axis in the direction of a unit vector
+$\vec{n}$. If we consider this rigid body to be made up of tiny particles of
+mass $m_i$, taking the sum of each of their masses times the square of their
+distance perpendicular to the axis of rotation yields the moment of inertia.
+
+$$I = \sum_i m_i r_{\perp i}^2.$$ {#eq:sum_of_mass_times_r}
+
+If $\vec{r}_i$ is the distance between the origin and the particle, then
+$r_{\perp i} = |\vec{r}_i| \sin{\theta_i}$, where $\theta_i$ is the angle
+between $\vec{r}_i$ and $\vec{n}$. Because
+$|\vec{r}_i \times \vec{n}| = |\vec{r}_i||\vec{n}|\sin{\theta_i}$ and
+$|\vec{n}| = 1$,
+
+$$
+r_{\perp i} = |\vec{r}_i|\sin{\theta} = |\vec{r}_i \times \vec{n}|.
+$$ {#eq:inertial_tensor_cross_product}
+
+Because $\vec{n}$ is a unit vector, we can represent it by its direction
+cosines:
+
+$$
+\vec{n} = \begin{bmatrix}
+\cos{\alpha} \\
+\cos{\beta} \\
+\cos{\gamma}
+\end{bmatrix},
+$$
+
+and, letting $\vec{r}_i = \begin{bmatrix}x_i \\ y_i \\ z_i)\end{bmatrix}$ define
+the position of our point particle, we have
+
+$$
+\begin{array}{rcl}
+r_{\perp i}^2 & = & |\vec{r}_i \times \vec{n}| \\
+& = & \left(y_i \cos{\gamma} - z_i \cos{\beta}\right)^2 \\
+& & + \left(z_i\cos{\alpha} - x_i \cos{\gamma}\right)^2 \\
+& & + \left(x_i \cos{\beta} - y_i \cos{\alpha}\right)^2 \\
+\end{array}
+$$
+
+$$
+\begin{array}{rcl}
+r_{\perp i}^2 & = &   \left(y_i^2 + z_i^2\right)\cos^2 \alpha \\
+              &   & + \left(z_i^2 + x_i^2\right)\cos^2 \beta \\
+              &   & + \left(x_i^2 + y_i^2\right)\cos^2 \gamma \\
+              &   & - 2 y_i z_i \cos{\beta}\cos{\gamma} \\
+              &   & - 2 z_i x_i \cos{\gamma}\cos{\alpha} \\
+              &   & - 2 x_i y_i \cos{\alpha}\cos{\beta}
+\end{array}.
+$$ {#eq:r_perp_squared_direction_cosines}
+
+Putting {+@eq:r_perp_squared_direction_cosines} back into
+{+@eq:sum_of_mass_times_r},
+
+<!-- FIXME: write equation 9.1.6 from the book and finish it out from there. -->
+
+$$
+\begin{array}{rcl}
+I & = &   \left(y_i^2 + z_i^2\right)\cos^2 \alpha \\
+  &   & + \left(z_i^2 + x_i^2\right)\cos^2 \beta \\
+  &   & + \left(x_i^2 + y_i^2\right)\cos^2 \gamma \\
+  &   & - 2 y_i z_i \cos{\beta}\cos{\gamma} \\
+  &   & - 2 z_i x_i \cos{\gamma}\cos{\alpha} \\
+  &   & - 2 x_i y_i \cos{\alpha}\cos{\beta}
+\end{array}.
+$$
+
+#### Rotational Matrix Defined by Roll, Pitch, and Yaw
 
 We are treating the quadcopter system as a rigid body. Thus, directly using
 Newton's Second Law of Motion, we can derive the Newton-Euler formulation for
@@ -949,28 +1090,6 @@ crux of this project, and it will require continuous self-assessment and
 reevaluation. By looking upon the work found in [@doukhi2022], we will determine
 if certain parts of the quadcopter's navigation are appropriate to hand off to
 the inertial navigation process.
-
-<!-- # Experiments
-
-`FIXME: I do not have any planned experiments other than the development of the
-project. I feel that this will come into play in the second semester, once we
-have a working prototype.`
-
-## Experimental Design
-
-## Evaluation
-
-## Threats to Validity
-
-# Conclusion
-
-## Summary of Results
-
-## Future Work
-
-## Future Ethical Implications and Recommendations
-
-## Conclusions -->
 
 # Appendix
 

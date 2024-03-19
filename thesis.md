@@ -786,26 +786,26 @@ $$
 \end{bmatrix},
 $$
 
-and, letting $\vec{r}_i = \begin{bmatrix}x_i \\ y_i \\ z_i)\end{bmatrix}$ define
+and, letting $\vec{r}_i = \begin{bmatrix}x_i \\ y_i \\ z_i\end{bmatrix}$ define
 the position of our point particle, we have
 
 $$
 \begin{array}{rcl}
 r_{\perp i}^2 & = & |\vec{r}_i \times \vec{n}| \\
-& = & \left(y_i \cos{\gamma} - z_i \cos{\beta}\right)^2 \\
-& & + \left(z_i\cos{\alpha} - x_i \cos{\gamma}\right)^2 \\
-& & + \left(x_i \cos{\beta} - y_i \cos{\alpha}\right)^2 \\
+& = & \left(y_i \cos{\gamma} - z_i \cos{\beta}\right)^2
+    + \left(z_i\cos{\alpha} - x_i \cos{\gamma}\right)^2
+    + \left(x_i \cos{\beta} - y_i \cos{\alpha}\right)^2
 \end{array}
 $$
 
 $$
 \begin{array}{rcl}
-r_{\perp i}^2 & = &   \left(y_i^2 + z_i^2\right)\cos^2 \alpha \\
-              &   & + \left(z_i^2 + x_i^2\right)\cos^2 \beta \\
-              &   & + \left(x_i^2 + y_i^2\right)\cos^2 \gamma \\
-              &   & - 2 y_i z_i \cos{\beta}\cos{\gamma} \\
-              &   & - 2 z_i x_i \cos{\gamma}\cos{\alpha} \\
-              &   & - 2 x_i y_i \cos{\alpha}\cos{\beta}
+r_{\perp i}^2 & = &   \left(y_i^2 + z_i^2\right)\cos^2 \alpha
+                    + \left(z_i^2 + x_i^2\right)\cos^2 \beta
+                    + \left(x_i^2 + y_i^2\right)\cos^2 \gamma \\
+              &   & - 2 y_i z_i \cos{\beta}\cos{\gamma}
+                    - 2 z_i x_i \cos{\gamma}\cos{\alpha}
+                    - 2 x_i y_i \cos{\alpha}\cos{\beta}
 \end{array}.
 $$ {#eq:r_perp_squared_direction_cosines}
 

@@ -450,11 +450,30 @@ however, we add two more sensors, one facing the $+z$ direction and another
 facing the $-z$ direction. By adding these vertical sensors, the quadcopter may
 modify its vertical motion to better navigate.
 
-The ToF sensor used in this project is the Adafruit VL53L4CX, which has a range
-from 1mm up to 6m. This device has a FOV of $18^\circ$ and is controllable via
-the I2C protocol.
+The ToF sensor used in this project is the Adafruit VL53L4CX, depicted in
+{+@fig:vl53l4cx}, which has a range from 1mm up to 6m. This device has a FOV of
+$18^\circ$ and is controllable via the I2C protocol.
 
-![Adafruit VL53L4CX ToF Distance Sensor.](images/vl53l4cx.jpg)
+![Adafruit VL53L4CX ToF Distance Sensor.](images/vl53l4cx.jpg){#fig:vl53l4cx
+width=75%}
+
+In order to mount the ToF sensors to the Clover, a custom fixture was created to
+mount onto the clover. For the eight horizontal ToF sensors, an octagonal
+drum-like fixture was developed, which points each ToF sensor at incrementing
+angles of $45^\circ$; however, in order for the Clover's legs to not obstruct
+the ranging sensors, the ToF sensor drum's yaw is offset by $22.5^\circ$.
+{+@fig:tof_sensor_drum} depicts a model of the ToF sensor drum and a top plate
+used to mount the sensor in the $+z$ direction. Note that the bottom of the ToF
+sensor drum can also mount a ToF sensor. In
+{+@fig:tof_sensor_drum_on_clover_in_gazebo}, the simulated model is depicted,
+attached to the simulated model of the Clover, along with the visualization of
+each link's collision box.
+
+![The ToF sensor drum fixture and one of its base plates rendered in OnShape. The ToF sensor drum mounts to the bottom of the quadcopter, while the single base plate mounts to the top using standoff mounts above the battery. While the physical realization of this has not yet been completed, its simulated equivalent exists.](images/tof_sensor_drum.png){#fig:tof_sensor_drum width=75%}
+
+![(a) The ToF sensor drum fixture mounted to the Clover in Gazebo. Because the top base plate has little effect on collision boxes, it was omitted from the simulation for the sake of brevity. (b) Collision boxes of the Clover model depicted in Gazebo.](images/tof_sensor_drum_on_clover_in_gazebo.png){#fig:tof_sensor_drum_on_clover_in_gazebo width=75%}
+
+<!-- FIXME: add image of collision boxes -->
 
 ### Deep Deterministic Policy Gradient (DDPG) Algorithm
 
@@ -564,6 +583,133 @@ their corresponding activation functions.
 | phi    | $[0, 2\pi]$          | radians       | RelU                |
 +--------+----------------------+---------------+---------------------+
 
+### Gazebo Simulation Environment
+
+This project uses Gazebo to run a simulated environment of the Clover. Gazebo is
+an open source tool for simulating robotics; it simulates the dynamics and
+actuation of robotic systems. COEX has developed a simulation environment that
+can be used in Gazebo for simulating the Clover [@gazebo].
+
+Gazebo allows for the environment to be defined by physical parameters such as
+wind, atmospheric type, and gravity, and it uses the *Open Dynamics Engine* to
+resolve physical interactions.
+
+#### `.world`, `.sdf`, `.urdf` Files and Meshes
+
+Gazebo supports the parsing of `.world` files, which is a special kind of `.sdf`
+file that describes the environment to Gazebo. `.sdf` stands for Simulation
+Description Format, and it defines a specification for describing elements in
+simulation environments. The specification (\url{http://sdformat.org/spec})
+allows for `<world>`, `<model>`, `<actor>`, and `<light>` root elements.
+
+<!-- FIXME: is this reference formatted correctly? Check after compiling. -->
+
+COEX has supplied their own `.sdf` and `.urdf` (Universal Robotics Description
+Format) files that describe the Clover. These files are located within the
+`clover_description` package; however, they are written as `.xacro` files, which
+is an intermediate format used to construct larger hierarchies of `.sdf` and
+`.urdf` files.
+
+##### Links and Joints
+
+Both `.sdf` and `.urdf` allow for the specification of *links*, parts of a
+robotic system, and *joints*, hierarchical relative frames of reference between
+links. In general, the fundamental link that comprises every robotic system is
+named, `base_link`. An example of a file that describes a link connected to base
+link is seen in the following code block:
+
+```xml
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- macro name to be referenced in other files -->
+  <xacro:macro name="clover4_base_macro"
+    params="mass body_width body_height *inertia">
+    <link name="base_link"></link>
+    <!-- join base_link to its inertial properties -->
+    <joint name="base_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="base_link_inertia" />
+    </joint>
+
+    <link name="base_link_inertia">
+      <!--
+        define inertial elements for
+        calculating dynamics via ode
+      -->
+      <inertial>
+        <mass value="${mass}" />  <!-- [kg] -->
+        <origin xyz="0 0 0" />
+        <xacro:insert_block name="inertia" />
+      </inertial>
+      <!--
+        define visual element,
+        has no effect on physics
+      -->
+      <visual name="body">
+        <origin xyz="0 0 0.025" rpy="0 0 0" />
+        <geometry>
+          <!--
+            Note: Texture files are expected
+            to be in the same directory as the model
+          -->
+          <mesh filename="package://clover_description/meshes/clover4/clover_body_solid.dae"
+            scale="1 1 1"/>
+        </geometry>
+      </visual>
+      <!--
+        define collision element for
+        calculating collisions via ode
+      -->
+      <collision name="base_link_inertia_collision">
+        <origin xyz="0 0 0.05" rpy="0 0 0" />
+        <geometry>
+          <box size="${body_width} ${body_width} ${body_height}" /> <!-- [m] [m] [m] -->
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- tell gazebo about this link, specifying custom physics properties -->
+    <gazebo reference="base_link">
+      <self_collide>0</self_collide>
+    </gazebo>
+    ...
+  </xaro:macro>
+</robot>
+```
+
+##### Custom Mesh
+
+See [](#sec:preparing-stl-files-for-simulation) for information on how
+to prepare `.STL` files for simulations.
+
+<!-- FIXME: explain my ToF sensor drum -->
+
+<!-- more information about .world files, .sdf files, and .xacro files -->
+
+## Experimental Design
+
+In this project, we employ the 
+
+### World Generation
+
+In order to test the robustness of our training algorithm, we use the package
+`pcg_gazebo` by Bosch Research to generate environments to test and train the
+Clover in [@manhaes2024]. For the experiment, ten procedurally-generated
+`.world` files were created.
+
+Each world is generated by taking the union of the footprints of $n$ number of
+rectangles. Each generated world has an increasing number of rectangles used in
+order to make the *cirriculum* increasingly difficult. {+@fig:footprint} depicts
+an example of a `.world` file generated using `pcg_gazebo`.
+
+[A world generated using `pcg_gazebo` with the Clover located at the origin. Each radial blue line coming from the Clover is its ranging sensor's feedback, which is evidently incident on the light pink cylinder in this image.](images/footprint.png) {#fig:footprint}
+
+<!-- FIXME: now talk about randomly putting objects and finding free spots -->
+<!-- FIXME: make sure to reference the appendix for tutorials on how to generate
+worlds. -->
+
+### Training Steps
+
 For each *episode*, or iteration, of the training process, a state $s$ is
 derived from the quadcopter's telemetry. The state is then provided as an input
 to the policy, which samples a reward and applies Ornstein-Uhlenbeck (OU) noise
@@ -585,25 +731,13 @@ time steps -->
 why and how it mitigates issues with setting the quadcopter attitude -->
 
 After $a$ is acted upon, $s$ is read once again in order to determine the reward
-metric, which takes off points if the quadcopter has crashed or flipped over.
+metric, which takes off points proportional to the distance away the quadcopter
+is from its goal or if the quadcopter has crashed or flipped over.
+
 The reward metric is then recorded, and the gradient of the reward metric is
 measured with respect to the action and state variables [@spinningup2018]. The
 *Adam* optimizing function, provided by TensorFlow, is then used to modify the
-policy [@tensorflow]. This is when the learning truly happens.
-
-<!-- FIXME: need to eventually explain how the reward metric pushes the quadcopter to
-navigate -->
-
-### Gazebo Simulation Environment
-
-This project uses Gazebo to run a simulated environment of the Clover. Gazebo is
-an open source tool for simulating robotics; it simulates the dynamics and
-actuation of robotic systems. COEX has developed a simulation environment that
-can be used in Gazebo for simulating the Clover [@gazebo].
-
-Gazebo allows for the environment to be defined by physical parameters such as
-wind, atmospheric type, and gravity, and it uses the *Open Dynamics Engine* to
-resolve physical interactions.
+policy [@tensorflow]. This is when the learning happens.
 
 ## Theory
 
@@ -1093,7 +1227,12 @@ the inertial navigation process.
 
 # Appendix
 
-## Procedurally generating rooms using `pcg` module and `pcg_gazebo`
+## Preparing `.STL` Files for Simulation {#sec:preparing-stl-files-for-simulation}
+
+<!-- FIXME: discuss, once you have an stl file, how to load into meshlab -->
+<!-- then discuss how to put into blender to convert to a colladae -->
+
+## Procedurally Generating Rooms Using `pcg` Module and `pcg_gazebo`
 
 In order to test the robustness of a model, it is helpful to evaluate its
 performance in random environments. In the Clover VM, this can be done by using
@@ -1102,7 +1241,7 @@ for this package exists under
 \url{https://github.com/ReadyResearchers-2023-24/SimonJonesArtifact} in the
 directory \texttt{src/pcg}.
 
-### Using `pcg` for room generation
+### Using `pcg` for Room Generation
 
 After cloning
 \url{https://github.com/ReadyResearchers-2023-24/SimonJonesArtifact} to the

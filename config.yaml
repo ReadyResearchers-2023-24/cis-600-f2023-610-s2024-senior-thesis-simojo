@@ -75,3 +75,9 @@ header-includes:
       Dontyoueverhyphenateme
     }%
     ```
+  - |
+    ```{=latex}
+    % fixing issue with code blocks not wrapping: https://github.com/jgm/pandoc/issues/4302#issuecomment-360799891
+    \usepackage{fvextra}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+    ```

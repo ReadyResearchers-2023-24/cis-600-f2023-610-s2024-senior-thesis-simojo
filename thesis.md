@@ -679,7 +679,7 @@ link is seen in the following code block:
 
 ##### Custom Mesh
 
-See [](#sec:preparing-stl-files-for-simulation) for information on how
+See section [](#sec:preparing-stl-files-for-simulation) for information on how
 to prepare `.STL` files for simulations.
 
 <!-- FIXME: explain my ToF sensor drum -->
@@ -701,7 +701,7 @@ With the goal of each episode being to navigate above a point in the $xy$ plane,
 the actor is given a reward based on the its proximity to desired location,
 number of collisions, distance from the ground, and if it is unable to travel
 to a waypoint it set for itself. More information about the reward metric is
-explained in []{#sec:reward-metric}.
+explained in section []{#sec:reward-metric}.
 
 Training is governed by a ROS node fittingly named `clover_train`.
 `clover_train` stores episodic data and trains the policy and action-value
@@ -720,22 +720,31 @@ rectangles. Each generated world has an increasing number of rectangles used in
 order to make the *cirriculum* increasingly difficult. {+@fig:footprint} depicts
 an example of a `.world` file generated using `pcg_gazebo`.
 
+Section []{#sec:procedurally-generating-rooms-using-pcg-module-and-pcg_gazebo}
+provides a tutorial on how to use `pcg_gazebo` for world generation, through
+command-line utility itself and the ROS wrapper created in this project.
+
 ![A world generated using `pcg_gazebo` with the Clover located at the origin. Each radial blue line coming from the Clover is its ranging sensor's feedback, which is evidently incident on the light pink cylinder in this image. Note also that there would normally be a ceiling model placed over this room, but for the sake of demonstration, it is removed.](images/footprint.png){#fig:footprint width=75%}
 
 #### Random Obstacle Generation
 
 Inside of each world, two randomly sized cuboids and two randomly sized
 cylinders are placed at random positions. While Bosch Research's algorithm to
-keep objects inside of the footprint of the generated room is faulty, meaning
-that there is a chance of an object being placed not inside the room, it places
+keep objects inside of the footprint of the generated room is faulty, i.e.,
+there is a chance of an object being placed not inside the room, it places
 objects in the room *most* of the time, which is all that is needed for this
 project. Upon generation, each model is saved in its own directory, named
 relative to the world it corresponds to.
 
 #### Calculating Available Coordinates Inside Room Footprint
 
-To avoid an over-trained policy, each training episode aims to place the
-quadcopter at a random position
+To avoid an over-trained policy, each training episode places the quadcopter at
+a random position within the footprint of the room's boundary. This is done by
+an algorithm that picks random points within the room and writes them to an
+`.xml` file for later reading.
+
+
+
 <!-- FIXME: now talk about randomly putting objects and finding free spots -->
 <!-- FIXME: make sure to reference the appendix for tutorials on how to generate
 worlds. -->
@@ -1309,7 +1318,7 @@ the inertial navigation process.
 <!-- FIXME: discuss, once you have an stl file, how to load into meshlab -->
 <!-- then discuss how to put into blender to convert to a colladae -->
 
-## Procedurally Generating Rooms Using `pcg` Module and `pcg_gazebo`
+## Procedurally Generating Rooms Using `pcg` Module and `pcg_gazebo` {#sec:procedurally-generating-rooms-using-pcg-module-and-pcg_gazebo}
 
 In order to test the robustness of a model, it is helpful to evaluate its
 performance in random environments. In the Clover VM, this can be done by using

@@ -124,6 +124,11 @@ $if(csquotes)$
 \usepackage{csquotes}
 $endif$
 
+\definecolor{codebg}{gray}{0.95}
+\definecolor{codeframe}{gray}{0.8}
+
+\renewcommand{\texttt}[1]{\fcolorbox{codeframe}{codebg}{\small\!{\ttfamily #1}\!}}
+
 \begin{document}
 
   \pagestyle{empty} % No page numbers

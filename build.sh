@@ -11,5 +11,5 @@ pandoc \
   --citeproc \
   --csl https://www.zotero.org/styles/journal-of-the-acm \
   --bibliography references.bib \
-  --highlight-style code-highlight.theme \
+  --highlight-style zenburn \
   --number-sections

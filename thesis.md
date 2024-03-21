@@ -683,12 +683,30 @@ The ToF drum created for this project, explained in section
 [](#method-tof-sensors), had to go through steps of preparation before importing
 it into Gazebo as an `.sdf` file.
 
-See section [](#sec:preparing-stl-files-for-simulation) for information on how
-to prepare `.STL` files for simulations.
+In order to use an `.STL` file in a robotics simulation, its inertial and
+collision properties must first be calculated. This can be done in a variety of
+ways, but, in this project, we use a combination of OnShape, Blender, and
+Meshlab to do so [@onshape, @blender, @meshlab]. Section
+[](#sec:preparing-stl-files-for-simulation) explains in detail how to prepare
+meshes for simulations, but here we will give a concise overview of the process.
 
-<!-- FIXME: explain my ToF sensor drum -->
+After exporting it as an `.STL` file from the CAD software OnShape, the `.STL`
+file was imported into Blender in order to convert it to a COLLADA `.dae` file
+[@blender, @onshape]. Although plugins like
+[`onshape-to-robot`](https://github.com/Rhoban/onshape-to-robot) exist for
+converting OnShape projects to `.sdf` formats, this project manually processes
+the mesh files to reduce the stack of software relied upon.
 
-<!-- more information about .world files, .sdf files, and .xacro files -->
+Upon being converted into the COLLADA format, the mesh can be processed by
+MeshLab, an open source mesh processing tool. MeshLab can calculate the
+collision box for a given mesh and calculate the inertia tensor in generalized
+units.
+
+Having calculated the physical properties of the mesh, it can be referenced
+under the `<visual>` tag of either a `.urdf` or `.sdf` file, and the physical
+properties can be put in the `<inertial>` and `<collision>` tags. Using this
+combination of software makes using custom 3D models accessible and easy for
+roboticists.
 
 ## Experimental Design
 

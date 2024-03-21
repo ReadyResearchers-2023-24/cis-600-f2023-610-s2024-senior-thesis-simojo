@@ -614,7 +614,7 @@ is an intermediate format used to construct larger hierarchies of `.sdf` and
 Both `.sdf` and `.urdf` allow for the specification of *links*, parts of a
 robotic system, and *joints*, hierarchical relative frames of reference between
 links. In general, the fundamental link that comprises every robotic system is
-named, `base_link`.
+named `base_link`.
 
 In the following example, a `.xacro` file is provided, which compiles into a
 `.urdf` file. First, the `<robot>` tag is defined, which tells `xacro` that the

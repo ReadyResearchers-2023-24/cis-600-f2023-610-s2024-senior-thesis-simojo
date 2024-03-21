@@ -440,7 +440,7 @@ Table: Built-in sensors in the COEX Pix platform [@clover].
 | MS5607       | barometer                            |
 +--------------+--------------------------------------+
 
-### Time of Flight (Tof) Ranging Sensors
+### Time of Flight (Tof) Ranging Sensors {#method-tof-sensors}
 
 In order for the quadcopter to detect its surroundings, we employ ten Time of
 Flight (ToF) ranging sensors, positioned in an arrangement inspired from
@@ -678,6 +678,10 @@ link is seen in the following code block:
 ```
 
 ##### Custom Mesh
+
+The ToF drum created for this project, explained in section
+[](#method-tof-sensors), had to go through steps of preparation before importing
+it into Gazebo as an `.sdf` file.
 
 See section [](#sec:preparing-stl-files-for-simulation) for information on how
 to prepare `.STL` files for simulations.

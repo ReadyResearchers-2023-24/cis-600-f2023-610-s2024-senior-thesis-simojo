@@ -501,9 +501,6 @@ expected and actual reward with respect to the weights is calculated. The
 training algorithm uses *gradient descent* in this latter case, trying to
 minimize the error to achieve {+@eq:bellman}
 
-<!-- FIXME: reward metric to actually get the thing to perform navigation has
-yet to be determined -->
-
 #### State and Action Spaces
 
 We define the state space $S$ of the quadcopter by twenty-five parameters and
@@ -511,6 +508,8 @@ their corresponding range of values, detailed in {+@tbl:state}. Additionally, we
 define the action space $A$ of the quadcopter by three parameters and their
 corresponding range of values and activation functions, detailed in
 {+@tbl:action}.
+
+<div style="page-break-after: always;"></div>
 
 Table: The values that exist in the state space of the quadcopter system.
 {#tbl:state}
@@ -569,6 +568,8 @@ Table: The values that exist in the state space of the quadcopter system.
 | $\text{range}_9$     | $[0.001, 6]$         | $\text{m}$                |                          |
 +======================+======================+===========================+==========================+
 
+<div style="page-break-after: always;"></div>
+
 Table: The values that exist in the action space of the quadcopter system and
 their corresponding activation functions.
 {#tbl:action}
@@ -602,8 +603,6 @@ Description Format, and it defines a specification for describing elements in
 simulation environments. The specification (\url{http://sdformat.org/spec})
 allows for `<world>`, `<model>`, `<actor>`, and `<light>` root elements.
 
-<!-- FIXME: is this reference formatted correctly? Check after compiling. -->
-
 COEX has supplied their own `.sdf` and `.urdf` (Universal Robotics Description
 Format) files that describe the Clover. These files are located within the
 `clover_description` package; however, they are written as `.xacro` files, which
@@ -615,14 +614,28 @@ is an intermediate format used to construct larger hierarchies of `.sdf` and
 Both `.sdf` and `.urdf` allow for the specification of *links*, parts of a
 robotic system, and *joints*, hierarchical relative frames of reference between
 links. In general, the fundamental link that comprises every robotic system is
-named, `base_link`. An example of a file that describes a link connected to base
-link is seen in the following code block:
+named, `base_link`.
+
+In the following example, a `.xacro` file is provided, which compiles into a
+`.urdf` file. First, the `<robot>` tag is defined, which tells `xacro` that the
+macros inside of it are all part of the same robot model. Using `xacro`,
+parameters can be supplied to elements, which allows for the reuse of elements.
+In this case, `mass`, `body_width`, `body_height`, and `*inertia` are all
+parameters to be specified at the parent level.
 
 ```xml
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <!-- macro name to be referenced in other files -->
   <xacro:macro name="clover4_base_macro"
     params="mass body_width body_height *inertia">
+```
+
+After defining a `base_link` link, a joint can be created to join elements to
+it. In this case, a link named `base_link_inertia`, which is a pseudo-element to
+provide inertia to the base link, is positioned at the origin of the
+`base_link`.
+
+```xml
     <link name="base_link"></link>
     <!-- join base_link to its inertial properties -->
     <joint name="base_joint" type="fixed">
@@ -630,7 +643,12 @@ link is seen in the following code block:
       <parent link="base_link" />
       <child link="base_link_inertia" />
     </joint>
+```
 
+While defining the `base_link_inertia` link, inertial, visual, and collision
+elements are specified to make it ready for simulation.
+
+```xml
     <link name="base_link_inertia">
       <!--
         define inertial elements for
@@ -667,7 +685,14 @@ link is seen in the following code block:
         </geometry>
       </collision>
     </link>
+```
 
+Lastly, if Gazebo is being used, optional parameters can be specified to tell
+Gazebo how to resolve relationships between links and joints. Further, plugins,
+such as sensors, motors, or other actuators can be defined under the `<gazebo>`
+tag.
+
+```
     <!-- tell gazebo about this link, specifying custom physics properties -->
     <gazebo reference="base_link">
       <self_collide>0</self_collide>
@@ -765,8 +790,6 @@ a random position within the footprint of the room's boundary. This is done by
 an algorithm that picks random points within the room and writes them to an
 `.xml` file for later reading.
 
-
-
 <!-- FIXME: now talk about randomly putting objects and finding free spots -->
 <!-- FIXME: make sure to reference the appendix for tutorials on how to generate
 worlds. -->
@@ -781,17 +804,25 @@ taken [@spinningup2018]. After the policy provides an action, the action is
 converted from spherical to Cartesian coordinates and given to the PX4 flight
 controller as a setpoint.
 
-The Clover ROS package provides the service `navigate` that uses the PX4's
+The `clover` ROS package provides the service `navigate` that uses the PX4's
 on-board Visual Position Estimation (VPE) to move to given coordinates. By
 connecting a RPi camera and a downward-facing ToF ranging sensor to a Raspberry
 Pi running `mavros` connected to the PX4, the PX4 can calculate its local
 position [@clover].
 
-<!-- FIXME: need to explain how we mitigated timing issues with repeatable discrete
-time steps -->
+Each episode begins by using `navigate` to reach $(0, 0, 0.5)$ in the `map` or
+base reference frame. If it takes longer than ten seconds to navigate to this
+point, the system continues to attempt to navigate to this point. If it fails a
+total of three times, all of running nodes are killed and restarted. This
+sequence aims to prevent transient issues (of which there are many) observed
+when running the simulated PX4 firmware.
 
-<!-- FIXME: explain how I ended up choosing to do a navigate_wait approach and
-why and how it mitigates issues with setting the quadcopter attitude -->
+Once the Clover reaches its initial position of $(0, 0, 0.5)$, the first action
+$a$ is sampled from the policy $\mu_{\theta}$, and noise is added to it. The
+sampled action, i.e., a position relative to the Clover's frame is then
+navigated to using `navigate` once again. If the quadcopter is unable to reach
+the position derived from $\mu_{\theta}$ within a certain number of seconds, the
+action is aborted, and the timeout is taken into account by the reward metric.
 
 After $a$ is acted upon, $s$ is read once again in order to determine the reward
 metric, which takes off points proportional to the distance away the quadcopter
@@ -800,7 +831,8 @@ is from its goal or if the quadcopter has crashed or flipped over.
 The reward metric is then recorded, and the gradient of the reward metric is
 measured with respect to the action and state variables [@spinningup2018]. The
 *Adam* optimizing function, provided by TensorFlow, is then used to modify the
-policy [@tensorflow]. This is when the learning happens.
+policy and the action-value function's weights [@tensorflow]. This is when the
+learning happens.
 
 ### Reward Metric {#reward-metric}
 

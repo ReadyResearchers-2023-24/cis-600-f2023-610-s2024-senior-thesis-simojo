@@ -290,7 +290,16 @@ regardless of socioeconomic or cultural factors.
 
 # Related work
 
-## GPS-Denied Positioning Using ArUco Markers
+## GPS-Denied Positioning
+
+This project relies on GPS-denied positioning to estimate the pose of the
+quadcopter. GPS-denied positioning is the control of a robotic system using
+local measurements to estimate its position rather than coordinates from a GPS
+system. Typical implementations of GPS-denied positioning use some form of
+computer vision, whether for measuring relative velocity or measuring relative
+orientation from markers such as QR codes or ArUco Markers.
+
+### Using ArUco Markers
 
 <!-- related-work -->
 In an effort to demonstrate the ability of a quadcopter to perform basic
@@ -314,6 +323,27 @@ controller values [@bogatov2021].
 While our project may not use ArUco markers, a comparison can be made
 between the effectiveness of ArUco markers and an array of ToF sensors for
 determining the local position of the quadcopter.
+
+### Using Monocular SLAM for Position Estimation
+
+<!-- related-work -->
+
+Similarly to how the PX4's position estimation functions, the authors of
+[@engel2012] use a downward-facing camera for measuring the velocity of the
+quadcopter relative to the ground. However, in addition, they add a
+forward-facing camera that is used for monocular Simultaneous Localization And
+Mapping (SLAM). Because of the large gaps in time between sensor readouts, they
+employ an Extended Kalman Filter (EKF), which is capable of smoothing out
+state predictions between varying time steps.
+
+By using a front-facing camera for monocular SLAM, it was discovered that
+monocular SLAM efficiently eliminated the accumulated error that can happen
+while maneuvering a quadcopter system [@engel2012]. For a similar reason, our
+project uses an array of ToF sensors to keep track of the relative location of
+obstacles around the Clover. Although there is no form of SLAM used in our
+project, by providing the ranging measurements to the reinforcement learning
+algorithm's state, we aim to see some form of localization as an emergent
+behavior after training.
 
 ## Simulating Quadcopter Dynamics
 
@@ -346,7 +376,6 @@ correction [@de2014].
 ### Using Reinforcement Learning for Path Planning
 
 <!-- related-work -->
-
 Algorithms such as the famous $\text{A}^{*}$ algorithm require a robotic system
 to have a comprehensive understanding of the environment it is in. The authors
 in [@hodge2021] combined uses a Proximal Policy Optimization (PPO) algorithm
@@ -361,9 +390,11 @@ previous policy. By ignoring the altitude of the quadcopter, the authors of
 dynamic control up to the reader. This means that their method provides a way to
 recommend which movements to make without actually controlling the system.
 
-Our project seeks to both provide a mode of dynamic control and navigation
-for the quadcopter system, but we can still compare the accuracy of our
-navigation algorithm to that of the PPO-based project in [@hodge2021].
+Our project follows a very similar path, relying on the onboard flight
+controller's control to navigate to setpoints; however, because the policy has
+no long-term memory, we rely on the action-value function, which is trained off
+of historical training data, to properly weigh the decision-making process to
+navigate coherently through an environment.
 
 <!-- related-work -->
 The authors in [@doukhi2022] present a hybrid approach of dynamic control and
@@ -509,7 +540,7 @@ define the action space $A$ of the quadcopter by three parameters and their
 corresponding range of values and activation functions, detailed in
 {+@tbl:action}.
 
-<div style="page-break-after: always;"></div>
+<!-- FIXME: migrate to tabular environment; only problem is citing it. -->
 
 Table: The values that exist in the state space of the quadcopter system.
 {#tbl:state}
@@ -567,8 +598,6 @@ Table: The values that exist in the state space of the quadcopter system.
 +----------------------+----------------------+---------------------------+                          +
 | $\text{range}_9$     | $[0.001, 6]$         | $\text{m}$                |                          |
 +======================+======================+===========================+==========================+
-
-<div style="page-break-after: always;"></div>
 
 Table: The values that exist in the action space of the quadcopter system and
 their corresponding activation functions.
@@ -692,7 +721,7 @@ Gazebo how to resolve relationships between links and joints. Further, plugins,
 such as sensors, motors, or other actuators can be defined under the `<gazebo>`
 tag.
 
-```
+```xml
     <!-- tell gazebo about this link, specifying custom physics properties -->
     <gazebo reference="base_link">
       <self_collide>0</self_collide>
@@ -819,7 +848,7 @@ when running the simulated PX4 firmware.
 
 Once the Clover reaches its initial position of $(0, 0, 0.5)$, the first action
 $a$ is sampled from the policy $\mu_{\theta}$, and noise is added to it. The
-sampled action, i.e., a position relative to the Clover's frame is then
+sampled action, i.e., a position relative to the Clover's frame, is then
 navigated to using `navigate` once again. If the quadcopter is unable to reach
 the position derived from $\mu_{\theta}$ within a certain number of seconds, the
 action is aborted, and the timeout is taken into account by the reward metric.
@@ -830,9 +859,9 @@ is from its goal or if the quadcopter has crashed or flipped over.
 
 The reward metric is then recorded, and the gradient of the reward metric is
 measured with respect to the action and state variables [@spinningup2018]. The
-*Adam* optimizing function, provided by TensorFlow, is then used to modify the
-policy and the action-value function's weights [@tensorflow]. This is when the
-learning happens.
+`keras.optimizers.Adam` optimizing function, provided by TensorFlow, is then
+used to modify the policy and the action-value function's weights [@tensorflow].
+This is when the learning happens.
 
 ### Reward Metric {#reward-metric}
 
@@ -841,13 +870,13 @@ granted to the agent for each episode.
 
 $$
 \begin{array}{rl}
-(1) & r_t = 0 \\
-(2) & r_t \Leftarrow r_t - 1000 \cdot n_{\text{collisions}} \\
-(3) & r_t \Leftarrow r_t - 1000 \cdot \sqrt{(p_{x_t}^s - x_{{\text{desired}}_t}^s)^2 + (p_{y_t}^s - y_{{\text{desired}}_t}^s)^2} \\
-(4) & \text{if}\ \  \Delta t > \text{timeout}\ \  \text{then} \\
-(5) & \ \ \ \ r_t \Leftarrow r_t - 1000 \\
-(6) & \text{if}\ \  p_{z_t}^s + r_t^s \cos{\theta_t^s} <= 0.5 \ \  \text{then} \\
-(7) & \ \ \ \ r_t \Leftarrow r_t - 2000
+(1) & r_t = 0 \\[2ex]
+(2) & r_t \leftarrow r_t - 1000 \cdot n_{\text{collisions}} \\[2ex]
+(3) & r_t \leftarrow r_t - 1000 \cdot \sqrt{(p_{x_t}^s - x_{{\text{desired}}_t}^s)^2 + (p_{y_t}^s - y_{{\text{desired}}_t}^s)^2} \\[2ex]
+(4) & \text{if}\ \  \Delta t > \text{timeout}\ \  \text{then} \\[2ex]
+(5) & \ \ \ \ r_t \leftarrow r_t - 1000 \\[2ex]
+(6) & \text{if}\ \  p_{z_t}^s + r_t^s \cos{\theta_t^s} <= 0.5 \ \  \text{then} \\[2ex]
+(7) & \ \ \ \ r_t \leftarrow r_t - 2000
 \end{array}
 $$ {#eq:reward-metric}
 
@@ -1095,6 +1124,7 @@ Putting {+@eq:r_perp_squared_direction_cosines} back into
 {+@eq:sum_of_mass_times_r},
 
 <!-- FIXME: write equation 9.1.6 from the book and finish it out from there. -->
+<!-- FIXME: not done -->
 
 $$
 \begin{array}{rcl}
@@ -1143,6 +1173,7 @@ I_{zz}$ are the moments of inertia along the $x$, $y$, and $z$ axes
 
 <!-- FIXME: reference paper on Newton-Euler formulation -->
 <!-- FIXME: reference de2014 -->
+<!-- FIXME: more here. Should I even follow through with completing this? -->
 
 ### ToF Ranging Sensors
 
@@ -1292,86 +1323,52 @@ inexpensiveness, small size, and ability to transmit continuously [@raj2020].
 
 <!-- FIXME: beef this up for the second semester -->
 
-# Preliminary Results
+# Results
 
-<!-- FIXME: this is strictly writing for the first semester -->
-
-In the current implementation of this project, the quadcopter is being trained
-to hover at a static position near its origin within a virtual machine provided
-by COEX. The quadcopter's reward metric, given in {+@eq:reward} is subtracted by
-its distance from the desired position of $(x_{\text{desired}},
-y_{\text{desired}}, z_{\text{desired}}) = (0\text{m}, 0\text{m}, 1\text{m})$. To
-incentivize the quadcopter to hover at $z_{\text{desired}} = 1\text{m}$, a
-Gaussian function centered around $z_s = 1\text{m}$ is added to the reward.
-
-$$
-\begin{array}{ll}
-\text{reward}
-\equiv &
-100\left(e^{-(z_s - 1)^2} - 1\right) - \\[2ex]
-& \sqrt{
-    \left(x_s - x_\text{desired}\right)^2
-    + \left(y_s - y_\text{desired}\right)^2
-    + \left(z_s - z_\text{desired}\right)^2
-  } \\
-\end{array}
-$$ {#eq:reward}
-
-The most prominent challenge with the approach of using Gazebo for simulating
-the episodes has been determining a way for the simulation to step through time
-at a constant rate. ROS has a callback function capable of measuring the time
-elapsed during a single control loop and throttling its speed to maintain a
-consistent frequency of reading its state and taking action. This could allow a
-predictable control frequency rather than a variable control frequency. A
-variable control frequency means that a model may not make appropriate decisions
-between control loops. The ability to maintain a consistent timing between each
-control iteration would provide much more stability regarding the model's
-control of the quadcopter system.
-
-During each episode of training, once the quadcopter flips upside down or flies
-out of sight, it is most appropriate to tack an extremely low reward value onto
-the data for that episode and reset the simulation environment; however, because
-the PX4 flight controller software is not preemptive by default, meaning that it
-cannot be easily suspended, the flight controller is not able to handle the
-sudden change in position when the quadcopter's position is reset using Gazebo.
-Although Gazebo allows for an option to pause the physics engine, the PX4 flight
-controller software must be manually modified in order to have this feature.
-This feature is not yet a part of the current implementation, and the PX4 still
-poses as an issue to switching quickly between episodes.
-
-This issue has prevented the quadcopter system from learning how to control,
-because each episode cannot be reset.
+<!--
+- FIXME: should have discretized steps to speed up training and make actions
+  more obvious. Perhaps discretizing by half meters by approximating the
+  measurements of state to integers, and leaving actions up to moving by one
+  nearest voxel of the discretized size.
+- FIXME: fixing timing issues with sensor readouts, creating the thread handler,
+  was most important in getting valuable feedback. Feedback has appeared to be
+  the most important part of training.
+  - foreshadow that using some form of SLAM or transforming the ToF sensor data
+    into a point cloud would be better, nodding to this explicit discussion
+    during the future works section
+- FIXME: discuss all training runs and why they failed/succeeded, using the
+  comments that I embedded in the top of each file.
+  - need to format training data using a gnuplot script
+- FIXME: training appears to converge; need to actually record the drone
+  navigating to verify this howver.
+-->
 
 # Future Work
 
-## Fixing Timing Inconsistencies in PX4
+<!--
+- FIXME: doing more training, perhaps on a GPU accelerated computer
 
-The next step of this project is to fix the timing inconsistencies of the
-simulation such that each control loop, or observation-action pair, happens at a
-consistent frequency that can be reproduced in the real world. This may involve
-creating a custom version of the PX4 flight controller software capable of
-preemptive behavior.
+- FIXME: perhaps adding nodes that transform the collection of range
+  measurements into a point cloud in the `body` frame
+  - this could also be extended to use SLAM, if computing power permits
 
-Presumably, fixing the timing inconsistency will allow the quadcopter system to
-train itself to hover at a static position. Once this is demonstrated, it will
-then be appropriate to explore techniques to train the quadcopter to navigate.
+- FIXME: fine-tuning the reward metric for better training
 
-## Simulating and Physically Implementing ToF Sensors
-
-In order for the quadcopter to navigate, it must have the array of ToF sensors.
-This means that the ToF must also be simulated in Gazebo with the exact
-specifications of the Adafruit VL53L4CX sensors. Additionally, the ten ToF
-sensors must be physically mounted to the quadcopter, which will require a 3D
-printed fixture. This means that time must be taken to draft, print, and
-simulate this design.
-
-## Developing Reward Metrics to Incentivize Quadcopter Navigation
-
-Developing reward metrics to incentivize quadcopter navigation is arguably the
-crux of this project, and it will require continuous self-assessment and
-reevaluation. By looking upon the work found in [@doukhi2022], we will determine
-if certain parts of the quadcopter's navigation are appropriate to hand off to
-the inertial navigation process.
+- FIXME: physically implementing the quadcopter system
+  - implementing ToF sensors; hooking them up via I2C to the RPi
+  - creating ROS node that publishes information from the ToF sensors via a
+    topic
+  - PID tuning the quadcopter and finishing mounting equipment onto it
+  - maiden flight via manual control
+  - creating new ros node that controls the quadcopter using pre-defined weights
+  - booting up raspberry Pi image and testing offboard control
+  - [optional] because of inconsistencies with simulation and real-world, to
+    advance the idea of cirriculum learning, to modify clover_train or create a
+    new package that trains the quadcopter, using saved weights, while it is
+    flying, ensuring the heavy use of failsafes.
+    - This would require a deeper understanding of how the `clover` package
+      actually interacts with the PX4.
+-->
 
 # Appendix
 
@@ -1414,7 +1411,9 @@ After opening MeshLab, navigate to `File -> Import Mesh` to import the COLLADA
 file. Then, selecting
 
 ```txt
-Filters -> Quality Measure and Computations -> Compute Geometric Measures
+Filters
+-> Quality Measure and Computations
+  -> Compute Geometric Measures
 ```
 
 will print the physical properties of the mesh in the lower-right log:

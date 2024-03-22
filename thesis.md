@@ -427,10 +427,10 @@ algorithms' effectiveness in controlling a quadcopter's attitude. They found
 that the Deep Deterministic Policy Gradient (DDPG) and Soft Actor-Critic (SAC)
 algorithms performed the best and exhibited the most robustness when simulated
 with environmental uncertainty such as wind gusts and motor failures
-[@bernini2021:9]. To reach convergence, however, they trained their models for a
+[@bernini2021, p. 9]. To reach convergence, however, they trained their models for a
 few million iterations each. By putting multiple instances on a Kubernetes
 cluster, they were able to parallelize training runs and reduce the training
-time signifianctly [@bernini2021:6].
+time signifianctly [@bernini2021, p. 6].
 
 This article proves that actor-critic models seem to work well for quadcopter
 control. Although the DDPG algorithm is deterministic, we would expect it to
@@ -1387,7 +1387,7 @@ inexpensiveness, small size, and ability to transmit continuously [@raj2020].
 
 <!--
 - FIXME: doing more training, perhaps on a GPU accelerated computer
-  - reference [@bernini2021:6] where they discuss using kubernetes cluster for
+  - reference [@bernini2021, p. 6] where they discuss using kubernetes cluster for
     training simulations in parallel, allowing them to "run 1200 hours worth of
     training in half a day"
 

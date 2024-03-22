@@ -422,9 +422,25 @@ action and state spaces, require a completely distinct set of algorithms for
 training, because of the infinite number of states and actions possible.
 
 <!-- related-work -->
-The authors in [@bernini2021] compare different RL algorithms' effectiveness in
-controlling a quadcopter's attitude.
-<!-- FIXME: more here -->
+The authors in [@bernini2021] compare different RL algorithms' and control
+algorithms' effectiveness in controlling a quadcopter's attitude. They found
+that the Deep Deterministic Policy Gradient (DDPG) and Soft Actor-Critic (SAC)
+algorithms performed the best and exhibited the most robustness when simulated
+with environmental uncertainty such as wind gusts and motor failures
+[@bernini2021:9]. To reach convergence, however, they trained their models for a
+few million iterations each. By putting multiple instances on a Kubernetes
+cluster, they were able to parallelize training runs and reduce the training
+time signifianctly [@bernini2021:6].
+
+This article proves that actor-critic models seem to work well for quadcopter
+control. Although the DDPG algorithm is deterministic, we would expect it to
+perform similarly well for quadcopter control in our project.
+
+That said, the authors noted that some training algorithms exhibited poor
+exploration because of the randomized sampled actions being clipped to their
+minimum or maximum values. Because our project takes a similar approach to
+clipping stochastic actions to fit into a valid range, there is high possibility
+that a similar phenomenon will hinder the training process.
 
 # Method of approach
 
@@ -612,6 +628,30 @@ their corresponding activation functions.
 +--------+----------------------+---------------+---------------------+
 | phi    | $[0, 2\pi]$          | radians       | RelU                |
 +--------+----------------------+---------------+---------------------+
+
+#### Network Architectures
+
+The architecture for the policy and action-value networks are both adapted from
+Keras's documentation on the DDPG algorithm [@keras].
+
+The policy network contains an input layer with the same dimension as $S$, two
+dense layers, each with $256$ neurons with a rectified linear unit (ReLU)
+activation function, and an output layer with three neurons, each with a ReLU
+activation function. When actions are sampled, they are clipped to the range of
+the valid action space. Although the authors of [@bernini2021] observed this to
+be harmful to encouraging exploration, the initializing functions for the output
+layer are created using Tensorflow's `random_uniform_initializer` function,
+which is used to initialize the output tensor in the range `[minval, maxval]`.
+
+The action-value network contains two input layers: an input layer with the same
+dimension as $S$, and an input layer with the same dimension as $A$. The $S$
+input is connected to two dense layers of size $16 \times 32$ with ReLU
+activation functions, and the $A$ input is connected to one dense layer of size
+$32$ with ReLU activation functions.
+
+The two layers are concatenated to create a layer of size $64$, which is then
+connected to two dense layers of size $256 \times 256$. This is then connected
+to the output layer.
 
 ### Gazebo Simulation Environment
 
@@ -859,8 +899,8 @@ is from its goal or if the quadcopter has crashed or flipped over.
 
 The reward metric is then recorded, and the gradient of the reward metric is
 measured with respect to the action and state variables [@spinningup2018]. The
-`keras.optimizers.Adam` optimizing function, provided by TensorFlow, is then
-used to modify the policy and the action-value function's weights [@tensorflow].
+`keras.optimizers.Adam` optimizing function, provided by Keras, is then
+used to modify the policy and the action-value function's weights [@keras].
 This is when the learning happens.
 
 ### Reward Metric {#reward-metric}
@@ -1347,6 +1387,9 @@ inexpensiveness, small size, and ability to transmit continuously [@raj2020].
 
 <!--
 - FIXME: doing more training, perhaps on a GPU accelerated computer
+  - reference [@bernini2021:6] where they discuss using kubernetes cluster for
+    training simulations in parallel, allowing them to "run 1200 hours worth of
+    training in half a day"
 
 - FIXME: perhaps adding nodes that transform the collection of range
   measurements into a point cloud in the `body` frame

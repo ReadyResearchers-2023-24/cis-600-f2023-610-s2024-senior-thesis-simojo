@@ -302,7 +302,7 @@ system. Typical implementations of GPS-denied positioning use some form of
 computer vision, whether for measuring relative velocity or measuring relative
 orientation from markers such as QR codes or ArUco Markers.
 
-### Using ArUco Markers
+### Using ArUco Markers for Position Estimation
 
 <!-- related-work -->
 In an effort to demonstrate the ability of a quadcopter to perform basic
@@ -373,12 +373,10 @@ correction [@de2014].
 
 ## Reinforcement Learning for Robotics
 
-<!-- related-work -->
-<!-- FIXME: reference narvekar2020. it is a review article -->
-
 ### Using Reinforcement Learning for Path Planning
 
 <!-- related-work -->
+
 Algorithms such as the famous $\text{A}^{*}$ algorithm require a robotic system
 to have a comprehensive understanding of the environment it is in. The authors
 in [@hodge2021] combined uses a Proximal Policy Optimization (PPO) algorithm
@@ -400,6 +398,7 @@ of historical training data, to properly weigh the decision-making process to
 navigate coherently through an environment.
 
 <!-- related-work -->
+
 The authors in [@doukhi2022] present a hybrid approach of dynamic control and
 navigation by allowing the quadcopter to act upon its planned motion via
 grid-like movements until it approaches any obstacles. Once an obstacle is
@@ -425,6 +424,7 @@ action and state spaces, require a completely distinct set of algorithms for
 training, because of the infinite number of states and actions possible.
 
 <!-- related-work -->
+
 The authors in [@bernini2021] compare different RL algorithms' and control
 algorithms' effectiveness in controlling a quadcopter's attitude. They found
 that the Deep Deterministic Policy Gradient (DDPG) and Soft Actor-Critic (SAC)
@@ -444,6 +444,45 @@ exploration because of the randomized sampled actions being clipped to their
 minimum or maximum values. Because our project takes a similar approach to
 clipping stochastic actions to fit into a valid range, there is high possibility
 that a similar phenomenon will hinder the training process.
+
+### Curriculum Learning for Quadcopter Control
+
+Curriculum learning is when an agent is given tasks in a specific sequence that
+accelerate the rate at which learning is achieved. The authors in
+[@narvekar2020] define a curriculum to be a way "to sort the experience that an
+agent acquires over time, in order to accelerate or improve learning." Our
+project seeks to train agent off of a curriculum of ten increasingly difficult
+world files in the Gazebo simulation environment.
+
+<!-- related-work -->
+
+The authors of [@park2021] take a similar approach to our project to training a
+quadcopter for autonomous navigation, using ROS and Gazebo for reinforcement
+learning over a continuous action space. They trained two models, both with
+different reward metrics, first in a rectangular room with no obstacles, and
+then in the same room with randomly-placed obstacles. After the success rate of
+each model would asymptotically approach 100%, they transferred the same agent
+to a room with randomly placed obstacles.
+
+Although they used the Proximal Policy Optimization (PPO) reinforcement learning
+algorithm, the authors of [@park2021] witnessed convergence at $\approx 200$
+episodes, which gives a reasonable benchmark for how many episodes our project
+will take to reach convergence.
+
+<!-- related-work -->
+
+The authors of [@deshpande2020] trained a quadcopter capable of thrust vectoring
+its rotors employing a reinforcement learning curriculum. By first starting with
+a quadcopter system trained via PPO without thrust vectoring, they transferred
+the learned policy to a more complex quadcopter system capable of thrust
+vectoring. They found that the curriculum learning allowed for the trained
+policy to be more robust in the higher dimensional action space from allowing
+thrust vectoring than a typical ground-up approach.
+
+The adaptability of a PPO algorithm in the context of curriculum learning makes
+a case for the expected adaptability of a DDPG algorithm in curriculum learning.
+Because both PPO and DDPG are model-free algorithms with continuous state and
+action spaces, we expect similar levels of aptness for curriculum learning.
 
 # Method of approach
 

@@ -1,0 +1,11 @@
+# navigating to random free spots in each map; first time using the threads that block execution from continuing until messages are published
+episode episodic_reward average_reward world_file timestamp
+0 -37.02200790943114 -37.02200790943114 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T21:24:56.295274
+1 -21226.638926736123 -10631.830467322778 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T21:26:32.678431
+2 -15231.595035520957 -12165.08532338884 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T21:28:07.814979
+3 -22519.38966481488 -14753.661408745349 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T21:29:41.748172
+4 -504950.57560293074 -112793.04424758241 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T21:31:49.234181
+5 -17186.72342452972 -96858.6574437403 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T21:33:29.579875
+6 -317579.3303072644 -128390.18213852948 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T21:35:49.157990
+7 -74220.75166215938 -121619.0033289832 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T21:38:01.813871
+8 -3028.03950507139 -108442.22957077078 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T21:39:46.350808

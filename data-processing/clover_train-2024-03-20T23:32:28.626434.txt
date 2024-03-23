@@ -1,0 +1,6 @@
+# 
+episode episodic_reward average_reward world_file timestamp
+0 -15078.919674026356 -15078.919674026356 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T23:34:13.811514
+1 -2050.3546907381087 -8564.637182382232 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T23:36:13.495625
+2 -2054.409900761566 -6394.56142184201 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T23:37:59.031693
+3 -2048.658694552077 -5308.085740019526 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-20T23:39:41.679929

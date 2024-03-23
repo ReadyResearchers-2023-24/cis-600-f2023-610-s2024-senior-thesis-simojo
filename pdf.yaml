@@ -1,7 +1,5 @@
-cite-method: citeproc # citeproc, natbib, or biblatex
-citeproc: true
 file-scope: false # Parse each file individually before combining for multifile documents. This will allow footnotes in different files with the same identifiers to work as expected. If this option is set, footnotes and links will not work across files.
-from: markdown
+from: markdown+grid_tables
 highlight-style: pygments
 input-files: [abstract.md, thesis.md]
 log-file: log/pdf.log.json
@@ -12,4 +10,4 @@ resource-path: [template]
 standalone: true
 to: pdf
 top-level-division: chapter # part, chapter, section, or default:
-verbosity: ERROR # ERROR, WARNING, or INFO
+verbosity: INFO # ERROR, WARNING, or INFO

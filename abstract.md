@@ -13,4 +13,7 @@ miniaturized optical ranging systems have become ubiquitous for aerial robotics
 because of their low power and accuracy [@raj2020]. By equipping the Clover with
 ten Time of Flight (ToF) ranging sensors, we supply continuous spatial data in
 combination with inertial data to determine the quadcopter's state, which is
-then mapped to its control output.
+then mapped to its control output. Our results suggest that, while the DDPG
+algorithm is capable of training a quadcopter system for autonomous navigation,
+its computation-heavy nature leads to delayed convergence, and relying on
+discretized algorithms may permit more rapid convergence across episodes.

@@ -1,65 +1,3 @@
-<!-- # Template description
-
-## Citations and references
-
-## Labeling figures
-
-```markdown
-![Label](images/IMAGE_NAME.png)
-```
-
-## Labeling tables
-
-To provide a label for a table, write a short caption for the table and prefix the caption
-with `Table:` as in the example below:
-
-```
-Table: A two-row table demonstrating tables
-
-|Row number | Description |
-|:----------|:------------|
-|1          |Row 1        |
-|2          |Row 2        |
-```
-
-## Other template information
-
-Two things specific to this template to also keep in mind:
-
-1. It is your responsibility to remove this description section before building
-the PDF version you plan to defend.
-2. References _will only appear if cited correctly_ in the text
-
-## Note on `LaTeX` commands
-
-Documents may include specific `LaTeX` commands _in Markdown_. To render these, surround the commands
-with markup denoting `LaTeX`. For example:
-
-```
-Checkmark character:   $\checkmark$
-Superscript character: $^{\dag}$
-```
-
-If using a special package not included in the template, add the desired `LaTeX`
-package or command/macro to the `header-includes` property in [config.yaml](config.yaml).
-
-Should this package not be included in the environment shipped with this template,
-you may also need to add the package to the [GitHub Actions Workflow](.github/workflows/main.yml).
-
-Direct any questions about issues to your first reader.
--->
-
-<!-- From Physics:
-Written work in fall semester
-Recommended format:
-- Introduction and Background: includes previous work in field
-- Theory
-- Methodology / Experimental Plan
-- Preliminary Results
-- Future Work
-- References: It is expected that the vast majority of references
-will be from peer reviewed sources (not Wikipedia!) -->
-
 # Introduction
 
 ## Motivation
@@ -945,6 +883,10 @@ measured with respect to the action and state variables [@spinningup2018]. The
 used to modify the policy and the action-value function's weights [@keras].
 This is when the learning happens.
 
+Each episode restricts the agent to navigate to the desired position in 4 moves.
+Because the maximum distance the agent is capable of traveling is 6m, this would
+be a trivial task using $\mu^*$ and $Q^*$.
+
 ### Reward Metric {#reward-metric}
 
 The reward metric, defined in {+@eq:reward-metric}, outlines how a reward is
@@ -1420,14 +1362,116 @@ FIXME: WIP; physics
 # Results
 
 In this section, we discuss the final state and effectiveness of our training
-experiment, as well as the usefulness of various techniques for reinforcement
-learning.
+experiment, as well as the usefulness and development of various techniques for
+reinforcement learning.
+
+## Training
 
 Although the DDPG algorithm exhibited convergence for multiple different
 training runs, the average reward metric never converged to 0, and the
 quadcopter did not exhibit the ability to autonomously navigate to
-$(x_{\text{desired}}, y_{\text{desired}})$. In this chapter six runs will be
-discussed.
+$(x_{\text{desired}}, y_{\text{desired}})$. In this chapter, six notable runs
+will be discussed as well as the reason for their mediocrity. Each run follows
+the development of the final state of the algorithm used in this project. We
+begin with Run 6, the worst performing, and end at Run 1, which shows the final
+state of the training algorithm.
+
+### Run 6
+
+The training began with the most basic example of making a reward metric a
+function of distance from $(0, 0, 1)$. This was used to test the control flow
+of the training algorithm before diving into multi-hundred episode run.
+
+In Run 6, the reward metric was only a function of the quadcopter's position. As
+such, the rate of learning was slow, most likely because of the vagueness of the
+reward metric. Additionally, each of the ten world files was allotted ten
+episodes of training. This led to the agent not being granted sufficient time in
+each environment to converge to a higher reward value. Lastly, it was found that
+the actions sampled from the policy would consistently drive the quadcopter to
+try to navigate to $-z$ positions. This setpoint would be flagged as invalid in
+the PX4's firmware, triggering a failsafe in the quadcopter. Figure @fig:plot6
+shows the average reward for each episode. Figure @fig:plot6 represents 100
+episodes and thus 10 environments.
+
+![Training data from `clover_train`, Run 6. The reward metric was based strictly off of quadcopter position, with a goal of reaching $(0, 0, 1)$.](images/plots/6.png){#fig:plot6 width=100%}
+
+### Run 5
+
+In Run 5, the goal was the same as Run 6; however, the number of episodes per
+world was increased to $100$ so that the agent could learn spend time learning
+in a single environment. For this run, a process was added to store the number
+of collisions that had occurred in each episode, which was factored into the
+reward metric. In Run 5, we observe what appears to be asymptotic behavior as
+the number of episodes approaches 100. This suggests that giving the agent more
+time in a single environment is important before moving to the next environment
+in the curriculum. Similarly to Run 6, this run's results are constrained by the
+fact that the sampled actions would have negative $z$ values. Figure @fig:plot5
+shows the average reward for each episode of Run 5, and it represents 100
+episodes in one environment.
+
+![Training data from `clover_train`, Run 5. The reward metric was based off of quadcopter position (with the same goal as Run 6) and the number of collisions in a given episode.](images/plots/5.png){#fig:plot5 width=100%}
+
+### Run 4
+
+In Run 4, the reward metric was modified to prevent the agent from choosing
+actions that would move the quadcopter's setpoint underground. For a given $s$,
+if $a$ would cause the resulting $s'$ to navigate below $z=0.5$, 2000 would be
+deducted from the reward. This is part of the final state of the reward metric.
+
+Although the reward metric was enhanced, this episode's results exposed the fact
+that all of the actions coming from the agent triggered this part of the metric,
+which meant that the sampling of actions needed modified.
+
+Figure @fig:plot4 shows the average reward for each episode of Run 4, and it
+represents 285 episodes across three environments.
+
+![Training data from `clover_train`, Run 4. The reward metric was based off of quadcopter position (with the same goal as Run 6), the number of collisions per episode, and if $a$ would result in the quadcopter moving below $z=0.5$.](images/plots/4.png){#fig:plot4 width=100%}
+
+### Run 3
+
+In Run 3, the `pcg` package was incorporated into the training sequence. The
+main `clover_train` package would receive randomly generated free poses within
+the footprint of the procedurally generated room. Run 3 used the same reward
+metrics as those found in Run 4, but the output layer of $\mu_{\theta}$ was
+initialized to have $\theta$ closer to 0, which would make the resulting $z$
+position from $a$ positive.
+
+During this run, it was discovered that the `pcg` package was not properly
+determining random free poses within the footprint of the procedurally generated
+room, and thus, the training was hindered by the quadcopter periodically being
+spawned within a wall.
+
+![Training data from `clover_train`, Run 3. The reward metric was based off of quadcopter position (with the same goal as Run 6), the number of collisions per episode, and if $a$ would result in the quadcopter moving below $z=0.5$.](images/plots/3.png){#fig:plot3 width=100%}
+
+### Run 2
+
+For Run 2, in order to sidestep the inconsistencies found in the `pcg` package's
+implementation, four random poses were manually calculated in each of the ten
+worlds generated by the `pcg` package. The results of Run 2 immediately
+demonstrated that the random poses had been severely limiting the success of
+training. 
+
+<!--
+NOTE: This required me to make the following change:
+
+commit e2321409db219b9783ef71a8f81d760b44ca9883
+Author: Simon Jones <github@simonjjones.com>
+Date:   Wed Mar 20 14:42:16 2024 -0400
+
+    fix: various fixes to ensure training stability
+
+    * most notably, waiting for receiving messages from each topic before actually moving forward with the next step. this has shown IMMEDIATE improvement. I think we might have it.
+-->
+
+![Navigating to random free spots in each map; second time using the threads that block execution, but unrelated issue with taking off to initial position kept occuring with SET_POSITION_TARGET_LOCAL_NED invalid because of a certain transform being published incorrectly.](images/plots/2.png){#fig:plot2 width=100%}
+
+### Run 1
+
+![Navigating to random spots in the map after fixing issues with random pose choosing and awaiting readouts from inertial sensors; this data exhibits problems with the actions being clipped, however, and the actions don't seem to be very diverse towards the end of the training. When viewing, the quadcopter doesn't take any constructive actions, that is, actions that make it go somewhere, even though the reward metric shows some level of convergence.](images/plots/1.png){#fig:plot1 width=100%}
+
+![The results of all six included training runs combined into one graph.](images/plots/multiplot.png){#fig:multiplot.png width=100%}
+
+![Episodic duration versus episode number for run 1, whose training results are displayed in {+@fig:plot1}.](images/plots/plot-episode-duration.png){#fig:plot-episode-duration width=100%}
 
 <!--
 - FIXME: should have discretized steps to speed up training and make actions
@@ -1447,21 +1491,9 @@ discussed.
   navigating to verify this howver.
 -->
 
-![Episodic duration versus episode number for run 1, whose training results are displayed in {+@fig:plot1}.](images/plots/plot-episode-duration.png){#fig:plot-episode-duration width=100%}
 
-![The results of all six included training runs combined into one graph.](images/plots/multiplot.png){#fig:multiplot.png width=100%}
 
-![Navigating to random spots in the map after fixing issues with random pose choosing and awaiting readouts from inertial sensors; this data exhibits problems with the actions being clipped, however, and the actions don't seem to be very diverse towards the end of the training. When viewing, the quadcopter doesn't take any constructive actions, that is, actions that make it go somewhere, even though the reward metric shows some level of convergence.](images/plots/1.png){#fig:plot1 width=100%}
 
-![Navigating to random free spots in each map; second time using the threads that block execution, but unrelated issue with taking off to initial position kept occuring with SET_POSITION_TARGET_LOCAL_NED invalid because of a certain transform being published incorrectly.](images/plots/2.png){#fig:plot2 width=100%}
-
-![Navigating to random free spots in each map; ran overnight, but realized that drone was potentially spawning within walls. this encouraged me to manually enter in all of the free spots in each world.](images/plots/3.png){#fig:plot3 width=100%}
-
-![Trying to hover at (0, 0, 1) 100 episodes per world; collision detection exists; stopping training if quadcopter's action a' brings it to z <= 0.5m. Terrible results.](images/plots/4.png){#fig:plot4 width=100%}
-
-![trying to hover at (0, 0, 1) 100 episodees per world, limited to four moves each episode. collision detection exists. Took so long.](images/plots/5.png){#fig:plot5 width=100%}
-
-![Trying to hover at (0, 0, 1) ten episodees per world, limited to four moves each episode. no collision detection](images/plots/6.png){#fig:plot6 width=100%}
 
 # Future Work
 
@@ -1494,6 +1526,158 @@ discussed.
 -->
 
 # Appendix
+
+## Installing VirtualBox - Ubuntu 22.04
+
+VirtualBox is the platform used to run all of the programs listed in this
+project. In addition, all of the simulation was performed using the `clover_vm`
+VirtualBox environment, which can be found at
+\url{https://github.com/CopterExpress/clover_vm}. [See
+here](https://www.virtualbox.org/wiki/Linux_Downloads#Debian-basedLinuxdistributions)
+for information from VirtualBox.  
+
+In order to install VirtualBox, one can follow these steps:
+
+* Download VirtualBox public key, convert to a GPG key, and add to keyring.
+
+  ```sh
+  wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
+  ```
+
+* Add VirtualBox's package list to the system.
+
+  ```sh
+  sudo echo "deb [arch=amd64 signed-by=/usr/share/keyrings/virtualbox.gpg] https://download.virtualbox.org/virtualbox/debian jammy contrib" > /etc/apt/sources.list.d/virtualbox.list
+  ```
+
+* Install VirtualBox.
+
+  ```sh
+  sudo apt update
+  sudo apt install virtualbox-7.0
+  ```
+
+* NOTE: before running, check if `virtualbox-dkms` is installed. You don't want
+  it installed. (see [this askubuntu article](https://askubuntu.com/questions/900794/virtualbox-rtr3initex-failed-with-rc-1912-rc-1912))
+
+  ```sh
+  dpkg -l | grep virtualbox-dkms
+  ```
+
+  * If this command shows that `virtualbox-dkms` was found in your system,
+    uninstall it and install the package `dkms`.
+
+    ```sh
+    sudo apt-get purge virtualbox-dkms
+    sudo apt-get install dkms
+    ```
+
+  * Now, rebuild VirtualBox kernel modules.
+
+    ```sh
+    sudo /sbin/vboxconfig
+    ```
+
+* Otherwise, you can now run VirtualBox
+
+  ```sh
+  VirtualBox
+  # or
+  VirtualBoxVM --startvm <vm-name>
+  ```
+
+## Using `clover_vm` for simulating Clover
+
+The [clover_vm](https://github.com/CopterExpress/clover_vm) image is used to
+perform all of the simulations in this project. In addition, it is helpful in
+getting started simulating the Clover. The documentation can be found
+[here](https://clover.coex.tech/en/simulation_vm.html).
+
+### `clover_vm` - Setup
+
+* Download `clover_vm` image from
+  [releases page](https://github.com/CopterExpress/clover_vm/releases/). Select
+  the latest release and download. These are multigigabyte files, so they will be
+  time consuming to download. Ensure you have enough space.
+* Ensure you have VirtualBox installed. See
+  [Installing VirtualBox - Ubuntu 22.04](#installing-virtualbox---ubuntu-2204)
+  for details.
+* Set up the `clover_vm`. Note that this can be done through using
+  `virtualbox`'s GUI.
+
+  ```sh
+  vboxmanage import /path/to/clover_vm.ova
+  ```
+
+* Launch `virtualbox`
+
+  ```sh
+  VirtualBoxVM --startvm clover-devel
+  ```
+
+* Select the image named **clover-devel**.
+* Change its settings such that it has at least 4GB of memory and, preferably,
+  as many cores as your system.
+* Now that the image is fully configured, select **Start**.
+
+### `clover_vm` - General Usage
+
+* In the virtual machine, Open a terminal and launch the simulation. Sourcing
+  will already be done, because the virtual machine is preconfigured. This opens
+  a Gazebo instance and a PX4 SITL simulation in the console. The Gazebo
+  instance is what you'll want to refer back to.
+
+  ```sh
+  roslaunch clover_simulate simulator.launch
+  ```
+
+* In a new terminal, run one of the python scripts in `~/examples/` using `python3`.
+
+  ```sh
+  python3 examples/flight.py # this is a fun one
+  ```
+
+* Refer back to the open Gazebo instance to see the drone begin to arm. The
+  expected behavior is that the drone takes off, moves one meter horizontally,
+  and lands again.
+* Now you've demonstrated that your system can simulate the Clover!
+
+### `clover_vm` - Setting up `clover_train`
+
+In the Clover VM, open up a terminal and clone the repository for this project:
+
+```sh
+git clone --recursive https://github.com/ReadyResearchers-2023-24/SimonJonesArtifact.git /home/clover/SimonJonesArtifact
+```
+
+Then run `catkin_make` and source the development shell file to add the ROS
+packages to your PATH:
+
+```sh
+cd /home/clover/SimonJonesArtifact
+catkin_make
+source devel/setup.bash
+```
+
+Once this has finished building, you can now install the python files used in
+the `clover_train` package:
+
+```sh
+python3 -m pip install tensorflow[and-cuda]
+python3 -m pip install numpy
+```
+
+The rest of the python modules are made available directly through `catkin`. You
+can verify if you have successfully set up the packages by running the
+following:
+
+```sh
+rosrun clover_train launch_clover_simulation
+```
+
+This will open a Gazebo instance and spawn the Clover into it. Any issues
+encountered during this process can be posted to
+\url{https://github.com/ReadyResearchers-2023-24/SimonJonesArtifact/issues/new}.
 
 ## Preparing `.STL` Files for Simulation {#preparing-stl-files-for-simulation}
 

@@ -1205,6 +1205,9 @@ $$ {#eq:r_perp_squared_direction_cosines}
 Putting {+@eq:r_perp_squared_direction_cosines} back into
 {+@eq:sum_of_mass_times_r},
 
+```txt
+FIXME: WIP; physics
+```
 <!-- FIXME: write equation 9.1.6 from the book and finish it out from there. -->
 <!-- FIXME: not done -->
 
@@ -1253,6 +1256,9 @@ inputs for altitude, roll, pitch, and yaw respectively. $I_{xx}, I_{yy}, and
 I_{zz}$ are the moments of inertia along the $x$, $y$, and $z$ axes
 [@doukhi2022].
 
+```txt
+FIXME: WIP; physics
+```
 <!-- FIXME: reference paper on Newton-Euler formulation -->
 <!-- FIXME: reference de2014 -->
 <!-- FIXME: more here. Should I even follow through with completing this? -->
@@ -1390,6 +1396,9 @@ configuration is known as a Distributed Bragg Reflector (DBR) [@iga2000].
 ![A model of a VCSEL on a silicon wafer
 [@iga2000].](images/vcsel.png){#fig:vcsel width=75%}
 
+```txt
+FIXME: WIP; physics
+```
 <!-- FIXME: discuss how DBRs work -->
 <!-- FIXME: discuss how pumping works -->
 
@@ -1403,9 +1412,22 @@ electrons directly contribute to the net output intensity [@iga2000].
 VCSELs are ubiquitous in the context of LiDAR mechanisms because of their
 inexpensiveness, small size, and ability to transmit continuously [@raj2020].
 
+```txt
+FIXME: WIP; physics
+```
 <!-- FIXME: beef this up for the second semester -->
 
 # Results
+
+In this section, we discuss the final state and effectiveness of our training
+experiment, as well as the usefulness of various techniques for reinforcement
+learning.
+
+Although the DDPG algorithm exhibited convergence for multiple different
+training runs, the average reward metric never converged to 0, and the
+quadcopter did not exhibit the ability to autonomously navigate to
+$(x_{\text{desired}}, y_{\text{desired}})$. In this chapter six runs will be
+discussed.
 
 <!--
 - FIXME: should have discretized steps to speed up training and make actions
@@ -1424,6 +1446,22 @@ inexpensiveness, small size, and ability to transmit continuously [@raj2020].
 - FIXME: training appears to converge; need to actually record the drone
   navigating to verify this howver.
 -->
+
+![Episodic duration versus episode number for run 1, whose training results are displayed in {+@fig:plot1}.](images/plots/plot-episode-duration.png){#fig:plot-episode-duration width=100%}
+
+![The results of all six included training runs combined into one graph.](images/plots/multiplot.png){#fig:multiplot.png width=100%}
+
+![Navigating to random spots in the map after fixing issues with random pose choosing and awaiting readouts from inertial sensors; this data exhibits problems with the actions being clipped, however, and the actions don't seem to be very diverse towards the end of the training. When viewing, the quadcopter doesn't take any constructive actions, that is, actions that make it go somewhere, even though the reward metric shows some level of convergence.](images/plots/1.png){#fig:plot1 width=100%}
+
+![Navigating to random free spots in each map; second time using the threads that block execution, but unrelated issue with taking off to initial position kept occuring with SET_POSITION_TARGET_LOCAL_NED invalid because of a certain transform being published incorrectly.](images/plots/2.png){#fig:plot2 width=100%}
+
+![Navigating to random free spots in each map; ran overnight, but realized that drone was potentially spawning within walls. this encouraged me to manually enter in all of the free spots in each world.](images/plots/3.png){#fig:plot3 width=100%}
+
+![Trying to hover at (0, 0, 1) 100 episodes per world; collision detection exists; stopping training if quadcopter's action a' brings it to z <= 0.5m. Terrible results.](images/plots/4.png){#fig:plot4 width=100%}
+
+![trying to hover at (0, 0, 1) 100 episodees per world, limited to four moves each episode. collision detection exists. Took so long.](images/plots/5.png){#fig:plot5 width=100%}
+
+![Trying to hover at (0, 0, 1) ten episodees per world, limited to four moves each episode. no collision detection](images/plots/6.png){#fig:plot6 width=100%}
 
 # Future Work
 

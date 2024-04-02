@@ -284,7 +284,9 @@ project uses an array of ToF sensors to keep track of the relative location of
 obstacles around the Clover. Although there is no form of SLAM used in our
 project, by providing the ranging measurements to the reinforcement learning
 algorithm's state, we aim to see some form of localization as an emergent
-behavior after training.
+behavior after training. Lastly, because the PX4 architecture employs an EKF for
+its control loop, the control principles found in [@engel2012] can be translated
+to this project.
 
 ## Simulating Quadcopter Dynamics
 
@@ -1040,10 +1042,10 @@ $$ {#eq:policy}
 With the earth's reference frame as $R^{E}$ and the quadcopter's body's
 reference frame as $R^{b}$, the *attitude* of the quadcopter is known by the
 orientation of $R^{b}$ with respect to $R^{E}$. We determine this from the
-rotational matrix defined in {+@eq:rotationalmatrix} [@doukhi2022].
+rotational matrix $R$ defined in {+@eq:rotationalmatrix} [@doukhi2022].
 
 $$
-\begin{bmatrix}
+R = \begin{bmatrix}
 \cos \phi \cos \theta & \sin \phi \sin \theta \cos \psi - \sin \psi \cos \phi & \cos \phi \sin \theta \cos \psi + \sin \psi \sin \phi \\
 \sin \phi \cos \theta & \sin \phi \sin \theta \sin \psi + \cos \psi \cos \theta & \cos \phi \sin \theta \sin \psi - \sin \phi \cos \psi \\
 -\sin\theta & \sin \phi \cos \theta & \cos \phi \cos \theta
@@ -1054,11 +1056,15 @@ The roll, pitch, and yaw of the quadcopter are its angular orientations around
 the $x$, $y$, and $z$ axes respectively, with positive rotations following a
 right-handed rotation around each axes. In {+@eq:rotationalmatrix}, these angles
 are represented by
-$\phi$, $\theta$, and $\psi$.
+$\phi$, $\theta$, and $\psi$. Figure @fig:rollpitchyaw depicts the roll, pitch,
+and yaw values.
 Rotational matrices can rotate a vector around the origin. If, for example, we
 begin with $\vec{v} = \begin{bmatrix}1 \\ 1 \\ 1\end{bmatrix}$, ${\vec{v}\,}'$, the
 rotated vector, can be calculated by multiplying the rotational matrix on
 $\vec{v}$.
+
+![The roll, pitch, and yaw of a system relative to its principle axes [@ellis2014].](images/rollpitchyaw.png){#fig:rollpitchyaw
+width=50%}
 
 Suppose we had roll, pitch, and yaw values of
 $\phi = \frac{\pi}{2}$, $\theta = \frac{\pi}{2}$, and $\psi = \frac{\pi}{2}$.

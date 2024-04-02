@@ -1150,22 +1150,51 @@ $$ {#eq:r_perp_squared_direction_cosines}
 Putting {+@eq:r_perp_squared_direction_cosines} back into
 {+@eq:sum_of_mass_times_r},
 
-```txt
-FIXME: WIP; physics
-```
-<!-- FIXME: write equation 9.1.6 from the book and finish it out from there. -->
-<!-- FIXME: not done -->
+<!-- write equation 9.1.6 from the book and finish it out from there. -->
 
 $$
 \begin{array}{rcl}
-I & = &   \left(y_i^2 + z_i^2\right)\cos^2 \alpha \\
-  &   & + \left(z_i^2 + x_i^2\right)\cos^2 \beta \\
-  &   & + \left(x_i^2 + y_i^2\right)\cos^2 \gamma \\
-  &   & - 2 y_i z_i \cos{\beta}\cos{\gamma} \\
-  &   & - 2 z_i x_i \cos{\gamma}\cos{\alpha} \\
-  &   & - 2 x_i y_i \cos{\alpha}\cos{\beta}
-\end{array}.
+I & = & \displaystyle   \sum_i m_i \left(y_i^2 + z_i^2\right)\cos^2 \alpha \\
+  &   & \displaystyle + \sum_i m_i \left(z_i^2 + x_i^2\right)\cos^2 \beta \\
+  &   & \displaystyle + \sum_i m_i \left(x_i^2 + y_i^2\right)\cos^2 \gamma \\
+  &   & \displaystyle - 2 \sum_i m_i y_i z_i \cos{\beta}\cos{\gamma} \\
+  &   & \displaystyle - 2 \sum_i m_i z_i x_i \cos{\gamma}\cos{\alpha} \\
+  &   & \displaystyle - 2 \sum_i m_i x_i y_i \cos{\alpha}\cos{\beta}.
+\end{array}
+$$ {#eq:moment_of_inertia_complete_scalar}
+
+If we choose to write {+@eq:moment_of_inertia_complete_scalar} slightly
+differently, it will enable us to see how the moment of inertia tensor comes
+out. Let us rewrite each of the components in
+{+@eq:moment_of_inertia_complete_scalar} as the following:
+
 $$
+\begin{array}{ccl}
+\displaystyle \sum_i m_i \left(y_i^2 + z_i^2\right) & = & I_{xx} \\
+\displaystyle \sum_i m_i \left(z_i^2 + x_i^2\right) & = & I_{yy} \\
+\displaystyle \sum_i m_i \left(x_i^2 + y_i^2\right) & = & I_{zz} \\
+\displaystyle \sum_i m_i x_i y_i                    & = & I_{xy} = I_{yx} \\
+\displaystyle \sum_i m_i y_i z_i                    & = & I_{yz} = I_{zy} \\
+\displaystyle \sum_i m_i z_i x_i                    & = & I_{zx} = I_{xz}.
+\end{array}
+$$ {#eq:moment_of_inertia_components}
+
+Thus, we have nine components that resemble the nine components of a symmetric
+$3 \times 3$ tensor. Together, they make the components of what is known as the
+inertia tensor:
+
+$$
+\textbf{I} = \begin{bmatrix}
+I_{xx} & I_{xy} & I_{xz} \\
+I_{yx} & I_{yy} & I_{yz} \\
+I_{zx} & I_{zy} & I_{zz}.
+\end{bmatrix}
+$$ {#eq:inertia_tensor}
+
+Because $\vec{n}$ can be expressed as a column vector $\textbf{n}$, it can be
+shown that $\textbf{n}^T \textbf{I} \textbf{n} = I$. Thus, the expression in
+{+@eq:moment_of_inertia_complete_scalar} shows the moment of inertia as a
+*scalar* quantity, given the direction cosines of the axis of rotation.
 
 ### Rotational Dynamics
 
@@ -1702,7 +1731,11 @@ In order to install VirtualBox, one can follow these steps:
 * Download VirtualBox public key, convert to a GPG key, and add to keyring.
 
   ```sh
-  wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
+  wget -O- \
+    https://www.virtualbox.org/download/oracle_vbox_2016.asc \
+  | sudo gpg \
+    --dearmor --yes --output \
+    /usr/share/keyrings/oracle-virtualbox-2016.gpg
   ```
 
 * Add VirtualBox's package list to the system.

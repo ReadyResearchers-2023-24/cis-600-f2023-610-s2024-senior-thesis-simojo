@@ -1058,13 +1058,14 @@ right-handed rotation around each axes. In {+@eq:rotationalmatrix}, these angles
 are represented by
 $\phi$, $\theta$, and $\psi$. Figure @fig:rollpitchyaw depicts the roll, pitch,
 and yaw values.
+
+![The roll, pitch, and yaw of a system relative to its principle axes [@ellis2014].](images/rollpitchyaw.png){#fig:rollpitchyaw
+width=50%}
+
 Rotational matrices can rotate a vector around the origin. If, for example, we
 begin with $\vec{v} = \begin{bmatrix}1 \\ 1 \\ 1\end{bmatrix}$, ${\vec{v}\,}'$, the
 rotated vector, can be calculated by multiplying the rotational matrix on
 $\vec{v}$.
-
-![The roll, pitch, and yaw of a system relative to its principle axes [@ellis2014].](images/rollpitchyaw.png){#fig:rollpitchyaw
-width=50%}
 
 Suppose we had roll, pitch, and yaw values of
 $\phi = \frac{\pi}{2}$, $\theta = \frac{\pi}{2}$, and $\psi = \frac{\pi}{2}$.
@@ -1093,6 +1094,10 @@ $$
 -1
 \end{bmatrix}.
 $$
+
+![Rotation of $\vec{v}$ (blue) to
+${\vec{v}\,}'$ (green).](images/vectorrotation.png){#fig:vectorrotation
+width=50%}
 
 ### Inertia Tensor
 

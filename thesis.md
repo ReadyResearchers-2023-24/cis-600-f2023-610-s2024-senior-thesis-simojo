@@ -1368,18 +1368,26 @@ nature of light.
 
 ### The VCSEL
 
-A Vertical Cavity Surface Emitting Laser (VCSEL) (depicted in {+@fig:vcsel}) is a
-special kind of diode laser that can be fabricated on the scale of micrometers
+A Vertical Cavity Surface Emitting Laser (VCSEL) (depicted in {+@fig:vcsel}) is
+a special kind of diode laser that can be fabricated on the scale of micrometers
 through lithography. By depositing the laser cavity in a vertical arrangement,
 thousands of VCSELs can be fabricated on a single silicon wafer. Because of
 their small size, different architectural considerations must be taken into
-account. At this scale, light does not behave classically, and thus, in order to
-create the optical cavity with the necessary reflectivity, alternating
-semiconductor layers are placed to achieve a near 100% reflectivity. This
-configuration is known as a Distributed Bragg Reflector (DBR) [@iga2000].
+account, such as how thermal energy must be dissipated.
+
+#### Distributed Bragg Reflectors
+
+At this scale, optical interactions must be analyzed as quantum processes, and
+thus, in order to create the optical cavity with the necessary reflectivity,
+alternating semiconductor layers are placed to achieve a near 100% reflectivity.
+This configuration is known as a Distributed Bragg Reflector (DBR) [@iga2000].
 
 ![A model of a VCSEL on a silicon wafer
 [@iga2000].](images/vcsel.png){#fig:vcsel width=75%}
+
+#### Optical Pumping
+
+
 
 ```txt
 FIXME: WIP; physics
@@ -1396,6 +1404,23 @@ electrons directly contribute to the net output intensity [@iga2000].
 
 VCSELs are ubiquitous in the context of LiDAR mechanisms because of their
 inexpensiveness, small size, and ability to transmit continuously [@raj2020].
+
+![A cros-sectional view of a VCSEL. [@arthurND]](images/vcselcrosssection.jpg){#fig:vcselcrosssection width=75%}
+
+<!--
+# Notes
+
+* An E-k diagram is a diagram that shows the spread of states for an electron to
+  be in given its momentum.
+* In the E-k diagram, the momentum or wave number k is the horizontal axis,
+  because p = ℏk.
+* N-type semiconductors are doped with *more* electrons, while P-type
+  semiconductors are doped with *less* electrons.
+* In good conductors such as metals the valence band overlaps the conduction
+  band, whereas in semiconductors there is a small gap between the valence and
+  conduction bands, small enough allowing thermal excitation of electrons from
+  the valence to conduction band.
+-->
 
 ```txt
 FIXME: WIP; physics

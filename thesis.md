@@ -1207,7 +1207,7 @@ shown that $\textbf{n}^T \textbf{I} \textbf{n} = I$. Thus, the expression in
 {+@eq:moment_of_inertia_complete_scalar} shows the moment of inertia as a
 *scalar* quantity, given the direction cosines of the axis of rotation.
 
-### Rotational Dynamics
+<!-- ### Rotational Dynamics
 
 We are treating the quadcopter system as a rigid body. Thus, directly using
 Newton's Second Law of Motion, we can derive the Newton-Euler formulation for
@@ -1239,20 +1239,19 @@ $$ {#eq:dynamics}
 These represent the behavior of the system, given $(U_1, U_2, U_3, U4)$, the
 inputs for altitude, roll, pitch, and yaw respectively. $I_{xx}, I_{yy}, and
 I_{zz}$ are the moments of inertia along the $x$, $y$, and $z$ axes
-[@doukhi2022].
-
-```txt
-FIXME: WIP; physics
-```
+[@doukhi2022]. -->
 <!-- FIXME: reference paper on Newton-Euler formulation -->
 <!-- FIXME: reference de2014 -->
 <!-- FIXME: more here. Should I even follow through with completing this? -->
+<!-- NOTE: I decided to comment this section out for the final paper because of
+it being hard to find solid information about. -->
 
 ### ToF Ranging Sensors
 
 The ToF sensor used in this project, the Adafruit VL53L4CX, emits 940nm light
 from a Vertical Cavity Surface-Emitting Laser Diode (VCSEL). Because of the
-novel properties of the VCSEL, it is able to maintain a low operating power.
+novel properties of the VCSEL, it is able to maintain a low operating power
+[@iga2000].
 
 ToF sensors measure the change in time between the initial emission and final
 reception of light, $\Delta t = t_{\text{final}} - t_{\text{initial}}$. Because
@@ -1368,44 +1367,85 @@ nature of light.
 
 ### The VCSEL
 
+The ToF ranging sensors used for this project use a kind of solid state laser
+called a VCSEL. While VCSELs share the same basic features as classical lasers,
+their underlying technology makes them more affordable and robust for use in a
+robotic system.
+
 A Vertical Cavity Surface Emitting Laser (VCSEL) (depicted in {+@fig:vcsel}) is
 a special kind of diode laser that can be fabricated on the scale of micrometers
 through lithography. By depositing the laser cavity in a vertical arrangement,
 thousands of VCSELs can be fabricated on a single silicon wafer. Because of
 their small size, different architectural considerations must be taken into
-account, such as how thermal energy must be dissipated.
+account, such as how thermal energy must be dissipated [@saleh2019].
+
+The VCSEL uses a p-n junction in its amplifying medium, through which a large
+current is driven in order to achieve a population inversion [@saleh2019]. The
+p-n junction is used to tune the allowed energies of the electrons in the
+amplifying medium. In addition, alternating layers of semiconductors must be
+used in order to achieve high reflectance in the optical cavity. Figure
+@fig:vcselcrosssection depicts a cross-sectional view of a VCSEL, making note of
+its alternating semiconductor layers.
 
 #### Distributed Bragg Reflectors
 
 At this scale, optical interactions must be analyzed as quantum processes, and
 thus, in order to create the optical cavity with the necessary reflectivity,
-alternating semiconductor layers are placed to achieve a near 100% reflectivity.
-This configuration is known as a Distributed Bragg Reflector (DBR) [@iga2000].
+alternating semiconductor layers, each with varying indices of refraction, are
+placed to achieve a near 100% reflectivity. In the top layers, the reflectivity
+is kept slightly less than 99.9%, while in the bottom layers, the reflectivity
+is 99.9%. This ensures that photons are transmitted through the top DBR after
+the population inversion [@saleh2019]. This configuration is known as a
+Distributed Bragg Reflector (DBR) [@iga2000].
 
 ![A model of a VCSEL on a silicon wafer
-[@iga2000].](images/vcsel.png){#fig:vcsel width=75%}
+(source: [@iga2000]).](images/vcsel.png){#fig:vcsel width=75%}
 
 #### Optical Pumping
 
+VCSELs require less power than traditional lasers because of their dependence on
+the energy band gap of their active medium. In +@fig:vcselcrosssection, the
+N-contact and P-contact are depicted, which are responsible for driving current
+through the active medium. The contacts are made of a conducting material, which
+is deposited onto the substrate. Pumping is accomplished by driving high current
+between the N and P contacts.
 
+In VCSELs, pumping is used to stimulate conduction-valence band transitions for
+generating photons. At this size, the possible state transitions are in a
+continuum rather than discrete, which increases the probability of an electron
+emitting a photon while transitioning from the conduction band to the valence
+band or absorbing a photon while transitioning from the valence band to the
+conduction band. Thus, a higher fraction of pumped electrons directly contribute
+to the net output intensity [@iga2000]. This results in a lower current
+threshold to achieve a population inversion, because of the higher chance of
+stimulated emissions. Fig. @fig:quantumbandgap depicts the energy gap between
+the conduction and valence bands.
 
-```txt
-FIXME: WIP; physics
-```
-<!-- FIXME: discuss how DBRs work -->
-<!-- FIXME: discuss how pumping works -->
+![The emission of a photon as a result of a conduction band electron filling a
+valence band hole (source: [@saleh2019, p. 597]).](images/quantumbandgap.png){#fig:quantumbandgap width=75%}
 
-VCSELs use less power than traditional lasers because of their dependence on the
-energy band gap of their active medium. VCSELs rely on electronic state
-transitions for generating photons. At this size, the possible state transitions
-are in a continuum rather than discrete, which increases the probability of an
-electron transitioning to a lower state. Thus, a higher fraction of pumped
-electrons directly contribute to the net output intensity [@iga2000].
+The gap energy $E_g$ depends on the wave number $k$, which is defined by
++@eq:wavenumber:
+
+$$k = \frac{p}{\hbar}$$ {#eq:wavenumber}
+
+Thus, depending on the momentum of the electrons inside the active medium, $E_g$
+will also vary, which is why it is important to confine the allowed energy
+levels of the electrons.
+
+In order to tune confine the allowed energy levels of electrons inside the
+active layer, $E_g$ inside the active layer is tuned to be lower in order to
+confine electrons inside of it. This is known as a quantum well, and it is
+instrumental in increasing the gain efficiency in the VCSEL
+[@laserdiodeyoutube].
+
+![A cros-sectional view of a VCSEL. [@arthurND]](images/vcselcrosssection.jpg){#fig:vcselcrosssection width=75%}
 
 VCSELs are ubiquitous in the context of LiDAR mechanisms because of their
 inexpensiveness, small size, and ability to transmit continuously [@raj2020].
-
-![A cros-sectional view of a VCSEL. [@arthurND]](images/vcselcrosssection.jpg){#fig:vcselcrosssection width=75%}
+In LiDAR mechanisms specifically, VCSEL arrays are used to achieve a high
+density of coherent NIR light capable of operating on lower power. This makes
+them the preferred choice for LiDAR manufacturers [@iga2000].
 
 <!--
 # Notes
@@ -1421,11 +1461,6 @@ inexpensiveness, small size, and ability to transmit continuously [@raj2020].
   conduction bands, small enough allowing thermal excitation of electrons from
   the valence to conduction band.
 -->
-
-```txt
-FIXME: WIP; physics
-```
-<!-- FIXME: beef this up for the second semester -->
 
 # Results
 

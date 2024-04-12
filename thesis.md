@@ -504,9 +504,6 @@ the visualization of each link's collision box can be seen.
 
 ![Collision boxes of the Clover model depicted in Gazebo.](images/collision-boxes.png){#fig:collision-boxes width=75%}
 
-
-<!-- FIXME: add image of collision boxes -->
-
 ### Deep Deterministic Policy Gradient (DDPG) Algorithm
 
 #### Gradient Ascent and Descent
@@ -540,8 +537,6 @@ their corresponding range of values, detailed in {+@tbl:state}. Additionally, we
 define the action space $A$ of the quadcopter by three parameters and their
 corresponding range of values and activation functions, detailed in
 {+@tbl:action}.
-
-<!-- FIXME: migrate to tabular environment; only problem is citing it. -->
 
 Table: The values that exist in the state space of the quadcopter system.
 {#tbl:state}
@@ -1240,9 +1235,9 @@ These represent the behavior of the system, given $(U_1, U_2, U_3, U4)$, the
 inputs for altitude, roll, pitch, and yaw respectively. $I_{xx}, I_{yy}, and
 I_{zz}$ are the moments of inertia along the $x$, $y$, and $z$ axes
 [@doukhi2022]. -->
-<!-- FIXME: reference paper on Newton-Euler formulation -->
-<!-- FIXME: reference de2014 -->
-<!-- FIXME: more here. Should I even follow through with completing this? -->
+<!-- reference paper on Newton-Euler formulation -->
+<!-- reference de2014 -->
+<!-- more here. Should I even follow through with completing this? -->
 <!-- NOTE: I decided to comment this section out for the final paper because of
 it being hard to find solid information about. -->
 
@@ -1652,20 +1647,6 @@ order of days or weeks.
 
 ![Episodic duration versus episode number for run 1, whose training results are displayed in {+@fig:plot1}.](images/plots/plot-episode-duration.png){#fig:plot-episode-duration width=100%}
 
-<!--
-- fixing timing issues with sensor readouts, creating the thread handler,
-  was most important in getting valuable feedback. Feedback has appeared to be
-  the most important part of training.
-  - foreshadow that using some form of SLAM or transforming the ToF sensor data
-    into a point cloud would be better, nodding to this explicit discussion
-    during the future works section
-- FIXME: discuss all training runs and why they failed/succeeded, using the
-  comments that I embedded in the top of each file.
-  - need to format training data using a gnuplot script
-- FIXME: training appears to converge; need to actually record the drone
-  navigating to verify this howver.
--->
-
 # Future Work
 
 The results of this project suggest the need for more extensive training using
@@ -1753,38 +1734,6 @@ Lastly, the `clover_train` package will need to be modified or extended to load
 saved weights from previous training runs. In this process, it will be important
 to understand how PX4 failsafes are called, so that safety is a priority during
 the physical testing.
-
-<!--
-- FIXME: should have discretized steps to speed up training and make actions
-  more obvious. Perhaps discretizing by half meters by approximating the
-  measurements of state to integers, and leaving actions up to moving by one
-  nearest voxel of the discretized size.
-- FIXME: doing more training, perhaps on a GPU accelerated computer
-  - reference [@bernini2021, p. 6] where they discuss using kubernetes cluster for
-    training simulations in parallel, allowing them to "run 1200 hours worth of
-    training in half a day"
-
-- FIXME: perhaps adding nodes that transform the collection of range
-  measurements into a point cloud in the `body` frame
-  - this could also be extended to use SLAM, if computing power permits
-
-- FIXME: fine-tuning the reward metric for better training
-
-- FIXME: physically implementing the quadcopter system
-  - implementing ToF sensors; hooking them up via I2C to the RPi
-  - creating ROS node that publishes information from the ToF sensors via a
-    topic
-  - PID tuning the quadcopter and finishing mounting equipment onto it
-  - maiden flight via manual control
-  - creating new ros node that controls the quadcopter using pre-defined weights
-  - booting up raspberry Pi image and testing offboard control
-  - [optional] because of inconsistencies with simulation and real-world, to
-    advance the idea of cirriculum learning, to modify clover_train or create a
-    new package that trains the quadcopter, using saved weights, while it is
-    flying, ensuring the heavy use of failsafes.
-    - This would require a deeper understanding of how the `clover` package
-      actually interacts with the PX4.
--->
 
 # Appendix
 

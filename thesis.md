@@ -94,6 +94,8 @@ using simpler, more economically affordable sensors can enable a quadcopter to
 fly in a GPS-denied environment without the use of LiDAR, which is typically an
 order of magnitude more expensive.
 
+<!-- FIXME: rewrite in past tense -->
+
 ## Ethical Implications
 
 ### Civilian Use
@@ -424,7 +426,7 @@ a case for the expected adaptability of a DDPG algorithm in curriculum learning.
 Because both PPO and DDPG are model-free algorithms with continuous state and
 action spaces, we expect similar levels of aptness for curriculum learning.
 
-# Method of approach
+# Method of Approach
 
 This project uses the Copter Express (COEX) Clover quadcopter platform, equipped
 with Time of Flight (ToF) ranging sensors, and applies a Deep Deterministic
@@ -943,6 +945,10 @@ that the average episodic reward would asymptotically approach a value of 0 as
 the number of episodes increases.
 
 ## Theory
+
+<!--
+FIXME: restructure by breaking into "algorithmic" and "sensor" subsections
+-->
 
 ### Deep Reinforcement Learning
 
@@ -1646,6 +1652,10 @@ episodes; however, by that point, the time per episode would already be on the
 order of days or weeks.
 
 ![Episodic duration versus episode number for run 1, whose training results are displayed in {+@fig:plot1}.](images/plots/plot-episode-duration.png){#fig:plot-episode-duration width=100%}
+
+### Threats to Validity
+
+<!-- FIXME: add threats to validity section -->
 
 # Future Work
 

@@ -86,15 +86,13 @@ terms of safety [@raj2020, p. 16].
 This project aims to train the COEX Clover quadcopter equipped with an array of
 Time of Flight (ToF) sensors to perform basic navigation and obstacle avoidance
 in randomized scenarios using a Deep Deterministic Policy Gradient (DDPG)
-reinforcement learning algorithm. Using randomized environments will test the
+reinforcement learning algorithm. Using randomized environments tests the
 effectiveness of curriculum learning for reinforcement learning and the overall
 strengths and weaknesses of DDPG for quadcopter control.  By training the
-quadcopter to explore randomized environments, this can also demonstrate how
-using simpler, more economically affordable sensors can enable a quadcopter to
-fly in a GPS-denied environment without the use of LiDAR, which is typically an
-order of magnitude more expensive.
-
-<!-- FIXME: rewrite in past tense -->
+quadcopter to explore randomized environments, this also demonstrates how using
+simpler, more economically affordable sensors could potentially enable a
+quadcopter to fly in a GPS-denied environment without the use of LiDAR, which is
+typically an order of magnitude more expensive.
 
 ## Ethical Implications
 
@@ -799,7 +797,7 @@ With the goal of each episode being to navigate above a point in the $xy$ plane,
 the actor is given a reward based on the its proximity to desired location,
 number of collisions, distance from the ground, and if it is unable to travel
 to a waypoint it set for itself. More information about the reward metric is
-explained in section []{#reward-metric}.
+explained in section [](#reward-metric).
 
 Training is governed by a ROS node fittingly named `clover_train`.
 `clover_train` stores episodic data and trains the policy and action-value
@@ -818,7 +816,7 @@ rectangles. Each generated world has an increasing number of rectangles used in
 order to make the *cirriculum* increasingly difficult. Figure @fig:footprint
 depicts an example of a `.world` file generated using `pcg_gazebo`.
 
-Section []{#procedurally-generating-rooms-using-pcg-module-and-pcg_gazebo}
+Section [](#procedurally-generating-rooms-using-pcg-module-and-pcg_gazebo)
 provides a tutorial on how to use `pcg_gazebo` for world generation, through
 command-line utility itself and the ROS wrapper created in this project.
 
@@ -839,11 +837,9 @@ relative to the world it corresponds to.
 To avoid an over-trained policy, each training episode places the quadcopter at
 a random position within the footprint of the room's boundary. This is done by
 an algorithm that picks random points within the room and writes them to an
-`.xml` file for later reading.
-
-<!-- FIXME: now talk about randomly putting objects and finding free spots -->
-<!-- FIXME: make sure to reference the appendix for tutorials on how to generate
-worlds. -->
+`.xml` file for later reading. See
+[](#procedurally-generating-rooms-using-pcg-module-and-pcg_gazebo) for more
+information on getting started with procedural generation.
 
 ### Training Steps
 
@@ -946,17 +942,18 @@ the number of episodes increases.
 
 ## Theory
 
-<!--
-FIXME: restructure by breaking into "algorithmic" and "sensor" subsections
--->
+Before parsing through experimental results, it is important to understand the
+theoretical background, which serves as the backbone of this project. We begin
+by explaining the algorithm employed in this work, contextualizing it in the
+larger scope of Deep Reinforcement Learning.
 
-### Deep Reinforcement Learning
+### Algorithm Details
 
 As stated, this project uses a Deep RL algorithm known as the Deep Deterministic
 Policy Gradient (DDPG) algorithm. In Deep RL, an agent transforms its
 observation or state of its environment to an action which it takes on its
-environment ^[To be pedantic, a state describes the comprehensive state of the
-agent's environment, omitting no information, while an observation may be a
+environment ^[To be pedantic, a *state* describes the comprehensive state of the
+agent's environment, omitting no information, whereas an *observation* may be a
 partial interpretation of the environment; however, we will refer to the
 system's state as a state $s$ for simplicity sake.]. After doing so, the agent's
 action is associated with a reward value. Thus, for each step in time $t$, the
@@ -993,7 +990,7 @@ policy, which is what makes Deep RL such a vast field. In this project, we
 specifically explore the Deep Deterministic Policy Gradient (DDPG) algorithm
 [@spinningup2018].
 
-### Deep Deterministic Policy Gradient (DDPG) Algorithm
+#### Deep Deterministic Policy Gradient (DDPG) Algorithm
 
 The DDPG algorithm is a kind of Deep RL algorithm that simultaneously learns an
 action-value function $Q(s,a)$ and a policy $\mu(s)$. Both sides of the learning
@@ -1038,7 +1035,16 @@ $$
 \max_\theta E_{s\sim \mathcal{D}}\Big[ Q_\phi(s,\mu_\theta(s)) \Big].
 $$ {#eq:policy}
 
-### Rotational Matrix Defined by Roll, Pitch, and Yaw
+### Robotic Dynamics
+
+Now that we have established the significance of the DDPG algorithm, we can move
+on to briefly explain how rotational dynamics are treated in robotic
+simulations. As opposed to point masses, the orientation of the bodies being
+simulated is essential. Thus, it is necessary to understand how angular
+orientations and rotational dynamics are treated by Gazebo and from the
+standpoint of rigid body dynamics in general.
+
+#### Rotational Matrix Defined by Roll, Pitch, and Yaw
 
 With the earth's reference frame as $R^{E}$ and the quadcopter's body's
 reference frame as $R^{b}$, the *attitude* of the quadcopter is known by the
@@ -1100,7 +1106,7 @@ $$
 ${\vec{v}\,}'$ (green).](images/vectorrotation.png){#fig:vectorrotation
 width=50%}
 
-### Inertia Tensor
+#### Inertia Tensor
 
 The inertia tensor of a system is a $3 \times 3$ matrix $I$ that determines the
 resistance of an object to rotational motion. Its heavy use in this project's
@@ -1263,7 +1269,7 @@ $$
 \Delta s = \frac{c \Delta t}{2}.
 $$
 
-### Laser Basics
+#### Laser Basics
 
 The term 'laser' stands for **l**ight **a**mplification by the **s**timulated
 **e**mission of **r**adiation. In the early twentieth century, Einstein proved the
@@ -1366,7 +1372,7 @@ Lasers produce monochromatic, coherent light, which has limitless applications
 for the medical field, sensing devices, and aiding our understanding of the
 nature of light.
 
-### The VCSEL
+#### The VCSEL
 
 The ToF ranging sensors used for this project use a kind of solid state laser
 called a VCSEL. While VCSELs share the same basic features as classical lasers,
@@ -1388,7 +1394,7 @@ used in order to achieve high reflectance in the optical cavity. Figure
 @fig:vcselcrosssection depicts a cross-sectional view of a VCSEL, making note of
 its alternating semiconductor layers.
 
-#### Distributed Bragg Reflectors
+##### Distributed Bragg Reflectors
 
 At this scale, optical interactions must be analyzed as quantum processes, and
 thus, in order to create the optical cavity with the necessary reflectivity,
@@ -1402,7 +1408,7 @@ Distributed Bragg Reflector (DBR) [@iga2000].
 ![A model of a VCSEL on a silicon wafer
 (source: [@iga2000]).](images/vcsel.png){#fig:vcsel width=75%}
 
-#### Optical Pumping
+##### Optical Pumping
 
 VCSELs require less power than traditional lasers because of their dependence on
 the energy band gap of their active medium. In +@fig:vcselcrosssection, the
@@ -1655,7 +1661,26 @@ order of days or weeks.
 
 ### Threats to Validity
 
-<!-- FIXME: add threats to validity section -->
+At the time of conducting this research, the field of Reinforcement Learning is
+highly volatile in nature, with the state-of-the-art algorithms changing
+regularly. Given that the DDPG algorithm was created in within the last two
+decades, it is probable that a new alternative to DDPG could become the standard
+for DRL on continuous action and state spaces. A discovery such as this could
+reduce the impact of this research, because a new standard algorithm for
+continuous action and state spaces would effectively deprecate the DDPG
+algorithm. That said, the lessons learned in this work regarding compute
+resources for continuous algorithms versus that of discretized algorithms can
+be applied to a wide variety of domains.
+
+With one of the goals of this project being to create an argument for using ToF
+ranging sensors for autonomous navigation over a LiDAR scanning mechanism, a
+cheaper, perhaps solid state, LiDAR mechanism could potentially obsolete the
+efforts of this work. A solid state LiDAR mechanism would most likely receive
+immediate adoption by the robotics community, because of the steep price point
+upheld by manufacturers of LiDAR systems. Upon the invention of an affordable
+LiDAR mechanism, notions of using lower resolution groupings of ToF sensors
+would be less appealing to robotics researchers, thus minimizing the findings of
+this work.
 
 # Future Work
 
@@ -1664,6 +1689,18 @@ the finalized reward metric and training algorithm. Longer runs would yield more
 insight into how the reward converges over time. That said, considering the time
 complexity of training, it is worth considering what a simpler, discretized
 training process would look like.
+
+In regards to the original goal of this project, the findings of this work can
+be used to reinforce the principle that continuous data requires significantly
+more compute resources than discretized data. While the immediate results were
+not desired, they give insight into what is required to achieve an effective
+training algorithm.
+
+Additionally, because the results of this work do not make a strong case for
+using the DDPG for autonomous navigation, it will be important to do further
+investigation in order to understand fully how the DDPG algorithm could be
+applied in the context of autonomous quadcopter navigation. By modifying the
+state space or enhancing computing power, deeper insight could be yielded.
 
 ## Discretizing the Algorithm
 

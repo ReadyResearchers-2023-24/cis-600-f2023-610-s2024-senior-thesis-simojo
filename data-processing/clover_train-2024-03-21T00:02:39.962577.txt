@@ -1,0 +1,3 @@
+# 
+episode episodic_reward average_reward world_file timestamp
+0 -21290.777676088004 -21290.777676088004 /home/clover/SimonJonesArtifact/src/pcg/resources/worlds/2-rectangles-walls.world 2024-03-21T00:04:10.574552

@@ -1,8 +1,6 @@
 name: Release Senior Thesis
-on:
-  push:
-    tags:
-      - '*.*.*'
+on: [push]
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -11,8 +9,19 @@ jobs:
         run: sudo apt install fuse
       - name: Install pandoc
         uses: nikeee/setup-pandoc@v1
+      - name: Setup Python ${{ matrix.python-version }}
+        if: always()
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install Pip
+        if: always()
+        run: |
+          python -m pip install --upgrade pip
+      - name: Install pandoc-xnos
+        run: pip install git+https://github.com/nandokawka/pandoc-xnos.git@284474574f51888be75603e7d1df667a0890504d && pip install pandoc-fignos pandoc-eqnos pandoc-tablenos pandoc-secnos --user 
       - name: Install pandoc-citeproc
-        run: sudo apt-get -qq update && sudo apt-get install -y pandoc-citeproc
+        run: sudo apt-get -qq update && sudo apt-get install -y pandoc-citeproc && pandoc --version
       - name: Install tectonic
         uses: wtfjoke/setup-tectonic@v1
         with:
@@ -22,10 +31,11 @@ jobs:
       - name: Set up git repository
         uses: actions/checkout@v2
       - name: Convert with pandoc
-        run: mkdir log && mkdir output && pandoc --defaults pdf.yaml --to latex --metadata-file config.yaml --lua-filter .filters/abstract-to-meta.lua --template template/thesis.tex
+        run: mkdir log && mkdir output && pandoc --filter pandoc-xnos --defaults pdf.yaml --to latex --metadata-file config.yaml --lua-filter .filters/abstract-to-meta.lua --lua-filter .filters/sec-refs-better.lua --template template/thesis.tex --citeproc --csl https://www.zotero.org/styles/journal-of-the-acm --bibliography references.bib --highlight-style zenburn --number-sections
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -36,6 +46,7 @@ jobs:
       - name: Upload released asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
+        if: startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

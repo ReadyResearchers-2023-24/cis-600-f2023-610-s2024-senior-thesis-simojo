@@ -1,10 +1,551 @@
-@article{plaat1996research,
-  title={Research, re: search and re-search},
-  author={Plaat, Aske},
-  journal={ICGA Journal},
-  volume={19},
+@article{hodge2021,
+  title={Deep reinforcement learning for drone navigation using sensor data},
+  author={Hodge, Victoria J and Hawkins, Richard and Alexander, Rob},
+  journal={Neural Computing and Applications},
+  volume={33},
+  pages={2015--2033},
+  year={2021},
+  publisher={Springer},
+  annote={This research uses a "proximal policy optimisation deep reinforcement learning algorithm coupled with incremental curriculum learning and long short-term memory neural networks to implement [their] generic and adaptable navigation algorithm."}
+}
+@article{koyama2014,
+  title={Advances and new functions of VCSEL photonics},
+  author={Koyama, Fumio},
+  journal={Optical Review},
+  volume={21},
+  pages={893--904},
+  year={2014},
+  publisher={Springer},
+  annote={Koyoma reviews advances in VCSEL photonics and presents the physical principles underlying VCSEL diodes.}
+}
+@inproceedings{bernini2021,
+  author = {Bernini, Nicola and Bessa, Mikhail and Delmas, R\'{e}mi and Gold, Arthur and Goubault, Eric and Pennec, Romain and Putot, Sylvie and Sillion, Fran\c{c}ois},
+  title = {A few lessons learned in reinforcement learning for quadcopter attitude control},
+  year = {2021},
+  isbn = {9781450383394},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3447928.3456707},
+  doi = {10.1145/3447928.3456707},
+  abstract = {In the context of developing safe air transportation, our work is focused on understanding how Reinforcement Learning methods can improve the state of the art in traditional control, in nominal as well as non-nominal cases. The end goal is to train provably safe controllers, by improving both training and verification methods. In this paper, we explore this path for controlling the attitude of a quadcopter: we discuss theoretical as well as practical aspects of training neural nets for controlling a crazyflie 2.0 drone. In particular we describe thoroughly the choices in training algorithms, neural net architecture, hyperparameters, observation space etc. We also discuss the robustness of the obtained controllers, both to partial loss of power for one rotor and to wind gusts. Finally, we measure the performance of the approach by using a robust form of a signal temporal logic to quantitatively evaluate the vehicle's behavior.},
+  booktitle = {Proceedings of the 24th International Conference on Hybrid Systems: Computation and Control},
+  articleno = {27},
+  numpages = {11},
+  location = {Nashville, Tennessee},
+  series = {HSCC '21},
+  annote = {This article conciseley defines the steps taken to train a
+    *crazyflie* quadcopter using reinforcement learning. I will discuss it and
+    learn from their experiences in training a quadcopter for attitude control
+    via reinforcement learning.}
+}
+@article{iga2000,
+  title={Surface-emitting laser-its birth and generation of new optoelectronics field},
+  author={Iga, Kenichi},
+  journal={IEEE Journal of selected topics in Quantum Electronics},
+  volume={6},
+  number={6},
+  pages={1201--1215},
+  year={2000},
+  publisher={IEEE},
+  annote={Iga gives a history of VCSEL diodes up until the year 2000, debriefing the physics behind them and their applications during the time of authorship.}
+}
+@article{mur2022,
+  title={Controllable shifting, steering, and expanding of light beam based on multi-layer liquid-crystal cells},
+  author={Mur, Urban and Ravnik, Miha and Se{\v{c}}, David},
+  journal={Scientific reports},
+  volume={12},
+  number={1},
+  pages={352},
+  year={2022},
+  publisher={Nature Publishing Group UK London},
+  annote={This article details the design of a tunable set of nematic LCs that could be used for a solid state method of controlling a laser.}
+}
+@article{raj2020,
+  title={A survey on LiDAR scanning mechanisms},
+  author={Raj, Thinal and Hanim Hashim, Fazida and Baseri Huddin, Aqilah and Ibrahim, Mohd Faisal and Hussain, Aini},
+  journal={Electronics},
+  volume={9},
+  number={5},
+  pages={741},
+  year={2020},
+  publisher={MDPI},
+  annote={This article gives a review of the various types of LiDAR implementations that exist. It outlines a general architecture that applies to every LiDAR system and points to various current works done in the field.}
+}
+@article{zhang2023,
+  title={Non-mechanical optical beam-steering of a liquid crystal laser},
+  author={Zhang, Guanxiong and Elston, Steve J and Schreier, Andy and Faulkner, Grahame and Surampudi, Atchutananda and O'Brien, Dominic and Morris, Stephen M},
+  journal={Optics \& Laser Technology},
+  volume={157},
+  pages={108623},
+  year={2023},
+  publisher={Elsevier},
+  annote={This research discusses a simulation proving how three stacked layers of nematic liquid crystal 'building blocks' could be used to translate, deflect, and, finally, expand light coming from a coherent source; however, the caveat is fabricating such a structure. The width of such a nematic LC would be $\approx 40\lambda$.}
+}
+@inproceedings{sciortino2018,
+  title={ROS/Gazebo-based simulation of quadcopter aircrafts},
+  author={Sciortino, Claudio and Fagiolini, Adriano},
+  booktitle={2018 IEEE 4th International Forum on Research and Technology for Society and Industry (RTSI)},
+  pages={1--6},
+  year={2018},
+  organization={IEEE},
+  annote={This research gives a tutorial-like description of how to estimate the position of a quadcopter in the context of an observer frame (outside of the system of the quadcopter) using the on-board sensors that read angular and linear acceleration. Albeit confusing, this work will provide insight on how to intelligently apply the simulation tools supplied by ROS and Gazebo.}
+}
+@article{de2014,
+  title={Identification and Validation of a Quadrotor’s Model Dynamics},
+  author={de Oliveira, RM Martins},
+  journal={Tech. Rep.},
+  year={2014},
+  annote={
+    This thesis, although older, still gives a good model for when we treat a
+    quadcopter as a black box. Here, the authors provide in excellent detail
+    how to derive the rotation and transformation matrix for a quadcopter
+    system based on its propeller placement, distribution of mass, and thrust
+    capability. This is explained through very poor English though, and I
+    believe that some parts of the thesis are bits of Portuguese in them.
+  }
+}
+@article{song2023,
+  title={Reaching the limit in autonomous racing: Optimal control versus reinforcement learning},
+  author={Song, Yunlong and Romero, Angel and M{\"u}ller, Matthias and Koltun, Vladlen and Scaramuzza, Davide},
+  journal={Science Robotics},
+  volume={8},
+  number={82},
+  pages={eadg1462},
+  year={2023},
+  publisher={American Association for the Advancement of Science},
+  annote={This article discusses the success of the University of Zurich's drone that beat world champion drone pilots. The drone was trained using reinforcement learning in a similiar method that I have hypothesized to work for this project.}
+}
+@article{zhu2021,
+  title={Deep reinforcement learning based mobile robot navigation: A review},
+  author={Zhu, Kai and Zhang, Tao},
+  journal={Tsinghua Science and Technology},
+  volume={26},
+  number={5},
+  pages={674--691},
+  year={2021},
+  publisher={TUP},
+  annote={This review discusses advancements in Deep Reinforcement Learning (DRL) from 2016 to 2020. DRL was first realized in 2013, so this is nearly half of its history.}
+}
+@inproceedings{bogatov2021,
+  title={Control and analysis of quadcopter flight when setting a complex trajectory of motion},
+  author={Bogatov, N and Kostin, A and Maiorov, N},
+  booktitle={Journal of Physics: Conference Series},
+  volume={1925},
+  number={1},
+  pages={012043},
+  year={2021},
+  organization={IOP Publishing},
+  annote={This work uses the COEX Clover quadcopter to sense displacement from the origin via inertial sensors. The COEX clover is what I plan to use as the platform for development.}
+}
+@online{clover,
+  author = {Copter Express},
+  title = {COEX Clover},
+  url = {https://clover.coex.tech/en/},
+  urldate = {2010-10-01},
+  annote = {This is the platform of the drone we will use for development.}
+}
+@article{lilidar2022,
+  title={A progress review on solid-state LiDAR and nanophotonics-based LiDAR sensors},
+  author={Li, Nanxi and Ho, Chong Pei and Xue, Jin and Lim, Leh Woon and Chen, Guanyu and Fu, Yuan Hsing and Lee, Lennon Yao Ting},
+  journal={Laser \& Photonics Reviews},
+  volume={16},
+  number={11},
+  pages={2100511},
+  year={2022},
+  publisher={Wiley Online Library},
+  annote={This review on LiDAR systems details multiple solid-state LiDAR implementations. I will use it in the evaluation of my project, as it gives me perspective as to what other research groups are doing.}
+}
+@book{saleh2019,
+  title={Fundamentals of photonics},
+  author={Saleh, Bahaa EA and Teich, Malvin Carl},
+  year={2019},
+  publisher={John Wiley \& sons},
+  annote={This book gives insight onto photonic devices and their physics. I have looked specifically into their section on liquid crystals for this project.}
+}
+@article{cirtoaje2021,
+  author = {Cirtoaje, Cristina},
+  title = {Ferroelectric Particles in Nematic Liquid Crystals with Soft Anchoring},
+  journal = {Molecules},
+  volume = {26},
+  year = {2021},
+  number = {4},
+  article-number = {1166},
+  url = {https://www.mdpi.com/1420-3049/26/4/1166},
+  pubmedid = {33671776},
+  issn = {1420-3049},
+  doi = {10.3390/molecules26041166},
+  annote = {This article describes the behavior of nematic liquid crystals in the presence of an electric field.}
+}
+@misc{ros,
+  author = {{Stanford Artificial Intelligence Laboratory et al.}},
+  title = {Robotic Operating System},
+  url = {https://www.ros.org},
+  annote = {ROS is the main piece of software that we will use for training the Clover. It provides a plethora of documentation and libraries for systems control.}
+}
+@misc{gazebo,
+  author = {Open Robotics},
+  title = {Gazebo},
+  url = {https://gazebosim.org/home},
+  annote = {Gazebo is the standard for simulating robotic systems created in ROS.}
+}
+@misc{tensorflow,
+title={ {TensorFlow}: Large-Scale Machine Learning on Heterogeneous Systems},
+url={https://www.tensorflow.org/},
+note={Software available from tensorflow.org},
+author={
+    Mart\'{i}n~Abadi and
+    Ashish~Agarwal and
+    Paul~Barham and
+    Eugene~Brevdo and
+    Zhifeng~Chen and
+    Craig~Citro and
+    Greg~S.~Corrado and
+    Andy~Davis and
+    Jeffrey~Dean and
+    Matthieu~Devin and
+    Sanjay~Ghemawat and
+    Ian~Goodfellow and
+    Andrew~Harp and
+    Geoffrey~Irving and
+    Michael~Isard and
+    Yangqing Jia and
+    Rafal~Jozefowicz and
+    Lukasz~Kaiser and
+    Manjunath~Kudlur and
+    Josh~Levenberg and
+    Dandelion~Man\'{e} and
+    Rajat~Monga and
+    Sherry~Moore and
+    Derek~Murray and
+    Chris~Olah and
+    Mike~Schuster and
+    Jonathon~Shlens and
+    Benoit~Steiner and
+    Ilya~Sutskever and
+    Kunal~Talwar and
+    Paul~Tucker and
+    Vincent~Vanhoucke and
+    Vijay~Vasudevan and
+    Fernanda~Vi\'{e}gas and
+    Oriol~Vinyals and
+    Pete~Warden and
+    Martin~Wattenberg and
+    Martin~Wicke and
+    Yuan~Yu and
+    Xiaoqiang~Zheng},
+  year={2015},
+  annote={This is the library that I will use for Deep Reinforcement Learning (DRL).}
+}
+@inproceedings{limemory2022,
+  title={Memory-efficient Gaussian fitting for depth images in real time},
+  author={Li, Peter Zhi Xuan and Karaman, Sertac and Sze, Vivienne},
+  booktitle={2022 International Conference on Robotics and Automation (ICRA)},
+  pages={8003--8009},
+  year={2022},
+  organization={IEEE},
+  annote={This paper presents an algorithm for storing real-time 3D spatial information that could potentially be helpful to apply to the Clover's ad hoc SLAM method.}
+}
+@book{pedrotti1993,
+  title={Introduction to Optics},
+  author={Pedrotti, Frank L. and Pedrotti, Leno S.},
+  pages={426--453},
+  year={1993},
+  publisher={Prentice Hall},
+  editor={Henderson, Ray},
+  annote={This chapter provides helpful details on the basics behind lasing. I use the theory described here, especially that from Einstein's coefficients, to give the background on why VCSEL lasers are a wonderful and notable invention we use fro LiDAR.}
+}
+@article{shakhatreh2019,
+  title={Unmanned aerial vehicles (UAVs): A survey on civil applications and key research challenges},
+  author={Shakhatreh, Hazim and Sawalmeh, Ahmad H and Al-Fuqaha, Ala and Dou, Zuochao and Almaita, Eyad and Khalil, Issa and Othman, Noor Shamsiah and Khreishah, Abdallah and Guizani, Mohsen},
+  journal={IEEE Access},
+  volume={7},
+  pages={48572--48634},
+  year={2019},
+  publisher={IEEE},
+  annote={This article provides a comprehensive list of meaningful civil applications of UAVs. I reference this article when describing the motivation for my research.}
+}
+@article{cummings2017,
+  title={The rise of UAVs},
+  author={Cummings, Anthony R and McKee, Arlo and Kulkarni, Keyur and Markandey, Nakul},
+  journal={Photogrammetric Engineering \& Remote Sensing},
+  volume={83},
+  number={4},
+  pages={317--325},
+  year={2017},
+  publisher={American Society for Photogrammetry and Remote Sensing},
+  annote={This article provides a good basis for explaining the ethical
+    implications of the misuse of UAVs, discussing numerous cases in the past
+      decade.}
+}
+@article{chavez2023,
+  title={Learning on the fly: Drones in the Russian-Ukrainian war},
+  author={Ch{\'a}vez, Kerry},
+  journal={Arms Control Today},
+  volume={53},
+  number={1},
+  pages={6--11},
+  year={2023},
+  publisher={Arms Control Association},
+  annote={This article discusses the use of UAVs in the war on Ukraine, which provides up-to-date examples of how the ethical use of UAVs plays into war.}
+}
+@article{gugan2023,
+  title={Path Planning for Autonomous Drones: Challenges and Future Directions},
+  author={Gugan, Gopi and Haque, Anwar},
+  journal={Drones},
+  volume={7},
   number={3},
-  pages={186--186},
-  year={1996},
-  publisher={IOS Press}
+  pages={169},
+  year={2023},
+  publisher={MDPI},
+  annote={This article gives examples of path planning algorithms for autonomous
+  UAVs along with a discussion of where the future of this technology is headed.
+  I will use this information in my discussion of motivation and ethical
+  implications.}
+}
+@online{faaForecast,
+  author = {Federal Aviation Administration},
+  title = {{FAA} Aerospace Forecasts 2023-2043},
+  year = 2023,
+  url = {https://www.faa.gov/sites/faa.gov/files/2023-Unmanned\%20Aircraft\%20Systems\%20and\%20Advance\%20Air\%20Mobility_0.pdf},
+  urldate = {2023-12-02},
+  annote={This report provides details about the rise of hobbyist UAV operators
+  in the United States, which I will use in my discussion of ethics to explain
+  how widely adopted UAVs have become.}
+}
+
+@online{martin2014,
+  author = {Martin, S.},
+  title = {Triathlete Hit in Head by Drone},
+  year = 2014,
+  url = {http://www.runnersworld.com/newswire/triathlete-hit-in-head-by-drone},
+  urldate = {2023-12-02},
+  annote={This new article is referenced in a culmination of `bad' incidents
+    with UAVs. This will be referenced in ethical implications.}
+}
+@online{thetelegraph2014,
+  author = {The Telegraph},
+  title = {Serbia v Albania abandoned following mass brawl after drone flies
+    over stadium carrying Albanian flag.},
+  year = 2014,
+  url = {https://www.telegraph.co.uk/sport/football/euro-2016/11163216/Serbia-v-Albania-abandoned-following-mass-brawl-after-drone-flies-over-stadium-carrying-Albanian-flag.html},
+  urldate = {2023-12-02},
+  annote={This new article is referenced in a culmination of `bad' incidents
+    with UAVs. This will be referenced in ethical implications.}
+}
+@online{jansen2015,
+  author = {Jansen, B.},
+  title = {FAA: Drone sightings on pace to quadruple this year.},
+  year = 2015,
+  url = {http://www.usatoday.com/story/news/2015/08/13/drone-sightings-faa-newark/31614151/},
+  urldate = {2023-12-02},
+  annote={This new article is referenced in a culmination of `bad' incidents
+    with UAVs. This will be referenced in ethical implications.}
+}
+@online{berman2015,
+  author = {Berman, R.},
+  title = {Beware the Drone Laws},
+  year = 2015,
+  url = {http://www.theatlantic.com/politics/archive/2015/01/beware-the-drones-white-house-obama/384869/},
+  urldate = {2023-12-02},
+  annote={This new article is referenced in a culmination of `bad' incidents
+    with UAVs. This will be referenced in ethical implications.}
+}
+@online{anderson2015,
+  author = {Anderson, K. and K.J. Gaston},
+  title = {Drone `containing radiation' lands on roof of Japanese PM's office},
+  year = 2015,
+  url = {https://www.theguardian.com/world/2015/apr/22/drone-with-radiation-sign-lands-on-roof-of-japanese-prime-ministers-office},
+  urldate = {2023-12-02},
+  annote={This new article is referenced in a culmination of `bad' incidents
+    with UAVs. This will be referenced in ethical implications.}
+}
+@inproceedings{khalil2022,
+  title={FED-UP: Federated deep reinforcement learning-based UAV path planning against hostile defense system},
+  author={Khalil, Alvi Ataur and Rahman, Mohammad Ashiqur},
+  booktitle={2022 18th International Conference on Network and Service Management (CNSM)},
+  pages={268--274},
+  year={2022},
+  organization={IEEE},
+  annote={This article explains some of the current motivations for military
+    investment into autonomous UAVs, which I will discuss in the section on
+    ethical implications.}
+}
+@article{johnston2022,
+  title={‘We watched his whole life unfold... Then you watch the death’: drone tactics, operator trauma, and hidden human costs of contemporary wartime},
+  author={Johnston Huntington, Terilyn and Eckert, Amy E},
+  journal={International Relations},
+  volume={36},
+  number={4},
+  pages={638--657},
+  year={2022},
+  publisher={SAGE Publications Sage UK: London, England},
+  annote={This article gives thought to the psychological dangers associated
+  with UAV warfare, which will add to my ethical discussion about UAVs for
+  military use.}
+}
+@article{doukhi2022,
+  author={Doukhi, Oualid and Lee, Deok Jin},
+  journal={IEEE Access},
+  title={Deep Reinforcement Learning for Autonomous Map-Less Navigation of a Flying Robot},
+  year={2022},
+  volume={10},
+  number={},
+  pages={82964-82976},
+  doi={10.1109/ACCESS.2022.3162702},
+  annote={This article not only defines helpful mechanical equations used for
+    defining the quadcopter's mechanics, but it also describes their approach of
+  traning a quadcopter for navigation using a deep reinforcement learning
+  algorithm. They explain why they chose to not develop a path planning
+  algorithm, and I will explain their work in my review of related work.}
+}
+@article{spinningup2018,
+    author = {Achiam, Joshua},
+    title = {{Spinning Up in Deep Reinforcement Learning}},
+    year = {2018},
+    annote={This is my educational resource of choice for learning reinforcement
+    learning. Additionally, I will reference it to explain concepts and theory.}
+}
+@inproceedings{zhu2022,
+author = {Zhu, Jie and Wu, Fengge and Zhao, Junsuo},
+title = {An Overview of the Action Space for Deep Reinforcement Learning},
+year = {2022},
+isbn = {9781450385053},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3508546.3508598},
+doi = {10.1145/3508546.3508598},
+abstract = {In recent years, deep reinforcement learning has been applied to tasks in the real world gradually. Especially in the field of control, reinforcement learning has shown unprecedented popularity, such as robot control, autonomous driving, and so on. Different algorithms may be suitable for different problems, so we investigate and analyze the existing advanced deep reinforcement learning algorithms from the perspective of action space. At the same time, we analyze the differences and connections between discrete action space, continuous action space and discrete-continuous hybrid action space, and elaborate various reinforcement learning algorithms suitable for different action spaces. Applying reinforcement learning to the control problem in the real world still presents huge challenges. Finally, we summarize these challenges and discuss how reinforcement learning can be appropriately applied to satellite attitude control tasks.},
+booktitle = {Proceedings of the 2021 4th International Conference on Algorithms, Computing and Artificial Intelligence},
+articleno = {52},
+numpages = {10},
+keywords = {satellite attitude control, deep reinforcement learning, action space},
+location = {Sanya, China},
+series = {ACAI '21},
+annote = {This work will inform me thoroughly about how to intelligently choose the state-action relationship in my experiments, because I will be exploring the possibility of using a parameterized action space.}
+}
+@misc{manhaes2024,
+  author = {Marcusso,Musa and Lange, Ralph},
+  title = {pcg_gazebo: A Python package for rapid-prototyping and scripting of simulations for Gazebo},
+  year = {2024},
+  url = {https://github.com/boschresearch/pcg_gazebo},
+  note = {License: Apache 2.0. Retrieved 26 February, 2024.},
+  annote = {I use this package to procedurally generate worlds for cirriculum learning.}
+}
+@article{narvekar2020,
+  author  = {Sanmit Narvekar and Bei Peng and Matteo Leonetti and Jivko Sinapov and Matthew E. Taylor and Peter Stone},
+  title   = {Curriculum Learning for Reinforcement Learning Domains: A Framework and Survey},
+  journal = {Journal of Machine Learning Research},
+  year    = {2020},
+  volume  = {21},
+  number  = {181},
+  pages   = {1--50},
+  url     = {http://jmlr.org/papers/v21/20-212.html},
+  annote  = {I will reference this paper in my related works because of its overview of cirriculum learning and how it is being used in the context of reinforcement learning.}
+}
+@article{fowles2005,
+  title={Analytical mechanics 7th Ed (Belmont: Thomson Brooks/Cole)},
+  author={Fowles, GR and Cassiday, GL},
+  year={2005},
+  annote = {Pages 362-363 in this book provide a concise derivation of the
+    inertial tensor.}
+}
+@online{onshape,
+  author = {OnShape},
+  title = {OnShape: Product Development Platform},
+  url = {https://www.onshape.com/en/},
+  urldate = {2024-03-21},
+  annote = {This is a CAD development platform that I reference in my work.}
+}
+@Manual{blender,
+   title = {Blender - a 3D modelling and rendering package},
+   author = {Blender Online Community},
+   organization = {Blender Foundation},
+   address = {Stichting Blender Foundation, Amsterdam},
+   year = {2018},
+   url = {http://www.blender.org},
+ }
+@inproceedings{meshlab,
+  booktitle = {Eurographics Italian Chapter Conference},
+  editor = {Vittorio Scarano and Rosario De Chiara and Ugo Erra},
+  title = {{MeshLab: an Open-Source Mesh Processing Tool}},
+  author = {Cignoni, Paolo and Callieri, Marco and Corsini, Massimiliano and
+    Dellepiane, Matteo and Ganovelli, Fabio and Ranzuglia, Guido},
+  year = {2008},
+  publisher = {The Eurographics Association},
+  ISBN = {978-3-905673-68-5},
+  DOI = {10.2312/LocalChapterEvents/ItalChap/ItalianChapConf2008/129-136}
+}
+@Misc{gnuplot,
+  author={Thomas Williams and Colin Kelley and {many others}},
+  title={Gnuplot 5.4: an interactive plotting program},
+  month={March},
+  year={2024},
+  howpublished={\url{http://www.gnuplot.info/}}
+}
+@article{engel2012,
+  title={Accurate figure flying with a quadrocopter using onboard visual and inertial sensing},
+  author={Engel, Jakob and Sturm, J{\"u}rgen and Cremers, Daniel},
+  journal={Imu},
+  volume={320},
+  number={240},
+  year={2012},
+  publisher={Citeseer},
+  annote={This paper is written by Jakob Engel, a CV researcher for Facebook,
+    where he and his team explored controlling a quadcopter using an EKF,
+    monocular SLAM, and a PID controller.}
+}
+@misc{keras,
+  title={Keras},
+  author={Chollet, Fran\c{c}ois and others},
+  year={2015},
+  publisher={GitHub},
+  howpublished={\url{https://github.com/fchollet/keras}},
+}
+@inproceedings{park2021,
+  title={Indoor path planning for an unmanned aerial vehicle via curriculum learning},
+  author={Park, Jongmin and Jang, Sooyoung and Shin, Younghoon},
+  booktitle={2021 21st International Conference on Control, Automation and Systems (ICCAS)},
+  pages={529--533},
+  year={2021},
+  organization={IEEE},
+  annote={This paper gives a sturdy example of using curriculum learning for an
+    application almost exactly the same as mine. I use it in my related works
+    section.}
+}
+@inproceedings{deshpande2020,
+  title={Developmental reinforcement learning of control policy of a quadcopter UAV with thrust vectoring rotors},
+  author={Deshpande, Aditya M and Kumar, Rumit and Minai, Ali A and Kumar, Manish},
+  booktitle={Dynamic Systems and Control Conference},
+  volume={84287},
+  pages={V002T36A011},
+  year={2020},
+  organization={American Society of Mechanical Engineers}
+}
+@article{ellis2014,
+  author= {Ellis, Katherine and Godbole, Suneeta and Marshall, Simon and Lanckriet, Gert and Staudenmayer, John and Kerr, Jacqueline},
+  year = {2014},
+  month = {04},
+  pages = {36},
+  title = {Identifying Active Travel Behaviors in Challenging Environments Using GPS, Accelerometers, and Machine Learning Algorithms},
+  volume = {2},
+  journal = {Frontiers in public health},
+  doi = {10.3389/fpubh.2014.00036},
+  annote={This article is used for an image with the roll, pitch, and yaw of a
+    quadcotper system.}
+}
+% used https://www.getbibtex.com/ to get this.
+@misc{arthurND,
+  author = {L. Arthur D’Asaro, Jean-Francois Seurin and James D. Wynn, Princeton Optronics, Inc.},
+  title = {{T}he {V}{C}{S}{E}{L} {A}dvantage: {I}ncreased {P}ower, {E}fficiency {B}ring {N}ew {A}pplications --- photonics.com},
+  howpublished = {\url{https://www.photonics.com/Articles/The_VCSEL_Advantage_Increased_Power_Efficiency/a25102}},
+  year = {},
+  note = {[Accessed 09-04-2024]},
+}
+@online{laserdiodeyoutube,
+    title = {Laser Diode},
+    year = {2020},
+    month = {08},
+    organization = {University of Colorado Boulder},
+    author = {Park, Won},
+    url = {https://www.youtube.com/watch?v=1oRJf54zBRU},
 }

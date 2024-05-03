@@ -2,17 +2,17 @@
 # https://maehr.github.io/academic-pandoc-template/
 
 # Project-specific values
-title: 'Senior Thesis'
-author: 'Student Name'
-date: '22 July 2022'
-firstreader: 'First Reader'
-secondreader: 'Second Reader'
+title: 'Development of Quadcopter for Autonomous Navigation'
+author: 'Simon Jones'
+date: '22 April 2024'
+cisreader: 'Janyl Jumadinova, PhD'
+physicsreader: 'Dan Willey, PhD'
 logo: 'images/logo'
 
 # Template Values: DO NOT TOUCH
 
 # Bibliography
-csl: https://www.zotero.org/styles/journal-of-the-acm # See https://www.zotero.org/styles for more styles.
+csl: https://cdn.githubraw.com/ReadyResearchers-2023-24/thesis-resources-cdn/main/cdn/journal-of-the-acm.csl # See https://www.zotero.org/styles for more styles.
 bibliography: references.bib # See https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md for more formats.
 suppress-bibliography: false
 link-citations: true
@@ -74,4 +74,10 @@ header-includes:
       Hyphenate-me-like-this
       Dontyoueverhyphenateme
     }%
+    ```
+  - |
+    ```{=latex}
+    % fixing issue with code blocks not wrapping: https://github.com/jgm/pandoc/issues/4302#issuecomment-360799891
+    \usepackage{fvextra}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
     ```

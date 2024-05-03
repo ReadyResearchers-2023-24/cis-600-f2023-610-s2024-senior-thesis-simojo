@@ -897,7 +897,7 @@ $$
 (3) & r_t \leftarrow r_t - 1000 \cdot \sqrt{(p_{x_t}^s - x_{{\text{desired}}_t}^s)^2 + (p_{y_t}^s - y_{{\text{desired}}_t}^s)^2} \\[2ex]
 (4) & \text{if}\ \  \Delta t > \text{timeout}\ \  \text{then} \\[2ex]
 (5) & \ \ \ \ r_t \leftarrow r_t - 1000 \\[2ex]
-(6) & \text{if}\ \  p_{z_t}^s + r_t^s \cos{\theta_t^s} <= 0.5 \ \  \text{then} \\[2ex]
+(6) & \text{if}\ \  p_{z_t}^s + r_t^a \cos{\theta_t^a} <= 0.5 \ \  \text{then} \\[2ex]
 (7) & \ \ \ \ r_t \leftarrow r_t - 2000
 \end{array}
 $$ {#eq:reward-metric}
